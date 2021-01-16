@@ -1,6 +1,6 @@
 module Main where
 
-import Lib
+import YACP
 
 main :: IO ()
 main = someFunc

@@ -3,14 +3,12 @@
 {-# LANGUAGE GADTs #-}
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE DeriveGeneric #-}
-module YACP
-  ( module X
-  , someFunc
+{-# LANGUAGE LambdaCase #-}
+module YACP.Generators.Graphviz
+  ( computeDiagram
   ) where
 
 import YACP.MyPrelude
+import YACP.Model
 
-import YACP.Model as X
-
-someFunc :: IO ()
-someFunc = putStrLn "someFunc"
+import qualified Diagrams.TwoD.GraphViz as G

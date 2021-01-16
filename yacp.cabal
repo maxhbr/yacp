@@ -26,17 +26,35 @@ source-repository head
 library
   exposed-modules:
       YACP
+      YACP.Generators.Graphviz
       YACP.Model
       YACP.Model.Component
       YACP.Model.Identifier
       YACP.Model.Relation
+      YACP.Model.State
       YACP.MyPrelude
   other-modules:
       Paths_yacp
   hs-source-dirs:
       src
   build-depends:
-      base >=4.7 && <5
+      Cabal
+    , aeson
+    , aeson-pretty
+    , base >=4.7 && <5
+    , bytestring
+    , containers
+    , diagrams-graphviz
+    , directory
+    , filepath
+    , hashable
+    , mtl
+    , random
+    , spdx
+    , text
+    , unordered-containers
+    , uuid
+    , vector
   default-language: Haskell2010
 
 executable yacp-exe
@@ -47,7 +65,23 @@ executable yacp-exe
       app
   ghc-options: -threaded -rtsopts -with-rtsopts=-N
   build-depends:
-      base >=4.7 && <5
+      Cabal
+    , aeson
+    , aeson-pretty
+    , base >=4.7 && <5
+    , bytestring
+    , containers
+    , diagrams-graphviz
+    , directory
+    , filepath
+    , hashable
+    , mtl
+    , random
+    , spdx
+    , text
+    , unordered-containers
+    , uuid
+    , vector
     , yacp
   default-language: Haskell2010
 
@@ -60,6 +94,22 @@ test-suite yacp-test
       test
   ghc-options: -threaded -rtsopts -with-rtsopts=-N
   build-depends:
-      base >=4.7 && <5
+      Cabal
+    , aeson
+    , aeson-pretty
+    , base >=4.7 && <5
+    , bytestring
+    , containers
+    , diagrams-graphviz
+    , directory
+    , filepath
+    , hashable
+    , mtl
+    , random
+    , spdx
+    , text
+    , unordered-containers
+    , uuid
+    , vector
     , yacp
   default-language: Haskell2010

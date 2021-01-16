@@ -21,6 +21,49 @@ description:         Please see the README on GitHub at <https://github.com/maxh
 
 dependencies:
 - base >= 4.7 && < 5
+# data types
+- text
+- bytestring
+- Cabal # for SDPX expressions
+- spdx # for SDPX.Extra
+- uuid
+# containers
+- vector
+- hashable
+- containers
+- unordered-containers
+# file path stuff
+- directory
+- filepath
+# parsing and file handling
+- aeson
+- aeson-pretty
+# output
+- diagrams-graphviz
+# misc
+- mtl
+- random
+
+# - attoparsec
+# - base16-bytestring
+# - cassava
+# - cryptohash-md5
+# - curl
+# - extra
+# - file-embed
+# - graphviz
+# - hexml
+# - http-client
+# - lens
+# - lens-aeson
+# - lucid
+# - mtl
+# - network-uri
+# - opensource
+# - pandoc
+# - pandoc-types
+# - raw-strings-qq
+# - yaml
 
 library:
   source-dirs: src
