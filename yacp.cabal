@@ -25,7 +25,12 @@ source-repository head
 
 library
   exposed-modules:
-      Lib
+      YACP
+      YACP.Model
+      YACP.Model.Component
+      YACP.Model.Identifier
+      YACP.Model.Relation
+      YACP.MyPrelude
   other-modules:
       Paths_yacp
   hs-source-dirs:
