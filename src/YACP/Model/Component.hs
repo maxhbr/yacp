@@ -29,7 +29,9 @@ data Component
   { _getIdentifier :: Identifier
   , _getLicense :: Maybe SPDX.LicenseExpression
   , _getPayload :: A.Array
-  }
+  } deriving (Eq)
+instance Show Component where
+  show (Component{_getIdentifier = cId, _getLicense = l}) = "{{{" ++  show cId ++ "@" ++ show l ++ "}}}"
 instance Identifiable Component where
   getIdentifier = _getIdentifier
   addIdentifier (c@Component{_getIdentifier = is}) i = c{_getIdentifier = is<>i}

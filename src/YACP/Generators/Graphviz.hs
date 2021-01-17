@@ -12,3 +12,6 @@ import YACP.MyPrelude
 import YACP.Model
 
 import qualified Diagrams.TwoD.GraphViz as G
+
+-- computeDiagram :: StateContainer -> G.Gr Identifier e
+computeDiagram = undefined

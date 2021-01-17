@@ -1,0 +1,2538 @@
+{
+  "repository" : {
+    "vcs" : {
+      "type" : "Git",
+      "url" : "https://github.com/psf/black",
+      "revision" : "de510478d9b12490eddf93a785494f726897363b",
+      "path" : ""
+    },
+    "vcs_processed" : {
+      "type" : "Git",
+      "url" : "https://github.com/psf/black.git",
+      "revision" : "de510478d9b12490eddf93a785494f726897363b",
+      "path" : ""
+    },
+    "config" : { }
+  },
+  "analyzer" : {
+    "start_time" : "2021-01-16T20:01:46.838514Z",
+    "end_time" : "2021-01-16T20:02:33.427836Z",
+    "environment" : {
+      "ort_version" : "DOCKER-SNAPSHOT",
+      "java_version" : "11.0.6",
+      "os" : "Linux",
+      "processors" : 12,
+      "max_memory" : 17179869184,
+      "variables" : {
+        "JAVA_HOME" : "/opt/java/openjdk",
+        "ANDROID_HOME" : "/opt/android-sdk",
+        "GOPATH" : "/go"
+      },
+      "tool_versions" : { }
+    },
+    "config" : {
+      "ignore_tool_versions" : false,
+      "allow_dynamic_versions" : true
+    },
+    "result" : {
+      "projects" : [ {
+        "id" : "PIP::black-requirementstest_requirements:de510478d9b12490eddf93a785494f726897363b",
+        "definition_file_path" : "test_requirements.txt",
+        "declared_licenses" : [ "MIT", "MIT License" ],
+        "declared_licenses_processed" : {
+          "spdx_expression" : "MIT",
+          "mapped" : {
+            "MIT License" : "MIT"
+          }
+        },
+        "vcs" : {
+          "type" : "",
+          "url" : "",
+          "revision" : "",
+          "path" : ""
+        },
+        "vcs_processed" : {
+          "type" : "Git",
+          "url" : "https://github.com/psf/black.git",
+          "revision" : "de510478d9b12490eddf93a785494f726897363b",
+          "path" : ""
+        },
+        "homepage_url" : "https://github.com/psf/black",
+        "scopes" : [ {
+          "name" : "install",
+          "dependencies" : [ {
+            "id" : "PyPI::coverage:5.3.1"
+          }, {
+            "id" : "PyPI::parameterized:0.8.1"
+          }, {
+            "id" : "PyPI::pre-commit:2.9.3",
+            "dependencies" : [ {
+              "id" : "PyPI::cfgv:3.2.0"
+            }, {
+              "id" : "PyPI::identify:1.5.12"
+            }, {
+              "id" : "PyPI::importlib-metadata:3.4.0",
+              "dependencies" : [ {
+                "id" : "PyPI::typing-extensions:3.7.4.3"
+              }, {
+                "id" : "PyPI::zipp:3.4.0"
+              } ]
+            }, {
+              "id" : "PyPI::importlib-resources:5.0.0",
+              "dependencies" : [ {
+                "id" : "PyPI::zipp:3.4.0"
+              } ]
+            }, {
+              "id" : "PyPI::nodeenv:1.5.0"
+            }, {
+              "id" : "PyPI::pyyaml:5.3.1"
+            }, {
+              "id" : "PyPI::toml:0.10.2"
+            }, {
+              "id" : "PyPI::virtualenv:20.3.1",
+              "dependencies" : [ {
+                "id" : "PyPI::appdirs:1.4.4"
+              }, {
+                "id" : "PyPI::distlib:0.3.1"
+              }, {
+                "id" : "PyPI::filelock:3.0.12"
+              }, {
+                "id" : "PyPI::importlib-metadata:3.4.0",
+                "dependencies" : [ {
+                  "id" : "PyPI::typing-extensions:3.7.4.3"
+                }, {
+                  "id" : "PyPI::zipp:3.4.0"
+                } ]
+              }, {
+                "id" : "PyPI::importlib-resources:5.0.0",
+                "dependencies" : [ {
+                  "id" : "PyPI::zipp:3.4.0"
+                } ]
+              }, {
+                "id" : "PyPI::six:1.15.0"
+              } ]
+            } ]
+          }, {
+            "id" : "PyPI::pytest-cases:3.1.1",
+            "dependencies" : [ {
+              "id" : "PyPI::decopatch:1.4.8",
+              "dependencies" : [ {
+                "id" : "PyPI::makefun:1.9.5"
+              } ]
+            }, {
+              "id" : "PyPI::makefun:1.9.5"
+            } ]
+          }, {
+            "id" : "PyPI::pytest-mock:3.5.1",
+            "dependencies" : [ {
+              "id" : "PyPI::pytest:6.2.1",
+              "dependencies" : [ {
+                "id" : "PyPI::attrs:20.3.0"
+              }, {
+                "id" : "PyPI::importlib-metadata:3.4.0",
+                "dependencies" : [ {
+                  "id" : "PyPI::typing-extensions:3.7.4.3"
+                }, {
+                  "id" : "PyPI::zipp:3.4.0"
+                } ]
+              }, {
+                "id" : "PyPI::iniconfig:1.1.1"
+              }, {
+                "id" : "PyPI::packaging:20.8",
+                "dependencies" : [ {
+                  "id" : "PyPI::pyparsing:2.4.7"
+                } ]
+              }, {
+                "id" : "PyPI::pluggy:0.13.1",
+                "dependencies" : [ {
+                  "id" : "PyPI::importlib-metadata:3.4.0",
+                  "dependencies" : [ {
+                    "id" : "PyPI::typing-extensions:3.7.4.3"
+                  }, {
+                    "id" : "PyPI::zipp:3.4.0"
+                  } ]
+                } ]
+              }, {
+                "id" : "PyPI::py:1.10.0"
+              }, {
+                "id" : "PyPI::toml:0.10.2"
+              } ]
+            } ]
+          }, {
+            "id" : "PyPI::tox:3.21.1",
+            "dependencies" : [ {
+              "id" : "PyPI::filelock:3.0.12"
+            }, {
+              "id" : "PyPI::importlib-metadata:3.4.0",
+              "dependencies" : [ {
+                "id" : "PyPI::typing-extensions:3.7.4.3"
+              }, {
+                "id" : "PyPI::zipp:3.4.0"
+              } ]
+            }, {
+              "id" : "PyPI::packaging:20.8",
+              "dependencies" : [ {
+                "id" : "PyPI::pyparsing:2.4.7"
+              } ]
+            }, {
+              "id" : "PyPI::pluggy:0.13.1",
+              "dependencies" : [ {
+                "id" : "PyPI::importlib-metadata:3.4.0",
+                "dependencies" : [ {
+                  "id" : "PyPI::typing-extensions:3.7.4.3"
+                }, {
+                  "id" : "PyPI::zipp:3.4.0"
+                } ]
+              } ]
+            }, {
+              "id" : "PyPI::py:1.10.0"
+            }, {
+              "id" : "PyPI::six:1.15.0"
+            }, {
+              "id" : "PyPI::toml:0.10.2"
+            }, {
+              "id" : "PyPI::virtualenv:20.3.1",
+              "dependencies" : [ {
+                "id" : "PyPI::appdirs:1.4.4"
+              }, {
+                "id" : "PyPI::distlib:0.3.1"
+              }, {
+                "id" : "PyPI::filelock:3.0.12"
+              }, {
+                "id" : "PyPI::importlib-metadata:3.4.0",
+                "dependencies" : [ {
+                  "id" : "PyPI::typing-extensions:3.7.4.3"
+                }, {
+                  "id" : "PyPI::zipp:3.4.0"
+                } ]
+              }, {
+                "id" : "PyPI::importlib-resources:5.0.0",
+                "dependencies" : [ {
+                  "id" : "PyPI::zipp:3.4.0"
+                } ]
+              }, {
+                "id" : "PyPI::six:1.15.0"
+              } ]
+            } ]
+          } ]
+        } ]
+      }, {
+        "id" : "PIP::docs/requirements.txt:de510478d9b12490eddf93a785494f726897363b",
+        "definition_file_path" : "docs/requirements.txt",
+        "declared_licenses" : [ ],
+        "declared_licenses_processed" : { },
+        "vcs" : {
+          "type" : "",
+          "url" : "",
+          "revision" : "",
+          "path" : ""
+        },
+        "vcs_processed" : {
+          "type" : "Git",
+          "url" : "https://github.com/psf/black.git",
+          "revision" : "de510478d9b12490eddf93a785494f726897363b",
+          "path" : "docs"
+        },
+        "homepage_url" : "",
+        "scopes" : [ {
+          "name" : "install",
+          "dependencies" : [ {
+            "id" : "PyPI::recommonmark:0.6.0",
+            "dependencies" : [ {
+              "id" : "PyPI::commonmark:0.9.1"
+            }, {
+              "id" : "PyPI::docutils:0.16"
+            }, {
+              "id" : "PyPI::sphinx:3.2.1",
+              "dependencies" : [ {
+                "id" : "PyPI::Jinja2:2.11.2",
+                "dependencies" : [ {
+                  "id" : "PyPI::MarkupSafe:1.1.1"
+                } ]
+              }, {
+                "id" : "PyPI::Pygments:2.6.1"
+              }, {
+                "id" : "PyPI::alabaster:0.7.12"
+              }, {
+                "id" : "PyPI::babel:2.9.0",
+                "dependencies" : [ {
+                  "id" : "PyPI::pytz:2020.5"
+                } ]
+              }, {
+                "id" : "PyPI::docutils:0.16"
+              }, {
+                "id" : "PyPI::imagesize:1.2.0"
+              }, {
+                "id" : "PyPI::packaging:20.8",
+                "dependencies" : [ {
+                  "id" : "PyPI::pyparsing:2.4.7"
+                } ]
+              }, {
+                "id" : "PyPI::requests:2.25.1",
+                "dependencies" : [ {
+                  "id" : "PyPI::certifi:2020.12.5"
+                }, {
+                  "id" : "PyPI::chardet:4.0.0"
+                }, {
+                  "id" : "PyPI::idna:2.10"
+                }, {
+                  "id" : "PyPI::urllib3:1.26.2"
+                } ]
+              }, {
+                "id" : "PyPI::setuptools:51.1.2"
+              }, {
+                "id" : "PyPI::snowballstemmer:2.0.0"
+              }, {
+                "id" : "PyPI::sphinxcontrib-applehelp:1.0.2"
+              }, {
+                "id" : "PyPI::sphinxcontrib-devhelp:1.0.2"
+              }, {
+                "id" : "PyPI::sphinxcontrib-htmlhelp:1.0.3"
+              }, {
+                "id" : "PyPI::sphinxcontrib-jsmath:1.0.1"
+              }, {
+                "id" : "PyPI::sphinxcontrib-qthelp:1.0.3"
+              }, {
+                "id" : "PyPI::sphinxcontrib-serializinghtml:1.1.4"
+              } ]
+            } ]
+          } ]
+        } ]
+      }, {
+        "id" : "Pipenv::Pipfile.lock:",
+        "definition_file_path" : "Pipfile.lock",
+        "declared_licenses" : [ ],
+        "declared_licenses_processed" : { },
+        "vcs" : {
+          "type" : "",
+          "url" : "",
+          "revision" : "",
+          "path" : ""
+        },
+        "vcs_processed" : {
+          "type" : "Git",
+          "url" : "https://github.com/psf/black.git",
+          "revision" : "de510478d9b12490eddf93a785494f726897363b",
+          "path" : ""
+        },
+        "homepage_url" : "",
+        "scopes" : [ ]
+      } ],
+      "packages" : [ {
+        "package" : {
+          "id" : "PyPI::Jinja2:2.11.2",
+          "purl" : "pkg:pypi/Jinja2@2.11.2",
+          "declared_licenses" : [ "BSD License", "BSD-3-Clause" ],
+          "declared_licenses_processed" : {
+            "spdx_expression" : "BSD-3-Clause",
+            "mapped" : {
+              "BSD License" : "BSD-3-Clause"
+            }
+          },
+          "description" : "A very fast and expressive template engine.",
+          "homepage_url" : "https://palletsprojects.com/p/jinja/",
+          "binary_artifact" : {
+            "url" : "https://files.pythonhosted.org/packages/30/9e/f663a2aa66a09d838042ae1a2c5659828bb9b41ea3a6efa20a20fd92b121/Jinja2-2.11.2-py2.py3-none-any.whl",
+            "hash" : {
+              "value" : "e36888c21cb0f6716b9987be2972744d",
+              "algorithm" : "MD5"
+            }
+          },
+          "source_artifact" : {
+            "url" : "https://files.pythonhosted.org/packages/64/a7/45e11eebf2f15bf987c3bc11d37dcc838d9dc81250e67e4c5968f6008b6c/Jinja2-2.11.2.tar.gz",
+            "hash" : {
+              "value" : "0362203b22547abca06ed1082bc1e7b4",
+              "algorithm" : "MD5"
+            }
+          },
+          "vcs" : {
+            "type" : "",
+            "url" : "",
+            "revision" : "",
+            "path" : ""
+          },
+          "vcs_processed" : {
+            "type" : "",
+            "url" : "",
+            "revision" : "",
+            "path" : ""
+          }
+        },
+        "curations" : [ ]
+      }, {
+        "package" : {
+          "id" : "PyPI::MarkupSafe:1.1.1",
+          "purl" : "pkg:pypi/MarkupSafe@1.1.1",
+          "declared_licenses" : [ "BSD License", "BSD-3-Clause" ],
+          "declared_licenses_processed" : {
+            "spdx_expression" : "BSD-3-Clause",
+            "mapped" : {
+              "BSD License" : "BSD-3-Clause"
+            }
+          },
+          "description" : "Safely add untrusted strings to HTML/XML markup.",
+          "homepage_url" : "https://palletsprojects.com/p/markupsafe/",
+          "binary_artifact" : {
+            "url" : "https://files.pythonhosted.org/packages/6d/d2/0ccd2c0e2cd93b35e765d9b3205cd6602e6b202b522fc7997531353715b3/MarkupSafe-1.1.1-cp27-cp27m-macosx_10_6_intel.whl",
+            "hash" : {
+              "value" : "c937b3654640ee5864f2917bf24a7ad2",
+              "algorithm" : "MD5"
+            }
+          },
+          "source_artifact" : {
+            "url" : "https://files.pythonhosted.org/packages/b9/2e/64db92e53b86efccfaea71321f597fa2e1b2bd3853d8ce658568f7a13094/MarkupSafe-1.1.1.tar.gz",
+            "hash" : {
+              "value" : "43fd756864fe42063068e092e220c57b",
+              "algorithm" : "MD5"
+            }
+          },
+          "vcs" : {
+            "type" : "",
+            "url" : "",
+            "revision" : "",
+            "path" : ""
+          },
+          "vcs_processed" : {
+            "type" : "",
+            "url" : "",
+            "revision" : "",
+            "path" : ""
+          }
+        },
+        "curations" : [ ]
+      }, {
+        "package" : {
+          "id" : "PyPI::Pygments:2.6.1",
+          "purl" : "pkg:pypi/Pygments@2.6.1",
+          "declared_licenses" : [ "BSD License" ],
+          "declared_licenses_processed" : {
+            "spdx_expression" : "BSD-3-Clause",
+            "mapped" : {
+              "BSD License" : "BSD-3-Clause"
+            }
+          },
+          "description" : "Pygments is a syntax highlighting package written in Python.",
+          "homepage_url" : "https://pygments.org/",
+          "binary_artifact" : {
+            "url" : "https://files.pythonhosted.org/packages/2d/68/106af3ae51daf807e9cdcba6a90e518954eb8b70341cee52995540a53ead/Pygments-2.6.1-py3-none-any.whl",
+            "hash" : {
+              "value" : "fff9d3cb89afa6c86e5e321a36e9d454",
+              "algorithm" : "MD5"
+            }
+          },
+          "source_artifact" : {
+            "url" : "https://files.pythonhosted.org/packages/6e/4d/4d2fe93a35dfba417311a4ff627489a947b01dc0cc377a3673c00cf7e4b2/Pygments-2.6.1.tar.gz",
+            "hash" : {
+              "value" : "a48c5219de92f12c41acba814730b31a",
+              "algorithm" : "MD5"
+            }
+          },
+          "vcs" : {
+            "type" : "",
+            "url" : "",
+            "revision" : "",
+            "path" : ""
+          },
+          "vcs_processed" : {
+            "type" : "",
+            "url" : "",
+            "revision" : "",
+            "path" : ""
+          }
+        },
+        "curations" : [ ]
+      }, {
+        "package" : {
+          "id" : "PyPI::alabaster:0.7.12",
+          "purl" : "pkg:pypi/alabaster@0.7.12",
+          "declared_licenses" : [ "BSD License" ],
+          "declared_licenses_processed" : {
+            "spdx_expression" : "BSD-3-Clause",
+            "mapped" : {
+              "BSD License" : "BSD-3-Clause"
+            }
+          },
+          "description" : "A configurable sidebar-enabled Sphinx theme",
+          "homepage_url" : "https://alabaster.readthedocs.io",
+          "binary_artifact" : {
+            "url" : "https://files.pythonhosted.org/packages/10/ad/00b090d23a222943eb0eda509720a404f531a439e803f6538f35136cae9e/alabaster-0.7.12-py2.py3-none-any.whl",
+            "hash" : {
+              "value" : "6487fd5054a3eece3a6b96bda83d97b2",
+              "algorithm" : "MD5"
+            }
+          },
+          "source_artifact" : {
+            "url" : "https://files.pythonhosted.org/packages/cc/b4/ed8dcb0d67d5cfb7f83c4d5463a7614cb1d078ad7ae890c9143edebbf072/alabaster-0.7.12.tar.gz",
+            "hash" : {
+              "value" : "3591827fde96d1dd23970fb05410ed04",
+              "algorithm" : "MD5"
+            }
+          },
+          "vcs" : {
+            "type" : "",
+            "url" : "",
+            "revision" : "",
+            "path" : ""
+          },
+          "vcs_processed" : {
+            "type" : "",
+            "url" : "",
+            "revision" : "",
+            "path" : ""
+          }
+        },
+        "curations" : [ ]
+      }, {
+        "package" : {
+          "id" : "PyPI::appdirs:1.4.4",
+          "purl" : "pkg:pypi/appdirs@1.4.4",
+          "declared_licenses" : [ "MIT", "MIT License" ],
+          "declared_licenses_processed" : {
+            "spdx_expression" : "MIT",
+            "mapped" : {
+              "MIT License" : "MIT"
+            }
+          },
+          "description" : "A small Python module for determining appropriate platform-specific dirs, e.g. a \"user data dir\".",
+          "homepage_url" : "http://github.com/ActiveState/appdirs",
+          "binary_artifact" : {
+            "url" : "https://files.pythonhosted.org/packages/3b/00/2344469e2084fb287c2e0b57b72910309874c3245463acd6cf5e3db69324/appdirs-1.4.4-py2.py3-none-any.whl",
+            "hash" : {
+              "value" : "1d638a5913a8d8ed8e7c7d789ece149c",
+              "algorithm" : "MD5"
+            }
+          },
+          "source_artifact" : {
+            "url" : "https://files.pythonhosted.org/packages/d7/d8/05696357e0311f5b5c316d7b95f46c669dd9c15aaeecbb48c7d0aeb88c40/appdirs-1.4.4.tar.gz",
+            "hash" : {
+              "value" : "d6bca12613174185dd9abc8a29f4f012",
+              "algorithm" : "MD5"
+            }
+          },
+          "vcs" : {
+            "type" : "",
+            "url" : "",
+            "revision" : "",
+            "path" : ""
+          },
+          "vcs_processed" : {
+            "type" : "Git",
+            "url" : "https://github.com/ActiveState/appdirs.git",
+            "revision" : "",
+            "path" : ""
+          }
+        },
+        "curations" : [ ]
+      }, {
+        "package" : {
+          "id" : "PyPI::attrs:20.3.0",
+          "purl" : "pkg:pypi/attrs@20.3.0",
+          "declared_licenses" : [ "MIT", "MIT License" ],
+          "declared_licenses_processed" : {
+            "spdx_expression" : "MIT",
+            "mapped" : {
+              "MIT License" : "MIT"
+            }
+          },
+          "description" : "Classes Without Boilerplate",
+          "homepage_url" : "https://www.attrs.org/",
+          "binary_artifact" : {
+            "url" : "https://files.pythonhosted.org/packages/c3/aa/cb45262569fcc047bf070b5de61813724d6726db83259222cd7b4c79821a/attrs-20.3.0-py2.py3-none-any.whl",
+            "hash" : {
+              "value" : "e8156a6d3ff4d7c6362c40451cddc897",
+              "algorithm" : "MD5"
+            }
+          },
+          "source_artifact" : {
+            "url" : "https://files.pythonhosted.org/packages/f0/cb/80a4a274df7da7b8baf083249b0890a0579374c3d74b5ac0ee9291f912dc/attrs-20.3.0.tar.gz",
+            "hash" : {
+              "value" : "4fe38f89297b2b446d83190fce189f29",
+              "algorithm" : "MD5"
+            }
+          },
+          "vcs" : {
+            "type" : "",
+            "url" : "",
+            "revision" : "",
+            "path" : ""
+          },
+          "vcs_processed" : {
+            "type" : "",
+            "url" : "",
+            "revision" : "",
+            "path" : ""
+          }
+        },
+        "curations" : [ ]
+      }, {
+        "package" : {
+          "id" : "PyPI::babel:2.9.0",
+          "purl" : "pkg:pypi/babel@2.9.0",
+          "declared_licenses" : [ "BSD", "BSD License" ],
+          "declared_licenses_processed" : {
+            "spdx_expression" : "BSD-3-Clause",
+            "mapped" : {
+              "BSD" : "BSD-3-Clause",
+              "BSD License" : "BSD-3-Clause"
+            }
+          },
+          "description" : "Internationalization utilities",
+          "homepage_url" : "http://babel.pocoo.org/",
+          "binary_artifact" : {
+            "url" : "https://files.pythonhosted.org/packages/dd/a5/81076e10b5ef74493cf08a8e419e61b64324c9c55db4aa7f89c0240c4873/Babel-2.9.0-py2.py3-none-any.whl",
+            "hash" : {
+              "value" : "f4ed917cb45bcc760a4f652890bdffa8",
+              "algorithm" : "MD5"
+            }
+          },
+          "source_artifact" : {
+            "url" : "https://files.pythonhosted.org/packages/41/1b/5ed6e564b9ca54318df20ebe5d642ab25da4118df3c178247b8c4b26fa13/Babel-2.9.0.tar.gz",
+            "hash" : {
+              "value" : "bfc803874aa71e9e9bd54bdd1ce944ba",
+              "algorithm" : "MD5"
+            }
+          },
+          "vcs" : {
+            "type" : "",
+            "url" : "",
+            "revision" : "",
+            "path" : ""
+          },
+          "vcs_processed" : {
+            "type" : "",
+            "url" : "",
+            "revision" : "",
+            "path" : ""
+          }
+        },
+        "curations" : [ ]
+      }, {
+        "package" : {
+          "id" : "PyPI::certifi:2020.12.5",
+          "purl" : "pkg:pypi/certifi@2020.12.5",
+          "declared_licenses" : [ "MPL-2.0", "Mozilla Public License 2.0 (MPL 2.0)" ],
+          "declared_licenses_processed" : {
+            "spdx_expression" : "MPL-2.0",
+            "mapped" : {
+              "Mozilla Public License 2.0 (MPL 2.0)" : "MPL-2.0"
+            }
+          },
+          "description" : "Python package for providing Mozilla's CA Bundle.",
+          "homepage_url" : "https://certifiio.readthedocs.io/en/latest/",
+          "binary_artifact" : {
+            "url" : "https://files.pythonhosted.org/packages/5e/a0/5f06e1e1d463903cf0c0eebeb751791119ed7a4b3737fdc9a77f1cdfb51f/certifi-2020.12.5-py2.py3-none-any.whl",
+            "hash" : {
+              "value" : "f29a46c26b4f06fa5721827fb8b3e173",
+              "algorithm" : "MD5"
+            }
+          },
+          "source_artifact" : {
+            "url" : "https://files.pythonhosted.org/packages/06/a9/cd1fd8ee13f73a4d4f491ee219deeeae20afefa914dfb4c130cfc9dc397a/certifi-2020.12.5.tar.gz",
+            "hash" : {
+              "value" : "522f9abe26e5d603a668d812aa6accca",
+              "algorithm" : "MD5"
+            }
+          },
+          "vcs" : {
+            "type" : "",
+            "url" : "",
+            "revision" : "",
+            "path" : ""
+          },
+          "vcs_processed" : {
+            "type" : "",
+            "url" : "",
+            "revision" : "",
+            "path" : ""
+          }
+        },
+        "curations" : [ ]
+      }, {
+        "package" : {
+          "id" : "PyPI::cfgv:3.2.0",
+          "purl" : "pkg:pypi/cfgv@3.2.0",
+          "declared_licenses" : [ "MIT", "MIT License" ],
+          "declared_licenses_processed" : {
+            "spdx_expression" : "MIT",
+            "mapped" : {
+              "MIT License" : "MIT"
+            }
+          },
+          "description" : "Validate configuration and produce human readable error messages.",
+          "homepage_url" : "https://github.com/asottile/cfgv",
+          "binary_artifact" : {
+            "url" : "https://files.pythonhosted.org/packages/45/cd/3878c9248e59e5e2ebd0dc741ab984b18d86e7283ae9b127b05fc287d239/cfgv-3.2.0-py2.py3-none-any.whl",
+            "hash" : {
+              "value" : "aa7f2e34eeeb63607d2be66bf049ffdc",
+              "algorithm" : "MD5"
+            }
+          },
+          "source_artifact" : {
+            "url" : "https://files.pythonhosted.org/packages/63/75/c80804e4a5eccc9acf767faf4591bb7ab289485ba236dfee542467dc7c9b/cfgv-3.2.0.tar.gz",
+            "hash" : {
+              "value" : "1ac98320f019624b4a33903f93f551b0",
+              "algorithm" : "MD5"
+            }
+          },
+          "vcs" : {
+            "type" : "",
+            "url" : "",
+            "revision" : "",
+            "path" : ""
+          },
+          "vcs_processed" : {
+            "type" : "Git",
+            "url" : "https://github.com/asottile/cfgv.git",
+            "revision" : "",
+            "path" : ""
+          }
+        },
+        "curations" : [ ]
+      }, {
+        "package" : {
+          "id" : "PyPI::chardet:4.0.0",
+          "purl" : "pkg:pypi/chardet@4.0.0",
+          "declared_licenses" : [ "GNU Library or Lesser General Public License (LGPL)", "LGPL" ],
+          "declared_licenses_processed" : {
+            "spdx_expression" : "LGPL-2.1-only AND LGPL-2.0-or-later",
+            "mapped" : {
+              "GNU Library or Lesser General Public License (LGPL)" : "LGPL-2.1-only",
+              "LGPL" : "LGPL-2.0-or-later"
+            }
+          },
+          "description" : "Universal encoding detector for Python 2 and 3",
+          "homepage_url" : "https://github.com/chardet/chardet",
+          "binary_artifact" : {
+            "url" : "https://files.pythonhosted.org/packages/19/c7/fa589626997dd07bd87d9269342ccb74b1720384a4d739a1872bd84fbe68/chardet-4.0.0-py2.py3-none-any.whl",
+            "hash" : {
+              "value" : "504627b9b4fcd44720d5aa1345e29cc7",
+              "algorithm" : "MD5"
+            }
+          },
+          "source_artifact" : {
+            "url" : "https://files.pythonhosted.org/packages/ee/2d/9cdc2b527e127b4c9db64b86647d567985940ac3698eeabc7ffaccb4ea61/chardet-4.0.0.tar.gz",
+            "hash" : {
+              "value" : "bc9a5603d8d0994b2d4cbf255f99e654",
+              "algorithm" : "MD5"
+            }
+          },
+          "vcs" : {
+            "type" : "",
+            "url" : "",
+            "revision" : "",
+            "path" : ""
+          },
+          "vcs_processed" : {
+            "type" : "Git",
+            "url" : "https://github.com/chardet/chardet.git",
+            "revision" : "",
+            "path" : ""
+          }
+        },
+        "curations" : [ ]
+      }, {
+        "package" : {
+          "id" : "PyPI::commonmark:0.9.1",
+          "purl" : "pkg:pypi/commonmark@0.9.1",
+          "declared_licenses" : [ "BSD License", "BSD-3-Clause" ],
+          "declared_licenses_processed" : {
+            "spdx_expression" : "BSD-3-Clause",
+            "mapped" : {
+              "BSD License" : "BSD-3-Clause"
+            }
+          },
+          "description" : "Python parser for the CommonMark Markdown spec",
+          "homepage_url" : "https://github.com/rtfd/commonmark.py",
+          "binary_artifact" : {
+            "url" : "https://files.pythonhosted.org/packages/b1/92/dfd892312d822f36c55366118b95d914e5f16de11044a27cf10a7d71bbbf/commonmark-0.9.1-py2.py3-none-any.whl",
+            "hash" : {
+              "value" : "091b5c3805fbdad90d5658ad4bf47687",
+              "algorithm" : "MD5"
+            }
+          },
+          "source_artifact" : {
+            "url" : "https://files.pythonhosted.org/packages/60/48/a60f593447e8f0894ebb7f6e6c1f25dafc5e89c5879fdc9360ae93ff83f0/commonmark-0.9.1.tar.gz",
+            "hash" : {
+              "value" : "cd1dc70c4714d9ed4117a40490c25e00",
+              "algorithm" : "MD5"
+            }
+          },
+          "vcs" : {
+            "type" : "",
+            "url" : "",
+            "revision" : "",
+            "path" : ""
+          },
+          "vcs_processed" : {
+            "type" : "Git",
+            "url" : "https://github.com/rtfd/commonmark.py.git",
+            "revision" : "",
+            "path" : ""
+          }
+        },
+        "curations" : [ ]
+      }, {
+        "package" : {
+          "id" : "PyPI::coverage:5.3.1",
+          "purl" : "pkg:pypi/coverage@5.3.1",
+          "declared_licenses" : [ "Apache 2.0", "Apache Software License" ],
+          "declared_licenses_processed" : {
+            "spdx_expression" : "Apache-2.0",
+            "mapped" : {
+              "Apache 2.0" : "Apache-2.0",
+              "Apache Software License" : "Apache-2.0"
+            }
+          },
+          "description" : "Code coverage measurement for Python",
+          "homepage_url" : "https://github.com/nedbat/coveragepy",
+          "binary_artifact" : {
+            "url" : "https://files.pythonhosted.org/packages/28/24/bab86059b84d5484b75d4f2d3d05606d85ff5e74e192217359b4474c257f/coverage-5.3.1-cp27-cp27m-macosx_10_9_x86_64.whl",
+            "hash" : {
+              "value" : "ea55245852c6a1b90ee92c1bb446e2d4",
+              "algorithm" : "MD5"
+            }
+          },
+          "source_artifact" : {
+            "url" : "https://files.pythonhosted.org/packages/40/05/2c1d1405edeec38114abcd404f15a35a41029b89d0514aa8ad11ffcbde81/coverage-5.3.1.tar.gz",
+            "hash" : {
+              "value" : "6ff1e5fafaa6d2156f45c274fa80a6d1",
+              "algorithm" : "MD5"
+            }
+          },
+          "vcs" : {
+            "type" : "",
+            "url" : "",
+            "revision" : "",
+            "path" : ""
+          },
+          "vcs_processed" : {
+            "type" : "Git",
+            "url" : "https://github.com/nedbat/coveragepy.git",
+            "revision" : "",
+            "path" : ""
+          }
+        },
+        "curations" : [ ]
+      }, {
+        "package" : {
+          "id" : "PyPI::decopatch:1.4.8",
+          "purl" : "pkg:pypi/decopatch@1.4.8",
+          "declared_licenses" : [ "BSD 3-Clause", "BSD License" ],
+          "declared_licenses_processed" : {
+            "spdx_expression" : "BSD-3-Clause",
+            "mapped" : {
+              "BSD 3-Clause" : "BSD-3-Clause",
+              "BSD License" : "BSD-3-Clause"
+            }
+          },
+          "description" : "Create decorators easily in python.",
+          "homepage_url" : "https://github.com/smarie/python-decopatch",
+          "binary_artifact" : {
+            "url" : "https://files.pythonhosted.org/packages/9b/17/c48e8989ada9be380bbf7f2911aefa0f56d87a7ddc9b48a536284e85f11d/decopatch-1.4.8-py2.py3-none-any.whl",
+            "hash" : {
+              "value" : "af4df86c924cce646263ae002d41241d",
+              "algorithm" : "MD5"
+            }
+          },
+          "source_artifact" : {
+            "url" : "https://files.pythonhosted.org/packages/1b/7f/07fed4897c155edaa33cb69b9eb4bf2daa44b3779a31f8d45bbc0aab8f80/decopatch-1.4.8.tar.gz",
+            "hash" : {
+              "value" : "efe83e67614ba8eff6576ae779d99410",
+              "algorithm" : "MD5"
+            }
+          },
+          "vcs" : {
+            "type" : "",
+            "url" : "",
+            "revision" : "",
+            "path" : ""
+          },
+          "vcs_processed" : {
+            "type" : "Git",
+            "url" : "https://github.com/smarie/python-decopatch.git",
+            "revision" : "",
+            "path" : ""
+          }
+        },
+        "curations" : [ ]
+      }, {
+        "package" : {
+          "id" : "PyPI::distlib:0.3.1",
+          "purl" : "pkg:pypi/distlib@0.3.1",
+          "declared_licenses" : [ "Python Software Foundation License", "Python license" ],
+          "declared_licenses_processed" : {
+            "spdx_expression" : "PSF-2.0",
+            "mapped" : {
+              "Python Software Foundation License" : "PSF-2.0"
+            },
+            "unmapped" : [ "Python license" ]
+          },
+          "description" : "Distribution utilities",
+          "homepage_url" : "https://bitbucket.org/pypa/distlib",
+          "binary_artifact" : {
+            "url" : "https://files.pythonhosted.org/packages/f5/0a/490fa011d699bb5a5f3a0cf57de82237f52a6db9d40f33c53b2736c9a1f9/distlib-0.3.1-py2.py3-none-any.whl",
+            "hash" : {
+              "value" : "fd12d085eefe9339b39fa892552d899b",
+              "algorithm" : "MD5"
+            }
+          },
+          "source_artifact" : {
+            "url" : "https://files.pythonhosted.org/packages/2f/83/1eba07997b8ba58d92b3e51445d5bf36f9fba9cb8166bcae99b9c3464841/distlib-0.3.1.zip",
+            "hash" : {
+              "value" : "4baf787d8aceb260d6f77cb31bf27cf6",
+              "algorithm" : "MD5"
+            }
+          },
+          "vcs" : {
+            "type" : "",
+            "url" : "",
+            "revision" : "",
+            "path" : ""
+          },
+          "vcs_processed" : {
+            "type" : "Git",
+            "url" : "https://bitbucket.org/pypa/distlib.git",
+            "revision" : "",
+            "path" : ""
+          }
+        },
+        "curations" : [ ]
+      }, {
+        "package" : {
+          "id" : "PyPI::docutils:0.16",
+          "purl" : "pkg:pypi/docutils@0.16",
+          "declared_licenses" : [ "BSD License", "GNU General Public License (GPL)", "Public Domain", "Python Software Foundation License", "public domain, Python, 2-Clause BSD, GPL 3 (see COPYING.txt)" ],
+          "declared_licenses_processed" : {
+            "spdx_expression" : "BSD-3-Clause AND GPL-3.0-only AND LicenseRef-scancode-public-domain-disclaimer AND PSF-2.0 AND LicenseRef-scancode-public-domain-disclaimer AND Python-2.0 AND BSD-2-Clause AND GPL-3.0-only",
+            "mapped" : {
+              "BSD License" : "BSD-3-Clause",
+              "GNU General Public License (GPL)" : "GPL-3.0-only",
+              "Public Domain" : "LicenseRef-scancode-public-domain-disclaimer",
+              "Python Software Foundation License" : "PSF-2.0",
+              "public domain, Python, 2-Clause BSD, GPL 3 (see COPYING.txt)" : "LicenseRef-scancode-public-domain-disclaimer AND Python-2.0 AND BSD-2-Clause AND GPL-3.0-only"
+            }
+          },
+          "description" : "Docutils -- Python Documentation Utilities",
+          "homepage_url" : "http://docutils.sourceforge.net/",
+          "binary_artifact" : {
+            "url" : "https://files.pythonhosted.org/packages/81/44/8a15e45ffa96e6cf82956dd8d7af9e666357e16b0d93b253903475ee947f/docutils-0.16-py2.py3-none-any.whl",
+            "hash" : {
+              "value" : "de3600f5400e8a8264db17277a69179a",
+              "algorithm" : "MD5"
+            }
+          },
+          "source_artifact" : {
+            "url" : "https://files.pythonhosted.org/packages/2f/e0/3d435b34abd2d62e8206171892f174b180cd37b09d57b924ca5c2ef2219d/docutils-0.16.tar.gz",
+            "hash" : {
+              "value" : "44952782107930ddfcd37ae48eee0857",
+              "algorithm" : "MD5"
+            }
+          },
+          "vcs" : {
+            "type" : "",
+            "url" : "",
+            "revision" : "",
+            "path" : ""
+          },
+          "vcs_processed" : {
+            "type" : "",
+            "url" : "",
+            "revision" : "",
+            "path" : ""
+          }
+        },
+        "curations" : [ ]
+      }, {
+        "package" : {
+          "id" : "PyPI::filelock:3.0.12",
+          "purl" : "pkg:pypi/filelock@3.0.12",
+          "declared_licenses" : [ "Public Domain", "Public Domain <http://unlicense.org>" ],
+          "declared_licenses_processed" : {
+            "spdx_expression" : "LicenseRef-scancode-public-domain-disclaimer",
+            "mapped" : {
+              "Public Domain" : "LicenseRef-scancode-public-domain-disclaimer",
+              "Public Domain <http://unlicense.org>" : "LicenseRef-scancode-public-domain-disclaimer"
+            }
+          },
+          "description" : "A platform independent file lock.",
+          "homepage_url" : "https://github.com/benediktschmitt/py-filelock",
+          "binary_artifact" : {
+            "url" : "https://files.pythonhosted.org/packages/93/83/71a2ee6158bb9f39a90c0dea1637f81d5eef866e188e1971a1b1ab01a35a/filelock-3.0.12-py3-none-any.whl",
+            "hash" : {
+              "value" : "6ba8f81427ba4566f249684b563b9db4",
+              "algorithm" : "MD5"
+            }
+          },
+          "source_artifact" : {
+            "url" : "https://files.pythonhosted.org/packages/14/ec/6ee2168387ce0154632f856d5cc5592328e9cf93127c5c9aeca92c8c16cb/filelock-3.0.12.tar.gz",
+            "hash" : {
+              "value" : "c1fe6d9a7433a7ca6ce4f36e273317d1",
+              "algorithm" : "MD5"
+            }
+          },
+          "vcs" : {
+            "type" : "",
+            "url" : "",
+            "revision" : "",
+            "path" : ""
+          },
+          "vcs_processed" : {
+            "type" : "Git",
+            "url" : "https://github.com/benediktschmitt/py-filelock.git",
+            "revision" : "",
+            "path" : ""
+          }
+        },
+        "curations" : [ ]
+      }, {
+        "package" : {
+          "id" : "PyPI::identify:1.5.12",
+          "purl" : "pkg:pypi/identify@1.5.12",
+          "declared_licenses" : [ "MIT", "MIT License" ],
+          "declared_licenses_processed" : {
+            "spdx_expression" : "MIT",
+            "mapped" : {
+              "MIT License" : "MIT"
+            }
+          },
+          "description" : "File identification library for Python",
+          "homepage_url" : "https://github.com/pre-commit/identify",
+          "binary_artifact" : {
+            "url" : "https://files.pythonhosted.org/packages/db/d9/fa8ceeccb99086453c8cb04ec1afd3146ab18f635ce31c78aa27fffb5048/identify-1.5.12-py2.py3-none-any.whl",
+            "hash" : {
+              "value" : "5dc34f952fc5d0ed02888b0d8cf9c1f2",
+              "algorithm" : "MD5"
+            }
+          },
+          "source_artifact" : {
+            "url" : "https://files.pythonhosted.org/packages/66/e6/dca195a587a91c86cd5882a14d3680793f37c5c173b11631fe3f5fed0bfb/identify-1.5.12.tar.gz",
+            "hash" : {
+              "value" : "a412f7832f23212c011b17c4f0e0fed5",
+              "algorithm" : "MD5"
+            }
+          },
+          "vcs" : {
+            "type" : "",
+            "url" : "",
+            "revision" : "",
+            "path" : ""
+          },
+          "vcs_processed" : {
+            "type" : "Git",
+            "url" : "https://github.com/pre-commit/identify.git",
+            "revision" : "",
+            "path" : ""
+          }
+        },
+        "curations" : [ ]
+      }, {
+        "package" : {
+          "id" : "PyPI::idna:2.10",
+          "purl" : "pkg:pypi/idna@2.10",
+          "declared_licenses" : [ "BSD License", "BSD-like" ],
+          "declared_licenses_processed" : {
+            "spdx_expression" : "BSD-3-Clause",
+            "mapped" : {
+              "BSD License" : "BSD-3-Clause",
+              "BSD-like" : "BSD-3-Clause"
+            }
+          },
+          "description" : "Internationalized Domain Names in Applications (IDNA)",
+          "homepage_url" : "https://github.com/kjd/idna",
+          "binary_artifact" : {
+            "url" : "https://files.pythonhosted.org/packages/a2/38/928ddce2273eaa564f6f50de919327bf3a00f091b5baba8dfa9460f3a8a8/idna-2.10-py2.py3-none-any.whl",
+            "hash" : {
+              "value" : "8f7d13f63706aa265d31ffedc8aa3053",
+              "algorithm" : "MD5"
+            }
+          },
+          "source_artifact" : {
+            "url" : "https://files.pythonhosted.org/packages/ea/b7/e0e3c1c467636186c39925827be42f16fee389dc404ac29e930e9136be70/idna-2.10.tar.gz",
+            "hash" : {
+              "value" : "7a910c706db30d758f377db2762c0f9a",
+              "algorithm" : "MD5"
+            }
+          },
+          "vcs" : {
+            "type" : "",
+            "url" : "",
+            "revision" : "",
+            "path" : ""
+          },
+          "vcs_processed" : {
+            "type" : "Git",
+            "url" : "https://github.com/kjd/idna.git",
+            "revision" : "",
+            "path" : ""
+          }
+        },
+        "curations" : [ ]
+      }, {
+        "package" : {
+          "id" : "PyPI::imagesize:1.2.0",
+          "purl" : "pkg:pypi/imagesize@1.2.0",
+          "declared_licenses" : [ "MIT", "MIT License" ],
+          "declared_licenses_processed" : {
+            "spdx_expression" : "MIT",
+            "mapped" : {
+              "MIT License" : "MIT"
+            }
+          },
+          "description" : "Getting image size from png/jpeg/jpeg2000/gif file",
+          "homepage_url" : "https://github.com/shibukawa/imagesize_py",
+          "binary_artifact" : {
+            "url" : "https://files.pythonhosted.org/packages/31/b2/b5522a0c8d11e4aff83f8342f3f0dea68c2fb25aa44403e420587f0ce204/imagesize-1.2.0-py2.py3-none-any.whl",
+            "hash" : {
+              "value" : "68367ae95abf2f3a53cef3b690b47d00",
+              "algorithm" : "MD5"
+            }
+          },
+          "source_artifact" : {
+            "url" : "https://files.pythonhosted.org/packages/e4/9f/0452b459c8ba97e07c3cd2bd243783936a992006cf4cd1353c314a927028/imagesize-1.2.0.tar.gz",
+            "hash" : {
+              "value" : "3a1e124594183778a8f87e4bcdb6dca9",
+              "algorithm" : "MD5"
+            }
+          },
+          "vcs" : {
+            "type" : "",
+            "url" : "",
+            "revision" : "",
+            "path" : ""
+          },
+          "vcs_processed" : {
+            "type" : "Git",
+            "url" : "https://github.com/shibukawa/imagesize_py.git",
+            "revision" : "",
+            "path" : ""
+          }
+        },
+        "curations" : [ ]
+      }, {
+        "package" : {
+          "id" : "PyPI::importlib-metadata:3.4.0",
+          "purl" : "pkg:pypi/importlib-metadata@3.4.0",
+          "declared_licenses" : [ "Apache Software License" ],
+          "declared_licenses_processed" : {
+            "spdx_expression" : "Apache-2.0",
+            "mapped" : {
+              "Apache Software License" : "Apache-2.0"
+            }
+          },
+          "description" : "Read metadata from Python packages",
+          "homepage_url" : "https://github.com/python/importlib_metadata",
+          "binary_artifact" : {
+            "url" : "https://files.pythonhosted.org/packages/f3/ed/da40116a204abb5c4dd1d929346d33e0d29cedb2cedd18ea98f0385dcd92/importlib_metadata-3.4.0-py3-none-any.whl",
+            "hash" : {
+              "value" : "83c9f2107da69f0dac857ff49735b3b6",
+              "algorithm" : "MD5"
+            }
+          },
+          "source_artifact" : {
+            "url" : "https://files.pythonhosted.org/packages/0c/89/412afa5f0018dccf637c2d25b9d6a41623cd22beef6797c0d67a2082ccfe/importlib_metadata-3.4.0.tar.gz",
+            "hash" : {
+              "value" : "9cc01b572ffbef3539d51b87f95d8cdb",
+              "algorithm" : "MD5"
+            }
+          },
+          "vcs" : {
+            "type" : "",
+            "url" : "",
+            "revision" : "",
+            "path" : ""
+          },
+          "vcs_processed" : {
+            "type" : "Git",
+            "url" : "https://github.com/python/importlib_metadata.git",
+            "revision" : "",
+            "path" : ""
+          }
+        },
+        "curations" : [ ]
+      }, {
+        "package" : {
+          "id" : "PyPI::importlib-resources:5.0.0",
+          "purl" : "pkg:pypi/importlib-resources@5.0.0",
+          "declared_licenses" : [ "Apache Software License", "Apache2" ],
+          "declared_licenses_processed" : {
+            "spdx_expression" : "Apache-2.0",
+            "mapped" : {
+              "Apache Software License" : "Apache-2.0",
+              "Apache2" : "Apache-2.0"
+            }
+          },
+          "description" : "Read resources from Python packages",
+          "homepage_url" : "https://github.com/python/importlib_resources",
+          "binary_artifact" : {
+            "url" : "https://files.pythonhosted.org/packages/c6/c9/c267e6ff93460c0f467f243e2144b46d5c409c339d31d587d5d98def49e5/importlib_resources-5.0.0-py3-none-any.whl",
+            "hash" : {
+              "value" : "50d55f79197071960611c45d6a0a4c3d",
+              "algorithm" : "MD5"
+            }
+          },
+          "source_artifact" : {
+            "url" : "https://files.pythonhosted.org/packages/e0/fb/875db4023c8b075071cfd5f89203e39dc73b760142586ee9584c67bfd461/importlib_resources-5.0.0.tar.gz",
+            "hash" : {
+              "value" : "aefbc78747c661e30fb968075b04024f",
+              "algorithm" : "MD5"
+            }
+          },
+          "vcs" : {
+            "type" : "",
+            "url" : "",
+            "revision" : "",
+            "path" : ""
+          },
+          "vcs_processed" : {
+            "type" : "Git",
+            "url" : "https://github.com/python/importlib_resources.git",
+            "revision" : "",
+            "path" : ""
+          }
+        },
+        "curations" : [ ]
+      }, {
+        "package" : {
+          "id" : "PyPI::iniconfig:1.1.1",
+          "purl" : "pkg:pypi/iniconfig@1.1.1",
+          "declared_licenses" : [ "MIT License" ],
+          "declared_licenses_processed" : {
+            "spdx_expression" : "MIT",
+            "mapped" : {
+              "MIT License" : "MIT"
+            }
+          },
+          "description" : "iniconfig: brain-dead simple config-ini parsing",
+          "homepage_url" : "http://github.com/RonnyPfannschmidt/iniconfig",
+          "binary_artifact" : {
+            "url" : "https://files.pythonhosted.org/packages/9b/dd/b3c12c6d707058fa947864b67f0c4e0c39ef8610988d7baea9578f3c48f3/iniconfig-1.1.1-py2.py3-none-any.whl",
+            "hash" : {
+              "value" : "90f3e1bb7ced782f2b04eb5af266ecb7",
+              "algorithm" : "MD5"
+            }
+          },
+          "source_artifact" : {
+            "url" : "https://files.pythonhosted.org/packages/23/a2/97899f6bd0e873fed3a7e67ae8d3a08b21799430fb4da15cfedf10d6e2c2/iniconfig-1.1.1.tar.gz",
+            "hash" : {
+              "value" : "0b7f3be87481211c183eae095bcea6f1",
+              "algorithm" : "MD5"
+            }
+          },
+          "vcs" : {
+            "type" : "",
+            "url" : "",
+            "revision" : "",
+            "path" : ""
+          },
+          "vcs_processed" : {
+            "type" : "Git",
+            "url" : "https://github.com/RonnyPfannschmidt/iniconfig.git",
+            "revision" : "",
+            "path" : ""
+          }
+        },
+        "curations" : [ ]
+      }, {
+        "package" : {
+          "id" : "PyPI::makefun:1.9.5",
+          "purl" : "pkg:pypi/makefun@1.9.5",
+          "declared_licenses" : [ "BSD 3-Clause", "BSD License" ],
+          "declared_licenses_processed" : {
+            "spdx_expression" : "BSD-3-Clause",
+            "mapped" : {
+              "BSD 3-Clause" : "BSD-3-Clause",
+              "BSD License" : "BSD-3-Clause"
+            }
+          },
+          "description" : "Small library to dynamically create python functions.",
+          "homepage_url" : "https://github.com/smarie/python-makefun",
+          "binary_artifact" : {
+            "url" : "https://files.pythonhosted.org/packages/ad/3d/fd1af12ce7c4e360ac38f01f7872fbbd6b4efb088fb9f39afc8beb447701/makefun-1.9.5-py2.py3-none-any.whl",
+            "hash" : {
+              "value" : "6beea6fde65296ac2d33eb26ee7ee376",
+              "algorithm" : "MD5"
+            }
+          },
+          "source_artifact" : {
+            "url" : "https://files.pythonhosted.org/packages/8e/ed/0b064e400abf5d1da15e74f0c447b33125ba42092f2beaf5ef0ecd92e179/makefun-1.9.5.tar.gz",
+            "hash" : {
+              "value" : "ceed1a5746c04dcd36f3b353b35c5e58",
+              "algorithm" : "MD5"
+            }
+          },
+          "vcs" : {
+            "type" : "",
+            "url" : "",
+            "revision" : "",
+            "path" : ""
+          },
+          "vcs_processed" : {
+            "type" : "Git",
+            "url" : "https://github.com/smarie/python-makefun.git",
+            "revision" : "",
+            "path" : ""
+          }
+        },
+        "curations" : [ ]
+      }, {
+        "package" : {
+          "id" : "PyPI::nodeenv:1.5.0",
+          "purl" : "pkg:pypi/nodeenv@1.5.0",
+          "declared_licenses" : [ "BSD", "BSD License" ],
+          "declared_licenses_processed" : {
+            "spdx_expression" : "BSD-3-Clause",
+            "mapped" : {
+              "BSD" : "BSD-3-Clause",
+              "BSD License" : "BSD-3-Clause"
+            }
+          },
+          "description" : "Node.js virtual environment builder",
+          "homepage_url" : "https://github.com/ekalinin/nodeenv",
+          "binary_artifact" : {
+            "url" : "https://files.pythonhosted.org/packages/ae/d0/efdf54539948315cc76e5a66b709212963101d002822c3b54369dbf9b5e0/nodeenv-1.5.0-py2.py3-none-any.whl",
+            "hash" : {
+              "value" : "bcaa7df2445ff932d761f38ac7596a41",
+              "algorithm" : "MD5"
+            }
+          },
+          "source_artifact" : {
+            "url" : "https://files.pythonhosted.org/packages/2f/15/d1eb0d2664e57da61622a815efe7a88db68c7a593fb86bd7cc629fc31c76/nodeenv-1.5.0.tar.gz",
+            "hash" : {
+              "value" : "841aa341e01ccab1fd99dac60df447fa",
+              "algorithm" : "MD5"
+            }
+          },
+          "vcs" : {
+            "type" : "",
+            "url" : "",
+            "revision" : "",
+            "path" : ""
+          },
+          "vcs_processed" : {
+            "type" : "Git",
+            "url" : "https://github.com/ekalinin/nodeenv.git",
+            "revision" : "",
+            "path" : ""
+          }
+        },
+        "curations" : [ ]
+      }, {
+        "package" : {
+          "id" : "PyPI::packaging:20.8",
+          "purl" : "pkg:pypi/packaging@20.8",
+          "declared_licenses" : [ "Apache Software License", "BSD License", "BSD-2-Clause or Apache-2.0" ],
+          "declared_licenses_processed" : {
+            "spdx_expression" : "Apache-2.0 AND BSD-3-Clause AND (BSD-2-Clause OR Apache-2.0)",
+            "mapped" : {
+              "Apache Software License" : "Apache-2.0",
+              "BSD License" : "BSD-3-Clause",
+              "BSD-2-Clause or Apache-2.0" : "BSD-2-Clause OR Apache-2.0"
+            }
+          },
+          "description" : "Core utilities for Python packages",
+          "homepage_url" : "https://github.com/pypa/packaging",
+          "binary_artifact" : {
+            "url" : "https://files.pythonhosted.org/packages/b1/a7/588bfa063e7763247ab6f7e1d994e331b85e0e7d09f853c59a6eb9696974/packaging-20.8-py2.py3-none-any.whl",
+            "hash" : {
+              "value" : "9aaeeb54f36d482e9a2fe7c95d7ffb33",
+              "algorithm" : "MD5"
+            }
+          },
+          "source_artifact" : {
+            "url" : "https://files.pythonhosted.org/packages/d7/c5/e81b9fb8033fe78a2355ea7b1774338e1dca2c9cbd2ee140211a9e6291ab/packaging-20.8.tar.gz",
+            "hash" : {
+              "value" : "101110b3d512d544b70fd61d58482eaf",
+              "algorithm" : "MD5"
+            }
+          },
+          "vcs" : {
+            "type" : "",
+            "url" : "",
+            "revision" : "",
+            "path" : ""
+          },
+          "vcs_processed" : {
+            "type" : "Git",
+            "url" : "https://github.com/pypa/packaging.git",
+            "revision" : "",
+            "path" : ""
+          }
+        },
+        "curations" : [ ]
+      }, {
+        "package" : {
+          "id" : "PyPI::parameterized:0.8.1",
+          "purl" : "pkg:pypi/parameterized@0.8.1",
+          "declared_licenses" : [ "BSD License", "FreeBSD" ],
+          "declared_licenses_processed" : {
+            "spdx_expression" : "BSD-3-Clause AND BSD-2-Clause-Views",
+            "mapped" : {
+              "BSD License" : "BSD-3-Clause",
+              "FreeBSD" : "BSD-2-Clause-Views"
+            }
+          },
+          "description" : "Parameterized testing with any Python test framework",
+          "homepage_url" : "https://github.com/wolever/parameterized",
+          "binary_artifact" : {
+            "url" : "https://files.pythonhosted.org/packages/31/13/fe468c8c7400a8eca204e6e160a29bf7dcd45a76e20f1c030f3eaa690d93/parameterized-0.8.1-py2.py3-none-any.whl",
+            "hash" : {
+              "value" : "c4969d09c87200cf06cd6e969e216057",
+              "algorithm" : "MD5"
+            }
+          },
+          "source_artifact" : {
+            "url" : "https://files.pythonhosted.org/packages/c6/23/2288f308d238b4f261c039cafcd650435d624de97c6ffc903f06ea8af50f/parameterized-0.8.1.tar.gz",
+            "hash" : {
+              "value" : "30e34da8db0b31bbc5c0ed86cfa9e7c1",
+              "algorithm" : "MD5"
+            }
+          },
+          "vcs" : {
+            "type" : "",
+            "url" : "",
+            "revision" : "",
+            "path" : ""
+          },
+          "vcs_processed" : {
+            "type" : "Git",
+            "url" : "https://github.com/wolever/parameterized.git",
+            "revision" : "",
+            "path" : ""
+          }
+        },
+        "curations" : [ ]
+      }, {
+        "package" : {
+          "id" : "PyPI::pluggy:0.13.1",
+          "purl" : "pkg:pypi/pluggy@0.13.1",
+          "declared_licenses" : [ "MIT License", "MIT license" ],
+          "declared_licenses_processed" : {
+            "spdx_expression" : "MIT",
+            "mapped" : {
+              "MIT License" : "MIT",
+              "MIT license" : "MIT"
+            }
+          },
+          "description" : "plugin and hook calling mechanisms for python",
+          "homepage_url" : "https://github.com/pytest-dev/pluggy",
+          "binary_artifact" : {
+            "url" : "https://files.pythonhosted.org/packages/a0/28/85c7aa31b80d150b772fbe4a229487bc6644da9ccb7e427dd8cc60cb8a62/pluggy-0.13.1-py2.py3-none-any.whl",
+            "hash" : {
+              "value" : "32a771dc4df48273d4967e5aab043653",
+              "algorithm" : "MD5"
+            }
+          },
+          "source_artifact" : {
+            "url" : "https://files.pythonhosted.org/packages/f8/04/7a8542bed4b16a65c2714bf76cf5a0b026157da7f75e87cc88774aa10b14/pluggy-0.13.1.tar.gz",
+            "hash" : {
+              "value" : "7f610e28b8b34487336b585a3dfb803d",
+              "algorithm" : "MD5"
+            }
+          },
+          "vcs" : {
+            "type" : "",
+            "url" : "",
+            "revision" : "",
+            "path" : ""
+          },
+          "vcs_processed" : {
+            "type" : "Git",
+            "url" : "https://github.com/pytest-dev/pluggy.git",
+            "revision" : "",
+            "path" : ""
+          }
+        },
+        "curations" : [ ]
+      }, {
+        "package" : {
+          "id" : "PyPI::pre-commit:2.9.3",
+          "purl" : "pkg:pypi/pre-commit@2.9.3",
+          "declared_licenses" : [ "MIT", "MIT License" ],
+          "declared_licenses_processed" : {
+            "spdx_expression" : "MIT",
+            "mapped" : {
+              "MIT License" : "MIT"
+            }
+          },
+          "description" : "A framework for managing and maintaining multi-language pre-commit hooks.",
+          "homepage_url" : "https://github.com/pre-commit/pre-commit",
+          "binary_artifact" : {
+            "url" : "https://files.pythonhosted.org/packages/1e/ab/191c8d1dbd179b6577cd9a5744e56aede754776905b9dc9c524b21607cf6/pre_commit-2.9.3-py2.py3-none-any.whl",
+            "hash" : {
+              "value" : "26bc851498db3f210456d67112e0d60c",
+              "algorithm" : "MD5"
+            }
+          },
+          "source_artifact" : {
+            "url" : "https://files.pythonhosted.org/packages/b1/7b/1536387577a2f01d6aea901b9331319a9f927725bfbfae78ddb7200141cc/pre_commit-2.9.3.tar.gz",
+            "hash" : {
+              "value" : "762ddaff36f1b9055e62f963eb85a3ab",
+              "algorithm" : "MD5"
+            }
+          },
+          "vcs" : {
+            "type" : "",
+            "url" : "",
+            "revision" : "",
+            "path" : ""
+          },
+          "vcs_processed" : {
+            "type" : "Git",
+            "url" : "https://github.com/pre-commit/pre-commit.git",
+            "revision" : "",
+            "path" : ""
+          }
+        },
+        "curations" : [ ]
+      }, {
+        "package" : {
+          "id" : "PyPI::py:1.10.0",
+          "purl" : "pkg:pypi/py@1.10.0",
+          "declared_licenses" : [ "MIT License", "MIT license" ],
+          "declared_licenses_processed" : {
+            "spdx_expression" : "MIT",
+            "mapped" : {
+              "MIT License" : "MIT",
+              "MIT license" : "MIT"
+            }
+          },
+          "description" : "library with cross-python path, ini-parsing, io, code, log facilities",
+          "homepage_url" : "https://py.readthedocs.io/",
+          "binary_artifact" : {
+            "url" : "https://files.pythonhosted.org/packages/67/32/6fe01cfc3d1a27c92fdbcdfc3f67856da8cbadf0dd9f2e18055202b2dc62/py-1.10.0-py2.py3-none-any.whl",
+            "hash" : {
+              "value" : "025a8dee6cd7e51790536da11d4a5aff",
+              "algorithm" : "MD5"
+            }
+          },
+          "source_artifact" : {
+            "url" : "https://files.pythonhosted.org/packages/0d/8c/50e9f3999419bb7d9639c37e83fa9cdcf0f601a9d407162d6c37ad60be71/py-1.10.0.tar.gz",
+            "hash" : {
+              "value" : "5f108bfe00d5468cbdb8071051f86a55",
+              "algorithm" : "MD5"
+            }
+          },
+          "vcs" : {
+            "type" : "",
+            "url" : "",
+            "revision" : "",
+            "path" : ""
+          },
+          "vcs_processed" : {
+            "type" : "",
+            "url" : "",
+            "revision" : "",
+            "path" : ""
+          }
+        },
+        "curations" : [ ]
+      }, {
+        "package" : {
+          "id" : "PyPI::pyparsing:2.4.7",
+          "purl" : "pkg:pypi/pyparsing@2.4.7",
+          "declared_licenses" : [ "MIT License" ],
+          "declared_licenses_processed" : {
+            "spdx_expression" : "MIT",
+            "mapped" : {
+              "MIT License" : "MIT"
+            }
+          },
+          "description" : "Python parsing module",
+          "homepage_url" : "https://github.com/pyparsing/pyparsing/",
+          "binary_artifact" : {
+            "url" : "https://files.pythonhosted.org/packages/8a/bb/488841f56197b13700afd5658fc279a2025a39e22449b7cf29864669b15d/pyparsing-2.4.7-py2.py3-none-any.whl",
+            "hash" : {
+              "value" : "dbfd0a241aad2595f43377ec7f1836ea",
+              "algorithm" : "MD5"
+            }
+          },
+          "source_artifact" : {
+            "url" : "https://files.pythonhosted.org/packages/c1/47/dfc9c342c9842bbe0036c7f763d2d6686bcf5eb1808ba3e170afdb282210/pyparsing-2.4.7.tar.gz",
+            "hash" : {
+              "value" : "f0953e47a0112f7a65aec2305ffdf7b4",
+              "algorithm" : "MD5"
+            }
+          },
+          "vcs" : {
+            "type" : "",
+            "url" : "",
+            "revision" : "",
+            "path" : ""
+          },
+          "vcs_processed" : {
+            "type" : "Git",
+            "url" : "https://github.com/pyparsing/pyparsing.git",
+            "revision" : "",
+            "path" : ""
+          }
+        },
+        "curations" : [ ]
+      }, {
+        "package" : {
+          "id" : "PyPI::pytest-cases:3.1.1",
+          "purl" : "pkg:pypi/pytest-cases@3.1.1",
+          "declared_licenses" : [ "BSD 3-Clause", "BSD License" ],
+          "declared_licenses_processed" : {
+            "spdx_expression" : "BSD-3-Clause",
+            "mapped" : {
+              "BSD 3-Clause" : "BSD-3-Clause",
+              "BSD License" : "BSD-3-Clause"
+            }
+          },
+          "description" : "Separate test code from test cases in pytest.",
+          "homepage_url" : "https://github.com/smarie/python-pytest-cases",
+          "binary_artifact" : {
+            "url" : "https://files.pythonhosted.org/packages/96/04/2a71f71dbb7011eceef0c54faed36bdd8ca3320bfbffd7c0f891a5d5f9e3/pytest_cases-3.1.1-py2.py3-none-any.whl",
+            "hash" : {
+              "value" : "6876afe00973bc9ec4e176663242b34b",
+              "algorithm" : "MD5"
+            }
+          },
+          "source_artifact" : {
+            "url" : "https://files.pythonhosted.org/packages/37/e3/6ade241e5668906ba914ed44630976db73324e8d9d0bfe63fc0df5699961/pytest-cases-3.1.1.tar.gz",
+            "hash" : {
+              "value" : "04eface014d91c04bbce21741da4fc69",
+              "algorithm" : "MD5"
+            }
+          },
+          "vcs" : {
+            "type" : "",
+            "url" : "",
+            "revision" : "",
+            "path" : ""
+          },
+          "vcs_processed" : {
+            "type" : "Git",
+            "url" : "https://github.com/smarie/python-pytest-cases.git",
+            "revision" : "",
+            "path" : ""
+          }
+        },
+        "curations" : [ ]
+      }, {
+        "package" : {
+          "id" : "PyPI::pytest-mock:3.5.1",
+          "purl" : "pkg:pypi/pytest-mock@3.5.1",
+          "declared_licenses" : [ "MIT", "MIT License" ],
+          "declared_licenses_processed" : {
+            "spdx_expression" : "MIT",
+            "mapped" : {
+              "MIT License" : "MIT"
+            }
+          },
+          "description" : "Thin-wrapper around the mock package for easier use with pytest",
+          "homepage_url" : "https://github.com/pytest-dev/pytest-mock/",
+          "binary_artifact" : {
+            "url" : "https://files.pythonhosted.org/packages/1d/ba/8bf763e2f300c1eba8f07506efd87a3c1c346e751d4dc618c444924b7c22/pytest_mock-3.5.1-py3-none-any.whl",
+            "hash" : {
+              "value" : "376895d2db36292f8ad462840aca5ea0",
+              "algorithm" : "MD5"
+            }
+          },
+          "source_artifact" : {
+            "url" : "https://files.pythonhosted.org/packages/24/1b/ddad49c762bddfe3cb61c8ba61349701afd584b84ff4189721bcba624598/pytest-mock-3.5.1.tar.gz",
+            "hash" : {
+              "value" : "4df7938dad05b3ba0ab80205ec4d75c2",
+              "algorithm" : "MD5"
+            }
+          },
+          "vcs" : {
+            "type" : "",
+            "url" : "",
+            "revision" : "",
+            "path" : ""
+          },
+          "vcs_processed" : {
+            "type" : "Git",
+            "url" : "https://github.com/pytest-dev/pytest-mock.git",
+            "revision" : "",
+            "path" : ""
+          }
+        },
+        "curations" : [ ]
+      }, {
+        "package" : {
+          "id" : "PyPI::pytest:6.2.1",
+          "purl" : "pkg:pypi/pytest@6.2.1",
+          "declared_licenses" : [ "MIT", "MIT License" ],
+          "declared_licenses_processed" : {
+            "spdx_expression" : "MIT",
+            "mapped" : {
+              "MIT License" : "MIT"
+            }
+          },
+          "description" : "pytest: simple powerful testing with Python",
+          "homepage_url" : "https://docs.pytest.org/en/latest/",
+          "binary_artifact" : {
+            "url" : "https://files.pythonhosted.org/packages/d7/15/5ef931cbd22585865aad0ea025162545b53af9319cf38542e0b7981d5b34/pytest-6.2.1-py3-none-any.whl",
+            "hash" : {
+              "value" : "304d5faf418f73198944e8805b1d2f92",
+              "algorithm" : "MD5"
+            }
+          },
+          "source_artifact" : {
+            "url" : "https://files.pythonhosted.org/packages/a3/98/a3dcf1b749aaddd5b6f01e8dc2a1da08dbaebc94d5c0c5bb8743316d4093/pytest-6.2.1.tar.gz",
+            "hash" : {
+              "value" : "e6f1ecae0536e5532f0ab39b1d73e89f",
+              "algorithm" : "MD5"
+            }
+          },
+          "vcs" : {
+            "type" : "",
+            "url" : "",
+            "revision" : "",
+            "path" : ""
+          },
+          "vcs_processed" : {
+            "type" : "",
+            "url" : "",
+            "revision" : "",
+            "path" : ""
+          }
+        },
+        "curations" : [ ]
+      }, {
+        "package" : {
+          "id" : "PyPI::pytz:2020.5",
+          "purl" : "pkg:pypi/pytz@2020.5",
+          "declared_licenses" : [ "MIT", "MIT License" ],
+          "declared_licenses_processed" : {
+            "spdx_expression" : "MIT",
+            "mapped" : {
+              "MIT License" : "MIT"
+            }
+          },
+          "description" : "World timezone definitions, modern and historical",
+          "homepage_url" : "http://pythonhosted.org/pytz",
+          "binary_artifact" : {
+            "url" : "https://files.pythonhosted.org/packages/89/06/2c2d3034b4d6bf22f2a4ae546d16925898658a33b4400cfb7e2c1e2871a3/pytz-2020.5-py2.py3-none-any.whl",
+            "hash" : {
+              "value" : "6aead685b020e49867313ae3a423b458",
+              "algorithm" : "MD5"
+            }
+          },
+          "source_artifact" : {
+            "url" : "https://files.pythonhosted.org/packages/70/44/404ec10dca553032900a65bcded8b8280cf7c64cc3b723324e2181bf93c9/pytz-2020.5.tar.gz",
+            "hash" : {
+              "value" : "e7ebdeb16f0e0abdddc0e764af68052c",
+              "algorithm" : "MD5"
+            }
+          },
+          "vcs" : {
+            "type" : "",
+            "url" : "",
+            "revision" : "",
+            "path" : ""
+          },
+          "vcs_processed" : {
+            "type" : "",
+            "url" : "",
+            "revision" : "",
+            "path" : ""
+          }
+        },
+        "curations" : [ ]
+      }, {
+        "package" : {
+          "id" : "PyPI::pyyaml:5.3.1",
+          "purl" : "pkg:pypi/pyyaml@5.3.1",
+          "declared_licenses" : [ "MIT", "MIT License" ],
+          "declared_licenses_processed" : {
+            "spdx_expression" : "MIT",
+            "mapped" : {
+              "MIT License" : "MIT"
+            }
+          },
+          "description" : "YAML parser and emitter for Python",
+          "homepage_url" : "https://github.com/yaml/pyyaml",
+          "binary_artifact" : {
+            "url" : "https://files.pythonhosted.org/packages/c8/af/64e32cb1c31dee44235ef39ea5ecbcde5d85f8f1d3b894b9788f53d82cf7/PyYAML-5.3.1-cp27-cp27m-win32.whl",
+            "hash" : {
+              "value" : "a2675c04e39f87dbf299feef41775dee",
+              "algorithm" : "MD5"
+            }
+          },
+          "source_artifact" : {
+            "url" : "https://files.pythonhosted.org/packages/64/c2/b80047c7ac2478f9501676c988a5411ed5572f35d1beff9cae07d321512c/PyYAML-5.3.1.tar.gz",
+            "hash" : {
+              "value" : "d3590b85917362e837298e733321962b",
+              "algorithm" : "MD5"
+            }
+          },
+          "vcs" : {
+            "type" : "",
+            "url" : "",
+            "revision" : "",
+            "path" : ""
+          },
+          "vcs_processed" : {
+            "type" : "Git",
+            "url" : "https://github.com/yaml/pyyaml.git",
+            "revision" : "",
+            "path" : ""
+          }
+        },
+        "curations" : [ ]
+      }, {
+        "package" : {
+          "id" : "PyPI::recommonmark:0.6.0",
+          "purl" : "pkg:pypi/recommonmark@0.6.0",
+          "declared_licenses" : [ "MIT", "MIT License" ],
+          "declared_licenses_processed" : {
+            "spdx_expression" : "MIT",
+            "mapped" : {
+              "MIT License" : "MIT"
+            }
+          },
+          "description" : "A docutils-compatibility bridge to CommonMark, enabling you to write CommonMark inside of Docutils & Sphinx projects.",
+          "homepage_url" : "https://github.com/rtfd/recommonmark",
+          "binary_artifact" : {
+            "url" : "https://files.pythonhosted.org/packages/94/de/334aaf73df8c0e77fb07f883d1e274344526196c137ef3479cb5e5aef086/recommonmark-0.6.0-py2.py3-none-any.whl",
+            "hash" : {
+              "value" : "cbf74ba5256ac106a1b10bab489e46df",
+              "algorithm" : "MD5"
+            }
+          },
+          "source_artifact" : {
+            "url" : "https://files.pythonhosted.org/packages/f5/71/046160d730f664662d65b3f8b399b519ad378ffa4369ff3b6060cf1318d7/recommonmark-0.6.0.tar.gz",
+            "hash" : {
+              "value" : "41edafd4f92392f2b49a1443bab27b90",
+              "algorithm" : "MD5"
+            }
+          },
+          "vcs" : {
+            "type" : "",
+            "url" : "",
+            "revision" : "",
+            "path" : ""
+          },
+          "vcs_processed" : {
+            "type" : "Git",
+            "url" : "https://github.com/rtfd/recommonmark.git",
+            "revision" : "",
+            "path" : ""
+          }
+        },
+        "curations" : [ ]
+      }, {
+        "package" : {
+          "id" : "PyPI::requests:2.25.1",
+          "purl" : "pkg:pypi/requests@2.25.1",
+          "declared_licenses" : [ "Apache 2.0", "Apache Software License" ],
+          "declared_licenses_processed" : {
+            "spdx_expression" : "Apache-2.0",
+            "mapped" : {
+              "Apache 2.0" : "Apache-2.0",
+              "Apache Software License" : "Apache-2.0"
+            }
+          },
+          "description" : "Python HTTP for Humans.",
+          "homepage_url" : "https://requests.readthedocs.io",
+          "binary_artifact" : {
+            "url" : "https://files.pythonhosted.org/packages/29/c1/24814557f1d22c56d50280771a17307e6bf87b70727d975fd6b2ce6b014a/requests-2.25.1-py2.py3-none-any.whl",
+            "hash" : {
+              "value" : "ec79209809129bf13cb002a0a573ef45",
+              "algorithm" : "MD5"
+            }
+          },
+          "source_artifact" : {
+            "url" : "https://files.pythonhosted.org/packages/6b/47/c14abc08432ab22dc18b9892252efaf005ab44066de871e72a38d6af464b/requests-2.25.1.tar.gz",
+            "hash" : {
+              "value" : "514d6f7eba77ada0b8c98ec7818828db",
+              "algorithm" : "MD5"
+            }
+          },
+          "vcs" : {
+            "type" : "",
+            "url" : "",
+            "revision" : "",
+            "path" : ""
+          },
+          "vcs_processed" : {
+            "type" : "",
+            "url" : "",
+            "revision" : "",
+            "path" : ""
+          }
+        },
+        "curations" : [ ]
+      }, {
+        "package" : {
+          "id" : "PyPI::setuptools:51.1.2",
+          "purl" : "pkg:pypi/setuptools@51.1.2",
+          "declared_licenses" : [ "MIT License" ],
+          "declared_licenses_processed" : {
+            "spdx_expression" : "MIT",
+            "mapped" : {
+              "MIT License" : "MIT"
+            }
+          },
+          "description" : "Easily download, build, install, upgrade, and uninstall Python packages",
+          "homepage_url" : "https://github.com/pypa/setuptools",
+          "binary_artifact" : {
+            "url" : "https://files.pythonhosted.org/packages/aa/d4/0089d680a610c7b5afda26c1ae588eb363b9050ccf5f33a8c2d1164210f3/setuptools-51.1.2-py3-none-any.whl",
+            "hash" : {
+              "value" : "10d3b5415c3146cbb0cada8ee2aba0f2",
+              "algorithm" : "MD5"
+            }
+          },
+          "source_artifact" : {
+            "url" : "https://files.pythonhosted.org/packages/82/2f/ef7afd98530d07c89deffec833b4b1a91a27a5db6d9f1a216599f5f0316e/setuptools-51.1.2.tar.gz",
+            "hash" : {
+              "value" : "c0cc26022ec424da5a5a9aa67cfa18ba",
+              "algorithm" : "MD5"
+            }
+          },
+          "vcs" : {
+            "type" : "",
+            "url" : "",
+            "revision" : "",
+            "path" : ""
+          },
+          "vcs_processed" : {
+            "type" : "Git",
+            "url" : "https://github.com/pypa/setuptools.git",
+            "revision" : "",
+            "path" : ""
+          }
+        },
+        "curations" : [ ]
+      }, {
+        "package" : {
+          "id" : "PyPI::six:1.15.0",
+          "purl" : "pkg:pypi/six@1.15.0",
+          "declared_licenses" : [ "MIT", "MIT License" ],
+          "declared_licenses_processed" : {
+            "spdx_expression" : "MIT",
+            "mapped" : {
+              "MIT License" : "MIT"
+            }
+          },
+          "description" : "Python 2 and 3 compatibility utilities",
+          "homepage_url" : "https://github.com/benjaminp/six",
+          "binary_artifact" : {
+            "url" : "https://files.pythonhosted.org/packages/ee/ff/48bde5c0f013094d729fe4b0316ba2a24774b3ff1c52d924a8a4cb04078a/six-1.15.0-py2.py3-none-any.whl",
+            "hash" : {
+              "value" : "16dc2d0f87a1ed05579ad7c4965cf0ef",
+              "algorithm" : "MD5"
+            }
+          },
+          "source_artifact" : {
+            "url" : "https://files.pythonhosted.org/packages/6b/34/415834bfdafca3c5f451532e8a8d9ba89a21c9743a0c59fbd0205c7f9426/six-1.15.0.tar.gz",
+            "hash" : {
+              "value" : "9f90a0eaa0ea7747fda01ca79d21ebcb",
+              "algorithm" : "MD5"
+            }
+          },
+          "vcs" : {
+            "type" : "",
+            "url" : "",
+            "revision" : "",
+            "path" : ""
+          },
+          "vcs_processed" : {
+            "type" : "Git",
+            "url" : "https://github.com/benjaminp/six.git",
+            "revision" : "",
+            "path" : ""
+          }
+        },
+        "curations" : [ ]
+      }, {
+        "package" : {
+          "id" : "PyPI::snowballstemmer:2.0.0",
+          "purl" : "pkg:pypi/snowballstemmer@2.0.0",
+          "declared_licenses" : [ "BSD License", "BSD-3-Clause" ],
+          "declared_licenses_processed" : {
+            "spdx_expression" : "BSD-3-Clause",
+            "mapped" : {
+              "BSD License" : "BSD-3-Clause"
+            }
+          },
+          "description" : "This package provides 26 stemmers for 25 languages generated from Snowball algorithms.",
+          "homepage_url" : "https://github.com/snowballstem/snowball",
+          "binary_artifact" : {
+            "url" : "https://files.pythonhosted.org/packages/7d/4b/cdf1113a0e88b641893b814e9c36f69a6fda28cd88b62c7f0d858cde3166/snowballstemmer-2.0.0-py2.py3-none-any.whl",
+            "hash" : {
+              "value" : "e5e7ab4d8fe1010d1838d061b22e6ea6",
+              "algorithm" : "MD5"
+            }
+          },
+          "source_artifact" : {
+            "url" : "https://files.pythonhosted.org/packages/21/1b/6b8bbee253195c61aeaa61181bb41d646363bdaa691d0b94b304d4901193/snowballstemmer-2.0.0.tar.gz",
+            "hash" : {
+              "value" : "c05ec4a897be3c953c8b8b844c4241d4",
+              "algorithm" : "MD5"
+            }
+          },
+          "vcs" : {
+            "type" : "",
+            "url" : "",
+            "revision" : "",
+            "path" : ""
+          },
+          "vcs_processed" : {
+            "type" : "Git",
+            "url" : "https://github.com/snowballstem/snowball.git",
+            "revision" : "",
+            "path" : ""
+          }
+        },
+        "curations" : [ ]
+      }, {
+        "package" : {
+          "id" : "PyPI::sphinx:3.2.1",
+          "purl" : "pkg:pypi/sphinx@3.2.1",
+          "declared_licenses" : [ "BSD", "BSD License" ],
+          "declared_licenses_processed" : {
+            "spdx_expression" : "BSD-3-Clause",
+            "mapped" : {
+              "BSD" : "BSD-3-Clause",
+              "BSD License" : "BSD-3-Clause"
+            }
+          },
+          "description" : "Python documentation generator",
+          "homepage_url" : "http://sphinx-doc.org/",
+          "binary_artifact" : {
+            "url" : "https://files.pythonhosted.org/packages/63/b8/34ba32a94cb2b223b941e43b3bcab11281763b95daa8587879eec1eb9a62/Sphinx-3.2.1-py3-none-any.whl",
+            "hash" : {
+              "value" : "0196459c7db32d91f953b1b6c706f05b",
+              "algorithm" : "MD5"
+            }
+          },
+          "source_artifact" : {
+            "url" : "https://files.pythonhosted.org/packages/57/58/48268b16bf3e6e8288c4c6f3d500e4dd1ca0210289a5be8366bd6d2e6088/Sphinx-3.2.1.tar.gz",
+            "hash" : {
+              "value" : "84aab02c279697e9414cbeed1c5c4b22",
+              "algorithm" : "MD5"
+            }
+          },
+          "vcs" : {
+            "type" : "",
+            "url" : "",
+            "revision" : "",
+            "path" : ""
+          },
+          "vcs_processed" : {
+            "type" : "",
+            "url" : "",
+            "revision" : "",
+            "path" : ""
+          }
+        },
+        "curations" : [ ]
+      }, {
+        "package" : {
+          "id" : "PyPI::sphinxcontrib-applehelp:1.0.2",
+          "purl" : "pkg:pypi/sphinxcontrib-applehelp@1.0.2",
+          "declared_licenses" : [ "BSD", "BSD License" ],
+          "declared_licenses_processed" : {
+            "spdx_expression" : "BSD-3-Clause",
+            "mapped" : {
+              "BSD" : "BSD-3-Clause",
+              "BSD License" : "BSD-3-Clause"
+            }
+          },
+          "description" : "sphinxcontrib-applehelp is a sphinx extension which outputs Apple help books",
+          "homepage_url" : "http://sphinx-doc.org/",
+          "binary_artifact" : {
+            "url" : "https://files.pythonhosted.org/packages/dc/47/86022665a9433d89a66f5911b558ddff69861766807ba685de2e324bd6ed/sphinxcontrib_applehelp-1.0.2-py2.py3-none-any.whl",
+            "hash" : {
+              "value" : "aac12ce30a5d53b6f96799062c0bc249",
+              "algorithm" : "MD5"
+            }
+          },
+          "source_artifact" : {
+            "url" : "https://files.pythonhosted.org/packages/9f/01/ad9d4ebbceddbed9979ab4a89ddb78c9760e74e6757b1880f1b2760e8295/sphinxcontrib-applehelp-1.0.2.tar.gz",
+            "hash" : {
+              "value" : "3f2de7681e12dde031acee0497c3cc2b",
+              "algorithm" : "MD5"
+            }
+          },
+          "vcs" : {
+            "type" : "",
+            "url" : "",
+            "revision" : "",
+            "path" : ""
+          },
+          "vcs_processed" : {
+            "type" : "",
+            "url" : "",
+            "revision" : "",
+            "path" : ""
+          }
+        },
+        "curations" : [ ]
+      }, {
+        "package" : {
+          "id" : "PyPI::sphinxcontrib-devhelp:1.0.2",
+          "purl" : "pkg:pypi/sphinxcontrib-devhelp@1.0.2",
+          "declared_licenses" : [ "BSD", "BSD License" ],
+          "declared_licenses_processed" : {
+            "spdx_expression" : "BSD-3-Clause",
+            "mapped" : {
+              "BSD" : "BSD-3-Clause",
+              "BSD License" : "BSD-3-Clause"
+            }
+          },
+          "description" : "sphinxcontrib-devhelp is a sphinx extension which outputs Devhelp document.",
+          "homepage_url" : "http://sphinx-doc.org/",
+          "binary_artifact" : {
+            "url" : "https://files.pythonhosted.org/packages/c5/09/5de5ed43a521387f18bdf5f5af31d099605c992fd25372b2b9b825ce48ee/sphinxcontrib_devhelp-1.0.2-py2.py3-none-any.whl",
+            "hash" : {
+              "value" : "bf8b7e07f26e8f17266650738b4b978b",
+              "algorithm" : "MD5"
+            }
+          },
+          "source_artifact" : {
+            "url" : "https://files.pythonhosted.org/packages/98/33/dc28393f16385f722c893cb55539c641c9aaec8d1bc1c15b69ce0ac2dbb3/sphinxcontrib-devhelp-1.0.2.tar.gz",
+            "hash" : {
+              "value" : "94069c5cdb5079c445f5477fa6107016",
+              "algorithm" : "MD5"
+            }
+          },
+          "vcs" : {
+            "type" : "",
+            "url" : "",
+            "revision" : "",
+            "path" : ""
+          },
+          "vcs_processed" : {
+            "type" : "",
+            "url" : "",
+            "revision" : "",
+            "path" : ""
+          }
+        },
+        "curations" : [ ]
+      }, {
+        "package" : {
+          "id" : "PyPI::sphinxcontrib-htmlhelp:1.0.3",
+          "purl" : "pkg:pypi/sphinxcontrib-htmlhelp@1.0.3",
+          "declared_licenses" : [ "BSD", "BSD License" ],
+          "declared_licenses_processed" : {
+            "spdx_expression" : "BSD-3-Clause",
+            "mapped" : {
+              "BSD" : "BSD-3-Clause",
+              "BSD License" : "BSD-3-Clause"
+            }
+          },
+          "description" : "sphinxcontrib-htmlhelp is a sphinx extension which renders HTML help files",
+          "homepage_url" : "http://sphinx-doc.org/",
+          "binary_artifact" : {
+            "url" : "https://files.pythonhosted.org/packages/36/62/8222554b29b3acde8420128d6d3999c5904d40922ef4b6ccb370e2be7421/sphinxcontrib_htmlhelp-1.0.3-py2.py3-none-any.whl",
+            "hash" : {
+              "value" : "07f3a4c3cc24b582f7c7f734e6d98091",
+              "algorithm" : "MD5"
+            }
+          },
+          "source_artifact" : {
+            "url" : "https://files.pythonhosted.org/packages/c9/2e/a7a5fef38327b7f643ed13646321d19903a2f54b0a05868e4bc34d729e1f/sphinxcontrib-htmlhelp-1.0.3.tar.gz",
+            "hash" : {
+              "value" : "f1db7db2a467f08f6292ab0d76e38584",
+              "algorithm" : "MD5"
+            }
+          },
+          "vcs" : {
+            "type" : "",
+            "url" : "",
+            "revision" : "",
+            "path" : ""
+          },
+          "vcs_processed" : {
+            "type" : "",
+            "url" : "",
+            "revision" : "",
+            "path" : ""
+          }
+        },
+        "curations" : [ ]
+      }, {
+        "package" : {
+          "id" : "PyPI::sphinxcontrib-jsmath:1.0.1",
+          "purl" : "pkg:pypi/sphinxcontrib-jsmath@1.0.1",
+          "declared_licenses" : [ "BSD", "BSD License" ],
+          "declared_licenses_processed" : {
+            "spdx_expression" : "BSD-3-Clause",
+            "mapped" : {
+              "BSD" : "BSD-3-Clause",
+              "BSD License" : "BSD-3-Clause"
+            }
+          },
+          "description" : "A sphinx extension which renders display math in HTML via JavaScript",
+          "homepage_url" : "http://sphinx-doc.org/",
+          "binary_artifact" : {
+            "url" : "https://files.pythonhosted.org/packages/c2/42/4c8646762ee83602e3fb3fbe774c2fac12f317deb0b5dbeeedd2d3ba4b77/sphinxcontrib_jsmath-1.0.1-py2.py3-none-any.whl",
+            "hash" : {
+              "value" : "4a9dbd97819fa713147472387ebd845d",
+              "algorithm" : "MD5"
+            }
+          },
+          "source_artifact" : {
+            "url" : "https://files.pythonhosted.org/packages/b2/e8/9ed3830aeed71f17c026a07a5097edcf44b692850ef215b161b8ad875729/sphinxcontrib-jsmath-1.0.1.tar.gz",
+            "hash" : {
+              "value" : "e45179f0a3608b6766862e0f34c23b62",
+              "algorithm" : "MD5"
+            }
+          },
+          "vcs" : {
+            "type" : "",
+            "url" : "",
+            "revision" : "",
+            "path" : ""
+          },
+          "vcs_processed" : {
+            "type" : "",
+            "url" : "",
+            "revision" : "",
+            "path" : ""
+          }
+        },
+        "curations" : [ ]
+      }, {
+        "package" : {
+          "id" : "PyPI::sphinxcontrib-qthelp:1.0.3",
+          "purl" : "pkg:pypi/sphinxcontrib-qthelp@1.0.3",
+          "declared_licenses" : [ "BSD", "BSD License" ],
+          "declared_licenses_processed" : {
+            "spdx_expression" : "BSD-3-Clause",
+            "mapped" : {
+              "BSD" : "BSD-3-Clause",
+              "BSD License" : "BSD-3-Clause"
+            }
+          },
+          "description" : "sphinxcontrib-qthelp is a sphinx extension which outputs QtHelp document.",
+          "homepage_url" : "http://sphinx-doc.org/",
+          "binary_artifact" : {
+            "url" : "https://files.pythonhosted.org/packages/2b/14/05f9206cf4e9cfca1afb5fd224c7cd434dcc3a433d6d9e4e0264d29c6cdb/sphinxcontrib_qthelp-1.0.3-py2.py3-none-any.whl",
+            "hash" : {
+              "value" : "c6d3633bba02c6746ac4ebbb656ee51b",
+              "algorithm" : "MD5"
+            }
+          },
+          "source_artifact" : {
+            "url" : "https://files.pythonhosted.org/packages/b1/8e/c4846e59f38a5f2b4a0e3b27af38f2fcf904d4bfd82095bf92de0b114ebd/sphinxcontrib-qthelp-1.0.3.tar.gz",
+            "hash" : {
+              "value" : "93216721f3e154cce12d1e9c3307b415",
+              "algorithm" : "MD5"
+            }
+          },
+          "vcs" : {
+            "type" : "",
+            "url" : "",
+            "revision" : "",
+            "path" : ""
+          },
+          "vcs_processed" : {
+            "type" : "",
+            "url" : "",
+            "revision" : "",
+            "path" : ""
+          }
+        },
+        "curations" : [ ]
+      }, {
+        "package" : {
+          "id" : "PyPI::sphinxcontrib-serializinghtml:1.1.4",
+          "purl" : "pkg:pypi/sphinxcontrib-serializinghtml@1.1.4",
+          "declared_licenses" : [ "BSD", "BSD License" ],
+          "declared_licenses_processed" : {
+            "spdx_expression" : "BSD-3-Clause",
+            "mapped" : {
+              "BSD" : "BSD-3-Clause",
+              "BSD License" : "BSD-3-Clause"
+            }
+          },
+          "description" : "sphinxcontrib-serializinghtml is a sphinx extension which outputs \"serialized\" HTML files (json and pickle).",
+          "homepage_url" : "http://sphinx-doc.org/",
+          "binary_artifact" : {
+            "url" : "https://files.pythonhosted.org/packages/9a/ca/bfad79b79b3821d0c6361c431f0ef4aec16ee248338b2c2013008b34d345/sphinxcontrib_serializinghtml-1.1.4-py2.py3-none-any.whl",
+            "hash" : {
+              "value" : "a4aa0f45dc0871cfdfabc4653c4875da",
+              "algorithm" : "MD5"
+            }
+          },
+          "source_artifact" : {
+            "url" : "https://files.pythonhosted.org/packages/ac/86/021876a9dd4eac9dae0b1d454d848acbd56d5574d350d0f835043b5ac2cd/sphinxcontrib-serializinghtml-1.1.4.tar.gz",
+            "hash" : {
+              "value" : "518ff437dcb05a74ed32ba19c892ce05",
+              "algorithm" : "MD5"
+            }
+          },
+          "vcs" : {
+            "type" : "",
+            "url" : "",
+            "revision" : "",
+            "path" : ""
+          },
+          "vcs_processed" : {
+            "type" : "",
+            "url" : "",
+            "revision" : "",
+            "path" : ""
+          }
+        },
+        "curations" : [ ]
+      }, {
+        "package" : {
+          "id" : "PyPI::toml:0.10.2",
+          "purl" : "pkg:pypi/toml@0.10.2",
+          "declared_licenses" : [ "MIT", "MIT License" ],
+          "declared_licenses_processed" : {
+            "spdx_expression" : "MIT",
+            "mapped" : {
+              "MIT License" : "MIT"
+            }
+          },
+          "description" : "Python Library for Tom's Obvious, Minimal Language",
+          "homepage_url" : "https://github.com/uiri/toml",
+          "binary_artifact" : {
+            "url" : "https://files.pythonhosted.org/packages/44/6f/7120676b6d73228c96e17f1f794d8ab046fc910d781c8d151120c3f1569e/toml-0.10.2-py2.py3-none-any.whl",
+            "hash" : {
+              "value" : "dc26cd71b80d6757139f38156a43c545",
+              "algorithm" : "MD5"
+            }
+          },
+          "source_artifact" : {
+            "url" : "https://files.pythonhosted.org/packages/be/ba/1f744cdc819428fc6b5084ec34d9b30660f6f9daaf70eead706e3203ec3c/toml-0.10.2.tar.gz",
+            "hash" : {
+              "value" : "59bce5d8d67e858735ec3f399ec90253",
+              "algorithm" : "MD5"
+            }
+          },
+          "vcs" : {
+            "type" : "",
+            "url" : "",
+            "revision" : "",
+            "path" : ""
+          },
+          "vcs_processed" : {
+            "type" : "Git",
+            "url" : "https://github.com/uiri/toml.git",
+            "revision" : "",
+            "path" : ""
+          }
+        },
+        "curations" : [ ]
+      }, {
+        "package" : {
+          "id" : "PyPI::tox:3.21.1",
+          "purl" : "pkg:pypi/tox@3.21.1",
+          "declared_licenses" : [ "MIT", "MIT License" ],
+          "declared_licenses_processed" : {
+            "spdx_expression" : "MIT",
+            "mapped" : {
+              "MIT License" : "MIT"
+            }
+          },
+          "description" : "tox is a generic virtualenv management and test command line tool",
+          "homepage_url" : "http://tox.readthedocs.org",
+          "binary_artifact" : {
+            "url" : "https://files.pythonhosted.org/packages/d5/2a/1f7b0ff269ddd65565c20e5048e39328ad0d08fe177dd9b5b39fcbc8f6f3/tox-3.21.1-py2.py3-none-any.whl",
+            "hash" : {
+              "value" : "9413e3eafd0514605dfa2c3d4ef67c44",
+              "algorithm" : "MD5"
+            }
+          },
+          "source_artifact" : {
+            "url" : "https://files.pythonhosted.org/packages/e7/a0/70463912e118e7ac9daa13fde5c0c73dac3ee4207daf85731ec9ecff15ba/tox-3.21.1.tar.gz",
+            "hash" : {
+              "value" : "300865b1be852680a0779edd54f2c7bf",
+              "algorithm" : "MD5"
+            }
+          },
+          "vcs" : {
+            "type" : "",
+            "url" : "",
+            "revision" : "",
+            "path" : ""
+          },
+          "vcs_processed" : {
+            "type" : "",
+            "url" : "",
+            "revision" : "",
+            "path" : ""
+          }
+        },
+        "curations" : [ ]
+      }, {
+        "package" : {
+          "id" : "PyPI::typing-extensions:3.7.4.3",
+          "purl" : "pkg:pypi/typing-extensions@3.7.4.3",
+          "declared_licenses" : [ "PSF", "Python Software Foundation License" ],
+          "declared_licenses_processed" : {
+            "spdx_expression" : "PSF-2.0",
+            "mapped" : {
+              "PSF" : "PSF-2.0",
+              "Python Software Foundation License" : "PSF-2.0"
+            }
+          },
+          "description" : "Backported and Experimental Type Hints for Python 3.5+",
+          "homepage_url" : "https://github.com/python/typing/blob/master/typing_extensions/README.rst",
+          "binary_artifact" : {
+            "url" : "https://files.pythonhosted.org/packages/be/e1/8fe3f8a8aa3380f2a92b0075406c49f96fcc2b256f5c92d09571d2ab7847/typing_extensions-3.7.4.3-py2-none-any.whl",
+            "hash" : {
+              "value" : "e59526817794f0f6455be69d863b8ce3",
+              "algorithm" : "MD5"
+            }
+          },
+          "source_artifact" : {
+            "url" : "https://files.pythonhosted.org/packages/16/06/0f7367eafb692f73158e5c5cbca1aec798cdf78be5167f6415dd4205fa32/typing_extensions-3.7.4.3.tar.gz",
+            "hash" : {
+              "value" : "5fcbfcb22e6f8c9bf23fb9f8e020f6ee",
+              "algorithm" : "MD5"
+            }
+          },
+          "vcs" : {
+            "type" : "",
+            "url" : "",
+            "revision" : "",
+            "path" : ""
+          },
+          "vcs_processed" : {
+            "type" : "Git",
+            "url" : "https://github.com/python/typing.git",
+            "revision" : "master",
+            "path" : "typing_extensions/README.rst"
+          }
+        },
+        "curations" : [ ]
+      }, {
+        "package" : {
+          "id" : "PyPI::urllib3:1.26.2",
+          "purl" : "pkg:pypi/urllib3@1.26.2",
+          "declared_licenses" : [ "MIT", "MIT License" ],
+          "declared_licenses_processed" : {
+            "spdx_expression" : "MIT",
+            "mapped" : {
+              "MIT License" : "MIT"
+            }
+          },
+          "description" : "HTTP library with thread-safe connection pooling, file post, and more.",
+          "homepage_url" : "https://urllib3.readthedocs.io/",
+          "binary_artifact" : {
+            "url" : "https://files.pythonhosted.org/packages/f5/71/45d36a8df68f3ebb098d6861b2c017f3d094538c0fb98fa61d4dc43e69b9/urllib3-1.26.2-py2.py3-none-any.whl",
+            "hash" : {
+              "value" : "bc8ab29becd464382bacbb195c6bd368",
+              "algorithm" : "MD5"
+            }
+          },
+          "source_artifact" : {
+            "url" : "https://files.pythonhosted.org/packages/29/e6/d1a1d78c439cad688757b70f26c50a53332167c364edb0134cadd280e234/urllib3-1.26.2.tar.gz",
+            "hash" : {
+              "value" : "2233256ccfe140a915f68703f8c2cc1f",
+              "algorithm" : "MD5"
+            }
+          },
+          "vcs" : {
+            "type" : "",
+            "url" : "",
+            "revision" : "",
+            "path" : ""
+          },
+          "vcs_processed" : {
+            "type" : "",
+            "url" : "",
+            "revision" : "",
+            "path" : ""
+          }
+        },
+        "curations" : [ ]
+      }, {
+        "package" : {
+          "id" : "PyPI::virtualenv:20.3.1",
+          "purl" : "pkg:pypi/virtualenv@20.3.1",
+          "declared_licenses" : [ "MIT", "MIT License" ],
+          "declared_licenses_processed" : {
+            "spdx_expression" : "MIT",
+            "mapped" : {
+              "MIT License" : "MIT"
+            }
+          },
+          "description" : "Virtual Python Environment builder",
+          "homepage_url" : "https://virtualenv.pypa.io/",
+          "binary_artifact" : {
+            "url" : "https://files.pythonhosted.org/packages/2c/a5/bb663a902f4e8e0a55e58b5b4cb6eb1460408603f50b942d756952f916c2/virtualenv-20.3.1-py2.py3-none-any.whl",
+            "hash" : {
+              "value" : "0b546a9f6a3793fd706bf1c7952e27c6",
+              "algorithm" : "MD5"
+            }
+          },
+          "source_artifact" : {
+            "url" : "https://files.pythonhosted.org/packages/aa/08/2c6c5a295133bd8244d74ccd21e7b3008d0cc96bad29163b3fedbd7c3ffc/virtualenv-20.3.1.tar.gz",
+            "hash" : {
+              "value" : "92974ca85f96ec69886e6615ffa7e20f",
+              "algorithm" : "MD5"
+            }
+          },
+          "vcs" : {
+            "type" : "",
+            "url" : "",
+            "revision" : "",
+            "path" : ""
+          },
+          "vcs_processed" : {
+            "type" : "",
+            "url" : "",
+            "revision" : "",
+            "path" : ""
+          }
+        },
+        "curations" : [ ]
+      }, {
+        "package" : {
+          "id" : "PyPI::zipp:3.4.0",
+          "purl" : "pkg:pypi/zipp@3.4.0",
+          "declared_licenses" : [ "MIT License" ],
+          "declared_licenses_processed" : {
+            "spdx_expression" : "MIT",
+            "mapped" : {
+              "MIT License" : "MIT"
+            }
+          },
+          "description" : "Backport of pathlib-compatible object wrapper for zip files",
+          "homepage_url" : "https://github.com/jaraco/zipp",
+          "binary_artifact" : {
+            "url" : "https://files.pythonhosted.org/packages/41/ad/6a4f1a124b325618a7fb758b885b68ff7b058eec47d9220a12ab38d90b1f/zipp-3.4.0-py3-none-any.whl",
+            "hash" : {
+              "value" : "bbd9aa1c9d53ed2178157746c7198fae",
+              "algorithm" : "MD5"
+            }
+          },
+          "source_artifact" : {
+            "url" : "https://files.pythonhosted.org/packages/ce/b0/757db659e8b91cb3ea47d90350d7735817fe1df36086afc77c1c4610d559/zipp-3.4.0.tar.gz",
+            "hash" : {
+              "value" : "ae81f228995578b840d76d1b7d87fede",
+              "algorithm" : "MD5"
+            }
+          },
+          "vcs" : {
+            "type" : "",
+            "url" : "",
+            "revision" : "",
+            "path" : ""
+          },
+          "vcs_processed" : {
+            "type" : "Git",
+            "url" : "https://github.com/jaraco/zipp.git",
+            "revision" : "",
+            "path" : ""
+          }
+        },
+        "curations" : [ ]
+      } ],
+      "issues" : {
+        "Pipenv::Pipfile.lock:" : [ {
+          "timestamp" : "2021-01-16T20:02:16.759762Z",
+          "source" : "Pipenv",
+          "message" : "Resolving dependencies for 'Pipfile.lock' failed with: IOException: Looking in indexes: https://pypi.python.org/simple\nObtaining file:///workdir (from -r requirements-from-pipenv.txt (line 2))\n  Installing build dependencies: started\n  Installing build dependencies: finished with status 'done'\nCollecting aiohttp-cors==0.7.0 (from -r requirements-from-pipenv.txt (line 3))\n  Downloading https://files.pythonhosted.org/packages/13/e7/e436a0c0eb5127d8b491a9b83ecd2391c6ff7dcd5548dfaec2080a2340fd/aiohttp_cors-0.7.0-py3-none-any.whl\nCollecting aiohttp==3.7.3 (from -r requirements-from-pipenv.txt (line 4))\n  Downloading https://files.pythonhosted.org/packages/68/96/40a765d7d68028c5a6d169b2747ea3f4828ec91a358a63818d468380521c/aiohttp-3.7.3.tar.gz (1.1MB)\n  Installing build dependencies: started\n  Installing build dependencies: finished with status 'done'\nCollecting appdirs==1.4.4 (from -r requirements-from-pipenv.txt (line 5))\n  Using cached https://files.pythonhosted.org/packages/3b/00/2344469e2084fb287c2e0b57b72910309874c3245463acd6cf5e3db69324/appdirs-1.4.4-py2.py3-none-any.whl\nCollecting async-timeout==3.0.1 (from -r requirements-from-pipenv.txt (line 6))\n  Downloading https://files.pythonhosted.org/packages/e1/1e/5a4441be21b0726c4464f3f23c8b19628372f606755a9d2e46c187e65ec4/async_timeout-3.0.1-py3-none-any.whl\nCollecting attrs==20.3.0 (from -r requirements-from-pipenv.txt (line 7))\n  Using cached https://files.pythonhosted.org/packages/c3/aa/cb45262569fcc047bf070b5de61813724d6726db83259222cd7b4c79821a/attrs-20.3.0-py2.py3-none-any.whl\nCollecting chardet==3.0.4 (from -r requirements-from-pipenv.txt (line 8))\n  Using cached https://files.pythonhosted.org/packages/bc/a9/01ffebfb562e4274b6487b4bb1ddec7ca55ec7510b22e4c51f14098443b8/chardet-3.0.4-py2.py3-none-any.whl\nCollecting click==7.1.2 (from -r requirements-from-pipenv.txt (line 9))\n  Using cached https://files.pythonhosted.org/packages/d2/3d/fa76db83bf75c4f8d338c2fd15c8d33fdd7ad23a9b5e57eb6c5de26b430e/click-7.1.2-py2.py3-none-any.whl\nCollecting dataclasses==0.6 (from -r requirements-from-pipenv.txt (line 10))\n  Downloading https://files.pythonhosted.org/packages/26/2f/1095cdc2868052dd1e64520f7c0d5c8c550ad297e944e641dbf1ffbb9a5d/dataclasses-0.6-py3-none-any.whl\nCollecting idna==2.10 (from -r requirements-from-pipenv.txt (line 11))\n  Using cached https://files.pythonhosted.org/packages/a2/38/928ddce2273eaa564f6f50de919327bf3a00f091b5baba8dfa9460f3a8a8/idna-2.10-py2.py3-none-any.whl\nCollecting multidict==5.1.0 (from -r requirements-from-pipenv.txt (line 12))\n  Downloading https://files.pythonhosted.org/packages/1c/74/e8b46156f37ca56d10d895d4e8595aa2b344cff3c1fb3629ec97a8656ccb/multidict-5.1.0.tar.gz (53kB)\n  Installing build dependencies: started\n  Installing build dependencies: finished with status 'done'\nCollecting mypy-extensions==0.4.3 (from -r requirements-from-pipenv.txt (line 13))\n  Downloading https://files.pythonhosted.org/packages/5c/eb/975c7c080f3223a5cdaff09612f3a5221e4ba534f7039db34c35d95fa6a5/mypy_extensions-0.4.3-py2.py3-none-any.whl\nCollecting pathspec==0.8.1 (from -r requirements-from-pipenv.txt (line 14))\n  Downloading https://files.pythonhosted.org/packages/29/29/a465741a3d97ea3c17d21eaad4c64205428bde56742360876c4391f930d4/pathspec-0.8.1-py2.py3-none-any.whl\nCollecting regex==2020.11.13 (from -r requirements-from-pipenv.txt (line 15))\n  Downloading https://files.pythonhosted.org/packages/5a/75/aca08032c9752a75acc60ff7f4e58f1a74164b996395f44727ffdb17ebaf/regex-2020.11.13-cp36-cp36m-manylinux1_x86_64.whl (666kB)\nCollecting setuptools-scm==5.0.1 (from -r requirements-from-pipenv.txt (line 16))\n  Using cached https://files.pythonhosted.org/packages/db/6e/2815f7c8561b088ccedc128681e64daac3d6b2e81a9918b007e244dad8b1/setuptools_scm-5.0.1-py2.py3-none-any.whl\nCollecting toml==0.10.2 (from -r requirements-from-pipenv.txt (line 17))\n  Using cached https://files.pythonhosted.org/packages/44/6f/7120676b6d73228c96e17f1f794d8ab046fc910d781c8d151120c3f1569e/toml-0.10.2-py2.py3-none-any.whl\nCollecting typed-ast==1.4.2 (from -r requirements-from-pipenv.txt (line 18))\n  Downloading https://files.pythonhosted.org/packages/56/c1/4cc3c0da2374963f59b2f57ef02e048cdc4f609cbc1184b4146d0812e5b5/typed_ast-1.4.2-cp36-cp36m-manylinux1_x86_64.whl (743kB)\nCollecting typing-extensions==3.7.4.3 (from -r requirements-from-pipenv.txt (line 19))\n  Using cached https://files.pythonhosted.org/packages/60/7a/e881b5abb54db0e6e671ab088d079c57ce54e8a01a3ca443f561ccadb37e/typing_extensions-3.7.4.3-py3-none-any.whl\nCollecting yarl==1.6.3 (from -r requirements-from-pipenv.txt (line 20))\n  Downloading https://files.pythonhosted.org/packages/97/e7/af7219a0fe240e8ef6bb555341a63c43045c21ab0392b4435e754b716fa1/yarl-1.6.3.tar.gz (176kB)\n  Installing build dependencies: started\n  Installing build dependencies: finished with status 'done'\nCollecting idna-ssl>=1.0 (from aiohttp==3.7.3->-r requirements-from-pipenv.txt (line 4))\n  Downloading https://files.pythonhosted.org/packages/46/03/07c4894aae38b0de52b52586b24bf189bb83e4ddabfe2e2c8f2419eec6f4/idna-ssl-1.1.0.tar.gz\nRequirement already satisfied: setuptools in /tmp/ort-workdir-virtualenv4502945969731426278/lib/python3.6/site-packages (from setuptools-scm==5.0.1->-r requirements-from-pipenv.txt (line 16)) (51.1.2)\nBuilding wheels for collected packages: aiohttp, multidict, yarl, idna-ssl\n  Running setup.py bdist_wheel for aiohttp: started\n  Running setup.py bdist_wheel for aiohttp: finished with status 'done'\n  Stored in directory: /home/mhuber/.cache/pip/wheels/bd/81/19/d583039906f10a32c700594b9ca6468554576dcb48f3008845\n  Running setup.py bdist_wheel for multidict: started\n  Running setup.py bdist_wheel for multidict: finished with status 'error'\n  Complete output from command /tmp/ort-workdir-virtualenv4502945969731426278/bin/python3 -u -c \"import setuptools, tokenize;__file__='/tmp/pip-install-aiixpl2l/multidict/setup.py';f=getattr(tokenize, 'open', open)(__file__);code=f.read().replace('\\r\\n', '\\n');f.close();exec(compile(code, __file__, 'exec'))\" bdist_wheel -d /tmp/pip-wheel-5we0t_st --python-tag cp36:\n  *********************\n  * Accelerated build *\n  *********************\n  running bdist_wheel\n  running build\n  running build_py\n  creating build\n  creating build/lib.linux-x86_64-3.6\n  creating build/lib.linux-x86_64-3.6/multidict\n  copying multidict/_abc.py -> build/lib.linux-x86_64-3.6/multidict\n  copying multidict/_compat.py -> build/lib.linux-x86_64-3.6/multidict\n  copying multidict/__init__.py -> build/lib.linux-x86_64-3.6/multidict\n  copying multidict/_multidict_py.py -> build/lib.linux-x86_64-3.6/multidict\n  copying multidict/_multidict_base.py -> build/lib.linux-x86_64-3.6/multidict\n  running egg_info\n  writing multidict.egg-info/PKG-INFO\n  writing dependency_links to multidict.egg-info/dependency_links.txt\n  writing top-level names to multidict.egg-info/top_level.txt\n  reading manifest file 'multidict.egg-info/SOURCES.txt'\n  reading manifest template 'MANIFEST.in'\n  warning: no previously-included files matching '*.pyc' found anywhere in distribution\n  warning: no previously-included files found matching 'multidict/_multidict.html'\n  warning: no previously-included files found matching 'multidict/*.so'\n  warning: no previously-included files found matching 'multidict/*.pyd'\n  warning: no previously-included files found matching 'multidict/*.pyd'\n  no previously-included directories found matching 'docs/_build'\n  writing manifest file 'multidict.egg-info/SOURCES.txt'\n  copying multidict/__init__.pyi -> build/lib.linux-x86_64-3.6/multidict\n  copying multidict/_multidict.c -> build/lib.linux-x86_64-3.6/multidict\n  copying multidict/py.typed -> build/lib.linux-x86_64-3.6/multidict\n  creating build/lib.linux-x86_64-3.6/multidict/_multilib\n  copying multidict/_multilib/defs.h -> build/lib.linux-x86_64-3.6/multidict/_multilib\n  copying multidict/_multilib/dict.h -> build/lib.linux-x86_64-3.6/multidict/_multilib\n  copying multidict/_multilib/istr.h -> build/lib.linux-x86_64-3.6/multidict/_multilib\n  copying multidict/_multilib/iter.h -> build/lib.linux-x86_64-3.6/multidict/_multilib\n  copying multidict/_multilib/pair_list.h -> build/lib.linux-x86_64-3.6/multidict/_multilib\n  copying multidict/_multilib/views.h -> build/lib.linux-x86_64-3.6/multidict/_multilib\n  running build_ext\n  building 'multidict._multidict' extension\n  creating build/temp.linux-x86_64-3.6\n  creating build/temp.linux-x86_64-3.6/multidict\n  x86_64-linux-gnu-gcc -pthread -DNDEBUG -g -fwrapv -O2 -Wall -g -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2 -fPIC -I/usr/include/python3.6m -I/tmp/ort-workdir-virtualenv4502945969731426278/include/python3.6m -c multidict/_multidict.c -o build/temp.linux-x86_64-3.6/multidict/_multidict.o -O2 -std=c99 -Wall -Wsign-compare -Wconversion -fno-strict-aliasing -pedantic\n  multidict/_multidict.c:1:10: fatal error: Python.h: No such file or directory\n   #include \"Python.h\"\n            ^~~~~~~~~~\n  compilation terminated.\n  error: command 'x86_64-linux-gnu-gcc' failed with exit status 1\n  \n  ----------------------------------------\n  Running setup.py clean for multidict\n  Running setup.py bdist_wheel for yarl: started\n  Running setup.py bdist_wheel for yarl: finished with status 'error'\n  Complete output from command /tmp/ort-workdir-virtualenv4502945969731426278/bin/python3 -u -c \"import setuptools, tokenize;__file__='/tmp/pip-install-aiixpl2l/yarl/setup.py';f=getattr(tokenize, 'open', open)(__file__);code=f.read().replace('\\r\\n', '\\n');f.close();exec(compile(code, __file__, 'exec'))\" bdist_wheel -d /tmp/pip-wheel-di7ao5a9 --python-tag cp36:\n  **********************\n  * Accellerated build *\n  **********************\n  running bdist_wheel\n  running build\n  running build_py\n  creating build\n  creating build/lib.linux-x86_64-3.6\n  creating build/lib.linux-x86_64-3.6/yarl\n  copying yarl/_quoting_py.py -> build/lib.linux-x86_64-3.6/yarl\n  copying yarl/__init__.py -> build/lib.linux-x86_64-3.6/yarl\n  copying yarl/_url.py -> build/lib.linux-x86_64-3.6/yarl\n  copying yarl/_quoting.py -> build/lib.linux-x86_64-3.6/yarl\n  running egg_info\n  writing yarl.egg-info/PKG-INFO\n  writing dependency_links to yarl.egg-info/dependency_links.txt\n  writing requirements to yarl.egg-info/requires.txt\n  writing top-level names to yarl.egg-info/top_level.txt\n  reading manifest file 'yarl.egg-info/SOURCES.txt'\n  reading manifest template 'MANIFEST.in'\n  warning: no previously-included files matching '*.pyc' found anywhere in distribution\n  warning: no previously-included files matching '*.cache' found anywhere in distribution\n  warning: no previously-included files found matching 'yarl/*.html'\n  warning: no previously-included files found matching 'yarl/*.so'\n  warning: no previously-included files found matching 'yarl/*.pyd'\n  no previously-included directories found matching 'docs/_build'\n  writing manifest file 'yarl.egg-info/SOURCES.txt'\n  copying yarl/__init__.pyi -> build/lib.linux-x86_64-3.6/yarl\n  copying yarl/_quoting_c.c -> build/lib.linux-x86_64-3.6/yarl\n  copying yarl/_quoting_c.pyi -> build/lib.linux-x86_64-3.6/yarl\n  copying yarl/_quoting_c.pyx -> build/lib.linux-x86_64-3.6/yarl\n  copying yarl/py.typed -> build/lib.linux-x86_64-3.6/yarl\n  running build_ext\n  building 'yarl._quoting_c' extension\n  creating build/temp.linux-x86_64-3.6\n  creating build/temp.linux-x86_64-3.6/yarl\n  x86_64-linux-gnu-gcc -pthread -DNDEBUG -g -fwrapv -O2 -Wall -g -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2 -fPIC -I/usr/include/python3.6m -I/tmp/ort-workdir-virtualenv4502945969731426278/include/python3.6m -c yarl/_quoting_c.c -o build/temp.linux-x86_64-3.6/yarl/_quoting_c.o\n  yarl/_quoting_c.c:4:10: fatal error: Python.h: No such file or directory\n   #include \"Python.h\"\n            ^~~~~~~~~~\n  compilation terminated.\n  error: command 'x86_64-linux-gnu-gcc' failed with exit status 1\n  \n  ----------------------------------------\n  Running setup.py clean for yarl\n  Running setup.py bdist_wheel for idna-ssl: started\n  Running setup.py bdist_wheel for idna-ssl: finished with status 'done'\n  Stored in directory: /home/mhuber/.cache/pip/wheels/d3/00/b3/32d613e19e08a739751dd6bf998cfed277728f8b2127ad4eb7\nSuccessfully built aiohttp idna-ssl\nFailed to build multidict yarl\nInstalling collected packages: attrs, chardet, multidict, async-timeout, idna, typing-extensions, yarl, idna-ssl, aiohttp, aiohttp-cors, appdirs, click, dataclasses, mypy-extensions, pathspec, regex, setuptools-scm, toml, typed-ast, black\n  Running setup.py install for multidict: started\n    Running setup.py install for multidict: finished with status 'error'\n    Complete output from command /tmp/ort-workdir-virtualenv4502945969731426278/bin/python3 -u -c \"import setuptools, tokenize;__file__='/tmp/pip-install-aiixpl2l/multidict/setup.py';f=getattr(tokenize, 'open', open)(__file__);code=f.read().replace('\\r\\n', '\\n');f.close();exec(compile(code, __file__, 'exec'))\" install --record /tmp/pip-record-v2uqfadp/install-record.txt --single-version-externally-managed --compile --install-headers /tmp/ort-workdir-virtualenv4502945969731426278/include/site/python3.6/multidict:\n    *********************\n    * Accelerated build *\n    *********************\n    running install\n    running build\n    running build_py\n    creating build\n    creating build/lib.linux-x86_64-3.6\n    creating build/lib.linux-x86_64-3.6/multidict\n    copying multidict/_abc.py -> build/lib.linux-x86_64-3.6/multidict\n    copying multidict/_compat.py -> build/lib.linux-x86_64-3.6/multidict\n    copying multidict/__init__.py -> build/lib.linux-x86_64-3.6/multidict\n    copying multidict/_multidict_py.py -> build/lib.linux-x86_64-3.6/multidict\n    copying multidict/_multidict_base.py -> build/lib.linux-x86_64-3.6/multidict\n    running egg_info\n    writing multidict.egg-info/PKG-INFO\n    writing dependency_links to multidict.egg-info/dependency_links.txt\n    writing top-level names to multidict.egg-info/top_level.txt\n    reading manifest file 'multidict.egg-info/SOURCES.txt'\n    reading manifest template 'MANIFEST.in'\n    warning: no previously-included files matching '*.pyc' found anywhere in distribution\n    warning: no previously-included files found matching 'multidict/_multidict.html'\n    warning: no previously-included files found matching 'multidict/*.so'\n    warning: no previously-included files found matching 'multidict/*.pyd'\n    warning: no previously-included files found matching 'multidict/*.pyd'\n    no previously-included directories found matching 'docs/_build'\n    writing manifest file 'multidict.egg-info/SOURCES.txt'\n    copying multidict/__init__.pyi -> build/lib.linux-x86_64-3.6/multidict\n    copying multidict/_multidict.c -> build/lib.linux-x86_64-3.6/multidict\n    copying multidict/py.typed -> build/lib.linux-x86_64-3.6/multidict\n    creating build/lib.linux-x86_64-3.6/multidict/_multilib\n    copying multidict/_multilib/defs.h -> build/lib.linux-x86_64-3.6/multidict/_multilib\n    copying multidict/_multilib/dict.h -> build/lib.linux-x86_64-3.6/multidict/_multilib\n    copying multidict/_multilib/istr.h -> build/lib.linux-x86_64-3.6/multidict/_multilib\n    copying multidict/_multilib/iter.h -> build/lib.linux-x86_64-3.6/multidict/_multilib\n    copying multidict/_multilib/pair_list.h -> build/lib.linux-x86_64-3.6/multidict/_multilib\n    copying multidict/_multilib/views.h -> build/lib.linux-x86_64-3.6/multidict/_multilib\n    running build_ext\n    building 'multidict._multidict' extension\n    creating build/temp.linux-x86_64-3.6\n    creating build/temp.linux-x86_64-3.6/multidict\n    x86_64-linux-gnu-gcc -pthread -DNDEBUG -g -fwrapv -O2 -Wall -g -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2 -fPIC -I/usr/include/python3.6m -I/tmp/ort-workdir-virtualenv4502945969731426278/include/python3.6m -c multidict/_multidict.c -o build/temp.linux-x86_64-3.6/multidict/_multidict.o -O2 -std=c99 -Wall -Wsign-compare -Wconversion -fno-strict-aliasing -pedantic\n    multidict/_multidict.c:1:10: fatal error: Python.h: No such file or directory\n     #include \"Python.h\"\n              ^~~~~~~~~~\n    compilation terminated.\n    error: command 'x86_64-linux-gnu-gcc' failed with exit status 1\n    \n    ----------------------------------------\n",
+          "severity" : "ERROR"
+        } ]
+      },
+      "has_issues" : true
+    }
+  },
+  "scanner" : null,
+  "advisor" : null,
+  "evaluator" : null
+}

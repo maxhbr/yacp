@@ -26,7 +26,9 @@ source-repository head
 library
   exposed-modules:
       YACP
+      YACP.Collectors.OrtCollector
       YACP.Generators.Graphviz
+      YACP.Generators.Plantuml
       YACP.Model
       YACP.Model.Component
       YACP.Model.Identifier
@@ -49,8 +51,11 @@ library
     , filepath
     , hashable
     , mtl
+    , network-uri
+    , pretty-terminal
     , random
     , spdx
+    , split
     , text
     , unordered-containers
     , uuid
@@ -76,8 +81,11 @@ executable yacp-exe
     , filepath
     , hashable
     , mtl
+    , network-uri
+    , pretty-terminal
     , random
     , spdx
+    , split
     , text
     , unordered-containers
     , uuid
@@ -95,6 +103,7 @@ test-suite yacp-test
   ghc-options: -threaded -rtsopts -with-rtsopts=-N
   build-depends:
       Cabal
+    , QuickCheck
     , aeson
     , aeson-pretty
     , base >=4.7 && <5
@@ -102,11 +111,16 @@ test-suite yacp-test
     , containers
     , diagrams-graphviz
     , directory
+    , file-embed
     , filepath
     , hashable
+    , hspec
     , mtl
+    , network-uri
+    , pretty-terminal
     , random
     , spdx
+    , split
     , text
     , unordered-containers
     , uuid

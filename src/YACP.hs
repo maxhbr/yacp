@@ -5,12 +5,10 @@
 {-# LANGUAGE DeriveGeneric #-}
 module YACP
   ( module X
-  , someFunc
   ) where
 
 import YACP.MyPrelude
 
 import YACP.Model as X
-
-someFunc :: IO ()
-someFunc = putStrLn "someFunc"
+import YACP.Collectors.OrtCollector as X
+import YACP.Generators.Plantuml as X

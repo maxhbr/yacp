@@ -27,6 +27,7 @@ dependencies:
 - Cabal # for SDPX expressions
 - spdx # for SDPX.Extra
 - uuid
+- network-uri # URI
 # containers
 - vector
 - hashable
@@ -43,6 +44,8 @@ dependencies:
 # misc
 - mtl
 - random
+- pretty-terminal
+- split
 
 # - attoparsec
 # - base16-bytestring
@@ -89,3 +92,6 @@ tests:
     - -with-rtsopts=-N
     dependencies:
     - yacp
+    - hspec
+    - QuickCheck
+    - file-embed

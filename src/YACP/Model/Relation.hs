@@ -149,4 +149,6 @@ data Relation
   { _getRelationSrc :: Identifier
   , _getRelationType :: RelationType
   , _getRelationTarget :: Identifier
-  } deriving (Show)
+  } deriving (Eq)
+instance Show Relation where
+  show (Relation rSrc rType rTarget) = "{{{" ++ show rSrc ++ " >" ++ show rType ++ "> " ++ show rTarget ++ "}}}"
