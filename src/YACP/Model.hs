@@ -7,7 +7,7 @@
 module YACP.Model
   ( module X
   , State (..), Components (..), Relations (..)
-  , YACP (..), runYACP
+  , YACP (..), runYACP, runYACP'
   , addComponent, addComponents
   , addRelation, addRelations
   , addComponentsWithRelations
@@ -45,7 +45,9 @@ type YACP a
 runYACP :: YACP a -> IO (a, State)
 runYACP yacp = let
   initialState = State [] (Components V.empty) (Relations V.empty)
-  in MTL.runStateT yacp initialState
+  in runYACP' yacp initialState
+runYACP' :: YACP a -> State -> IO (a, State)
+runYACP' yacp initialState = MTL.runStateT yacp initialState
 stderrLog :: String -> YACP ()
 stderrLog msg = MTL.liftIO $ hPutStrLn stderr (color Green msg)
 

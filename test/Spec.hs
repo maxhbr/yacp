@@ -13,6 +13,7 @@ import qualified Data.Aeson as A
 import qualified Data.Vector as V
 
 import YACP.MyPrelude
+import YACP
 import YACP.Model
 import YACP.Collectors.OrtCollector
 import YACP.Generators.Plantuml
@@ -45,12 +46,22 @@ ortSpec = let
       isRight ortResult `shouldBe` True
     case ortResult of
       Right ortResult' -> do
-        runIO $ print ortResult'
+        -- runIO $ print ortResult'
         it "expected number of project" $ do
           (length ((_or_projects . _of_Analyzer) ortResult')) `shouldBe` 3
         it "expected number of packagges" $ do
           (length ((_or_packages . _of_Analyzer) ortResult')) `shouldBe` 53
       _ -> return ()
+
+graphSpec = let
+  yacp = do
+    parseOrtBS ortFileBS
+    computeGraph
+  in do
+  describe "Graph" $ do
+    ((graph, vertToC, iToVert, bounds, edgeToRs), result) <- runIO $ runYACP yacp
+    it "bounds should be OK" $ do
+      bounds `shouldBe` (1,59)
 
 runSpec = let
   yacp = do
@@ -69,11 +80,10 @@ runSpec = let
         it "run is successfull and contains relations" $ do
           V.length rs `shouldBe` 96
 
-    runIO $ writePlantuml' result
-
 
 main :: IO ()
 main = hspec $ do
   identifierSpec
+  graphSpec
   ortSpec
   runSpec

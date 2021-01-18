@@ -46,6 +46,7 @@ dependencies:
 - random
 - pretty-terminal
 - split
+- process
 
 # - attoparsec
 # - base16-bytestring

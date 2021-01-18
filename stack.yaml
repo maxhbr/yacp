@@ -5,3 +5,7 @@ resolver:
 extra-deps:
 - diagrams-graphviz-1.4.1.1@sha256:e71afa8f89904c2a6a2cb490dba7108c6425779c2174b90bd90dbaf507a9d3dc,1388
 - spdx-1.0.0.2@sha256:7dfac9b454ff2da0abb7560f0ffbe00ae442dd5cb76e8be469f77e6988a70fed,2008
+
+nix:
+  enable: true
+  packages: [plantuml]

@@ -289,15 +289,12 @@ instance A.FromJSON OrtResult where
 data OrtFile
   = OrtFile
   { _of_Analyzer :: OrtResult
-  , _of_Scanner :: Maybe OrtResult
+  -- , _of_Scanner :: Maybe OrtResult
   } deriving (Show)
 instance A.FromJSON OrtFile where
   parseJSON = A.withObject "OrtFile" $ \v -> OrtFile
         <$> v A..: "analyzer"
-        <*> v A..:? "scanner"
-  -- "repository" : {
-  -- "advisor" : null,
-  -- "evaluator" : null
+        -- <*> v A..:? "scanner"
 
 parseOrtFile :: FilePath -> YACP ()
 parseOrtFile path = do
@@ -306,7 +303,7 @@ parseOrtFile path = do
 parseOrtBS :: B.ByteString -> YACP ()
 parseOrtBS bs = do
   case (A.eitherDecode bs :: Either String OrtFile) of
-    Right (OrtFile analyzerResult _) -> case analyzerResult of
+    Right (OrtFile{_of_Analyzer = analyzerResult}) -> case analyzerResult of
       (OrtResult{_or_projects = ps, _or_packages = cs}) -> do
          addComponents cs
          addComponentsWithRelations ps

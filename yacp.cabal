@@ -35,6 +35,7 @@ library
       YACP.Model.Relation
       YACP.Model.State
       YACP.MyPrelude
+      YACP.Processors.ComputeGraph
   other-modules:
       Paths_yacp
   hs-source-dirs:
@@ -53,6 +54,7 @@ library
     , mtl
     , network-uri
     , pretty-terminal
+    , process
     , random
     , spdx
     , split
@@ -83,6 +85,7 @@ executable yacp-exe
     , mtl
     , network-uri
     , pretty-terminal
+    , process
     , random
     , spdx
     , split
@@ -118,6 +121,7 @@ test-suite yacp-test
     , mtl
     , network-uri
     , pretty-terminal
+    , process
     , random
     , spdx
     , split

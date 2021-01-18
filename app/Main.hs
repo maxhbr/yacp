@@ -5,8 +5,9 @@ import System.IO
 
 main :: IO ()
 main = let
-  yacp = parseOrtFile "test/data/scanner_result.json"
+  yacp = do
+    parseOrtFile "test/data/analyzer-result.json"
+    writePlantumlFile "out.puml"
   in do
-  (_,result) <- runYACP yacp
-  withFile "out.puml" WriteMode $ \h ->
-    writePlantuml h result
+  (_, state) <- runYACP yacp
+  return ()
