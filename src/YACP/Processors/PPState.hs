@@ -8,8 +8,7 @@ module YACP.Processors.PPState
   ( ppState
   ) where
 
-import YACP.MyPrelude
-import YACP.Model
+import YACP.Core
 import YACP.Processors.ComputeGraph
 
 import System.IO (Handle, hPutStrLn, hClose, stdout)

@@ -1,6 +1,6 @@
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE LambdaCase #-}
-module YACP.MyPrelude
+module YACP.Core.MyPrelude
     ( module X
     , tShow
     ) where

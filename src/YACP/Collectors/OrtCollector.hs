@@ -9,8 +9,7 @@ module YACP.Collectors.OrtCollector
   , parseOrtFile, parseOrtBS
   ) where
 
-import YACP.MyPrelude
-import YACP.Model
+import YACP.Core
 
 import qualified Data.ByteString.Lazy as B
 import qualified Data.Aeson as A

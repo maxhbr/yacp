@@ -8,8 +8,7 @@ module YACP.Generators.Graphviz
   ( computeDiagram
   ) where
 
-import YACP.MyPrelude
-import YACP.Model
+import YACP.Core
 
 import qualified Diagrams.TwoD.GraphViz as G
 

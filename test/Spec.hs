@@ -14,11 +14,7 @@ import qualified Data.Vector as V
 import System.IO.Temp (withSystemTempDirectory)
 import System.Directory (doesFileExist)
 
-import YACP.MyPrelude
 import YACP
-import YACP.Model
-import YACP.Collectors.OrtCollector
-import YACP.Generators.Plantuml
 
 identifierSpec = let
       purl1 = "pkg:pypi/Jinja2@2.11.2"

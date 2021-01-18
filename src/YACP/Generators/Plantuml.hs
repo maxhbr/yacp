@@ -9,8 +9,7 @@ module YACP.Generators.Plantuml
   , writePlantumlFile
   ) where
 
-import YACP.MyPrelude
-import YACP.Model
+import YACP.Core
 import YACP.Processors.ComputeGraph (computeComponentsMapping)
 
 import System.IO (Handle, hPutStrLn, hClose, stdout)

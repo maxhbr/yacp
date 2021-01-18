@@ -7,9 +7,7 @@ module YACP
   ( module X
   ) where
 
-import YACP.MyPrelude
-
-import YACP.Model as X
+import YACP.Core as X
 import YACP.Collectors.OrtCollector as X
 import YACP.Processors.ComputeGraph as X
 import YACP.Processors.PPState as X

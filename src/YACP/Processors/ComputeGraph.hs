@@ -9,8 +9,7 @@ module YACP.Processors.ComputeGraph
   , computeComponentsMapping
   ) where
 
-import YACP.MyPrelude
-import YACP.Model
+import YACP.Core
 
 import System.IO (Handle, hPutStrLn, hClose, stdout)
 import qualified Data.List as List
