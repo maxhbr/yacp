@@ -18,7 +18,7 @@ module YACP.Model
   , Licenseable (..)
   -- Relations
   , RelationType (..)
-  , Relation (..), normalizeRelation
+  , Relation (..)
   -- State
   , State (..), Components (..), Relations (..)
   , YACP (..), runYACP, runYACP'
@@ -197,6 +197,8 @@ data Component
   { _getComponentIdentifier :: Identifier
   , _getComponentLicense :: Maybe SPDX.LicenseExpression
   , _getComponentPayload :: A.Array
+  , _getComponentRelations :: [Relation]
+  , _getComponentSubComponents :: [Component]
   } deriving (Eq)
 instance Show Component where
   show (Component{_getComponentIdentifier = cId, _getComponentLicense = l}) = "{{{" ++  show cId ++ "@" ++ show l ++ "}}}"
@@ -220,18 +222,28 @@ instance Semigroup Component where
       in if p1 /= p2
          then p1 <> p2
          else p1
+    mergedRelations = let
+      r1 = _getComponentRelations c1
+      r2 = _getComponentRelations c2
+      in nub (r1 ++ r2)
+    mergedSubComponents = let
+      sc1 = _getComponentSubComponents c1
+      sc2 = _getComponentSubComponents c2
+      in nub (sc1 ++ sc2)
     in Component
        { _getComponentIdentifier = mergedIdentifiers
        , _getComponentLicense = mergedLicense
        , _getComponentPayload = mergedPayload
+       , _getComponentRelations = mergedRelations
+       , _getComponentSubComponents = mergedSubComponents
        }
 instance Monoid Component where
-  mempty = Component mempty Nothing mempty
+  mempty = Component mempty Nothing mempty mempty mempty
 
 identifierToComponent :: Identifier -> Component
 identifierToComponent i = mempty{_getComponentIdentifier = i}
 
-class Licenseable a where
+class Monoid a => Licenseable a where
   getLicense :: a -> Maybe SPDX.LicenseExpression
   showLicense :: a -> String
   showLicense a = let
@@ -400,12 +412,6 @@ flipDirection (r@Relation{_getRelationSrc = src, _getRelationTarget = target}) =
 {-|
   direction should always be from the smaller to the bigger in which it is included
 -}
-normalizeRelation :: Relation -> Relation
-normalizeRelation (r@Relation{_getRelationType = DEPENDS_ON})       = flipDirection (r{_getRelationType = DEPENDENCY_OF})
-normalizeRelation (r@Relation{_getRelationType = DESCRIBED_BY})     = flipDirection (r{_getRelationType = DESCRIBES})
-normalizeRelation (r@Relation{_getRelationType = CONTAINS})         = flipDirection (r{_getRelationType = CONTAINED_BY})
-normalizeRelation (r@Relation{_getRelationType = HAS_PREREQUISITE}) = flipDirection (r{_getRelationType = PREREQUISITE_FOR})
-normalizeRelation r                                                 = r
 
 --------------------------------------------------------------------------------
 {-|
@@ -469,6 +475,8 @@ addComponent = let
     mergedC = c <> ((mconcat . V.toList) matchingCs)
     in Components (mergedC `V.cons` nonMatchingCs)
   in \c -> do
+  mapM_ addRelation (_getComponentRelations c)
+  mapM_ addComponent (_getComponentSubComponents c)
   c' <- MTL.liftIO $ addUuidIfMissing c
   MTL.modify (\s@State{_getComponents = cs} -> s{_getComponents = c' `addComponent'` cs})
   c'' <- MTL.gets (\State{_getComponents = Components cs} ->
@@ -490,6 +498,14 @@ addRelation = let
     return r{ _getRelationSrc = src'
             , _getRelationTarget = target'
             }
+
+  normalizeRelation :: Relation -> Relation
+  normalizeRelation (r@Relation{_getRelationType = DEPENDS_ON})       = flipDirection (r{_getRelationType = DEPENDENCY_OF})
+  normalizeRelation (r@Relation{_getRelationType = DESCRIBED_BY})     = flipDirection (r{_getRelationType = DESCRIBES})
+  normalizeRelation (r@Relation{_getRelationType = CONTAINS})         = flipDirection (r{_getRelationType = CONTAINED_BY})
+  normalizeRelation (r@Relation{_getRelationType = HAS_PREREQUISITE}) = flipDirection (r{_getRelationType = PREREQUISITE_FOR})
+  normalizeRelation r                                                 = r
+
   in \r -> do
   r' <- addRelationEdgesToComponents (normalizeRelation r)
   MTL.modify (\s@State{_getRelations = rs} -> s{_getRelations = r' `addRelation'` rs})

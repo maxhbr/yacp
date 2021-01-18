@@ -124,7 +124,7 @@ parseVcs v = let
           revision: ""
           path: ""
 -}
-packageJsonToComponent :: A.Object -> A.Parser (Component, [Relation])
+packageJsonToComponent :: A.Object -> A.Parser Component
 packageJsonToComponent v = let
     packageParser = v A..: "package"
     idParser = fmap Identifier (packageParser >>= (A..: "id"))
@@ -160,29 +160,32 @@ packageJsonToComponent v = let
         return [Relation id1 GENERATED_FROM artId]
       Nothing -> return []
   let rels = relFromVcs ++ relFromBinaryArtifact ++ relFromSourceArtifact
-  c <- Component
+  Component
      <$> pure (id1 <> id2)
      <*> fmap parseLicenses (packageParser >>= (A..: "declared_licenses"))
      <*> pure (V.singleton (A.Object v))
-  return (c, rels)
+     <*> pure rels
+     <*> pure []
 
-projectJsonToComponentWithRelations :: A.Object -> A.Parser (Component, [Relation])
+projectJsonToComponentWithRelations :: A.Object -> A.Parser Component
 projectJsonToComponentWithRelations v = let
     idParser = fmap Identifier (v A..: "id")
 
-    componentParser cId = do
+    componentParser cId rels = do
       Component
         <$> pure cId
         <*> fmap parseLicenses (v A..: "declared_licenses")
         <*> pure (V.singleton (A.Object v))
+        <*> pure rels
+        <*> pure []
     definedInParser cId = fmap ((\fp -> Relation fp METAFILE_OF cId) . PathIdentifier) (v A..: "definition_file_path")
   in do
   cId <- idParser
-  component <- componentParser cId
   definedIn <- definedInParser cId
   scopes <- (v A..: "scopes") >>= scopesJsonToRelations cId
   relFromVcs <- fmap (map (\vcs -> Relation vcs CONTAINS cId) . maybeToList) (parseVcs v)
-  return (component, definedIn : scopes ++ relFromVcs)
+  let rels = definedIn : scopes ++ relFromVcs
+  componentParser cId rels
 
 {-
   "scopes" : [ {
@@ -232,8 +235,8 @@ data OrtResult
   = OrtResult
   { _or_start_time :: String
   , _or_end_time :: String
-  , _or_projects :: Vector (Component, [Relation])
-  , _or_packages :: Vector (Component, [Relation])
+  , _or_projects :: Vector Component
+  , _or_packages :: Vector Component
   } deriving (Show)
 instance A.FromJSON OrtResult where
   parseJSON = A.withObject "OrtResult" $ \v -> let
@@ -267,9 +270,9 @@ parseOrtBS bs =
   case (A.eitherDecode bs :: Either String OrtFile) of
     Right (OrtFile{_of_Root = root, _of_Analyzer = analyzerResult}) -> case analyzerResult of
       OrtResult{_or_projects = ps, _or_packages = cs} -> do
-        addComponentsWithRelations cs
-        addComponentsWithRelations ps
-        let projectIds = V.map (\(c,_) -> (getIdentifier c)) ps
+        addComponents cs
+        addComponents ps
+        let projectIds = V.map getIdentifier ps
         case root of
           Just root' -> addRelations $ V.map (\pId -> Relation root' CONTAINS pId) projectIds
           Nothing -> return ()
