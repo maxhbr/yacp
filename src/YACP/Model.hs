@@ -8,6 +8,7 @@ module YACP.Model
   ( module X
   , State (..), Components (..), Relations (..)
   , YACP (..), runYACP, runYACP'
+  , addRoot, addRoots
   , addComponent, addComponents
   , addRelation, addRelations
   , addComponentsWithRelations
@@ -17,6 +18,7 @@ module YACP.Model
 
 import YACP.MyPrelude
 import YACP.Model.Identifier as X
+import YACP.Model.File as X
 import YACP.Model.Component as X
 import YACP.Model.Relation as X
 
@@ -33,23 +35,33 @@ data Relations
   = Relations (Vector Relation)
   deriving (Eq, Show)
 
+data Files
+  = Files (Vector File)
+  deriving (Eq, Show)
+
 data State
   = State
   { _getRoots :: [Identifier]
   , _getComponents :: Components
   , _getRelations :: Relations
+  , _getFiles :: Files
   } deriving (Eq, Show)
 
 type YACP a
   = MTL.StateT State IO a
 runYACP :: YACP a -> IO (a, State)
 runYACP yacp = let
-  initialState = State [] (Components V.empty) (Relations V.empty)
+  initialState = State [] (Components V.empty) (Relations V.empty) (Files V.empty)
   in runYACP' yacp initialState
 runYACP' :: YACP a -> State -> IO (a, State)
 runYACP' yacp initialState = MTL.runStateT yacp initialState
 stderrLog :: String -> YACP ()
 stderrLog msg = MTL.liftIO $ hPutStrLn stderr (color Green msg)
+
+addRoot :: Identifier -> YACP ()
+addRoot r = MTL.modify (\s@State{_getRoots = rs} -> s{_getRoots = r:rs})
+addRoots :: Vector Identifier -> YACP ()
+addRoots = V.mapM_ addRoot
 
 addComponent :: Component -> YACP Identifier
 addComponent = let
@@ -82,8 +94,8 @@ addRelation = let
     return r{ _getRelationSrc = src'
             , _getRelationTarget = target'
             }
-  in \r@(Relation src _ target) -> do
-  r' <- addRelationEdgesToComponents r
+  in \r -> do
+  r' <- addRelationEdgesToComponents (normalizeRelation r)
   MTL.modify (\s@State{_getRelations = rs} -> s{_getRelations = r' `addRelation'` rs})
 addRelations :: Vector Relation -> YACP ()
 addRelations = V.mapM_ addRelation

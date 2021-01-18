@@ -5,7 +5,7 @@
 {-# LANGUAGE DeriveGeneric #-}
 module YACP.Model.Relation
   ( RelationType (..)
-  , Relation (..)
+  , Relation (..), normalizeRelation
   ) where
 
 import YACP.MyPrelude
@@ -152,3 +152,15 @@ data Relation
   } deriving (Eq)
 instance Show Relation where
   show (Relation rSrc rType rTarget) = "{{{" ++ show rSrc ++ " >" ++ show rType ++ "> " ++ show rTarget ++ "}}}"
+
+flipDirection :: Relation -> Relation
+flipDirection (r@Relation{_getRelationSrc = src, _getRelationTarget = target}) = r{_getRelationSrc = target, _getRelationTarget = src}
+{-|
+  direction should always be from the smaller to the bigger in which it is included
+-}
+normalizeRelation :: Relation -> Relation
+normalizeRelation (r@Relation{_getRelationType = DEPENDS_ON})       = flipDirection (r{_getRelationType = DEPENDENCY_OF})
+normalizeRelation (r@Relation{_getRelationType = DESCRIBED_BY})     = flipDirection (r{_getRelationType = DESCRIBES})
+normalizeRelation (r@Relation{_getRelationType = CONTAINS})         = flipDirection (r{_getRelationType = CONTAINED_BY})
+normalizeRelation (r@Relation{_getRelationType = HAS_PREREQUISITE}) = flipDirection (r{_getRelationType = PREREQUISITE_FOR})
+normalizeRelation r                                                 = r

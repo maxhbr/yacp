@@ -31,11 +31,13 @@ library
       YACP.Generators.Plantuml
       YACP.Model
       YACP.Model.Component
+      YACP.Model.File
       YACP.Model.Identifier
       YACP.Model.Relation
       YACP.Model.State
       YACP.MyPrelude
       YACP.Processors.ComputeGraph
+      YACP.Processors.PPState
   other-modules:
       Paths_yacp
   hs-source-dirs:
@@ -125,6 +127,7 @@ test-suite yacp-test
     , random
     , spdx
     , split
+    , temporary
     , text
     , unordered-containers
     , uuid

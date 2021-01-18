@@ -16,8 +16,10 @@ import qualified Data.ByteString.Lazy as B
 import qualified Data.Aeson as A
 import qualified Data.Aeson.Types as A
 import Data.List (intercalate)
-import Data.Maybe (fromMaybe)
+import qualified Data.List as List
+import Data.Maybe (fromMaybe, maybeToList)
 import qualified Data.Vector as V
+import qualified System.FilePath as FP
 import qualified Control.Monad.State as MTL
 import qualified Distribution.SPDX as SPDX
 import qualified Distribution.Parsec as SPDX
@@ -36,73 +38,6 @@ parseLicenses ls = let
   in Just (parseLicenses' ls)
 
 {-
-  {
-    "package" : {
-      "id" : "PyPI::Jinja2:2.11.2",
-      "purl" : "pkg:pypi/Jinja2@2.11.2",
-      "declared_licenses" : [ "BSD License", "BSD-3-Clause" ],
-      "declared_licenses_processed" : {
-        "spdx_expression" : "BSD-3-Clause",
-        "mapped" : {
-          "BSD License" : "BSD-3-Clause"
-        }
-      },
-      "description" : "A very fast and expressive template engine.",
-      "homepage_url" : "https://palletsprojects.com/p/jinja/",
-      "binary_artifact" : {
-        "url" : "https://files.pythonhosted.org/packages/30/9e/f663a2aa66a09d838042ae1a2c5659828bb9b41ea3a6efa20a20fd92b121/Jinja2-2.11.2-py2.py3-none-any.whl",
-        "hash" : {
-          "value" : "e36888c21cb0f6716b9987be2972744d",
-          "algorithm" : "MD5"
-        }
-      },
-      "source_artifact" : {
-        "url" : "https://files.pythonhosted.org/packages/64/a7/45e11eebf2f15bf987c3bc11d37dcc838d9dc81250e67e4c5968f6008b6c/Jinja2-2.11.2.tar.gz",
-        "hash" : {
-          "value" : "0362203b22547abca06ed1082bc1e7b4",
-          "algorithm" : "MD5"
-        }
-      },
-      "vcs" : {
-        "type" : "",
-        "url" : "",
-        "revision" : "",
-        "path" : ""
-      },
-      "vcs_processed" : {
-        "type" : "",
-        "url" : "",
-        "revision" : "",
-        "path" : ""
-      }
-    },
-    "curations" : [ ]
-  }
--}
-
-packageJsonToComponent :: A.Object -> A.Parser Component
-packageJsonToComponent v = let
-    packageParser = v A..: "package"
-    idParser = fmap Identifier (packageParser >>= (A..: "id"))
-    purlParser = fmap parsePURL (packageParser >>= (A..: "purl"))
-  in do
-  id1 <- idParser
-  id2 <- purlParser
-  Component
-     <$> pure (id1 <> id2)
-     <*> fmap parseLicenses (packageParser >>= (A..: "declared_licenses"))
-     <*> pure (V.singleton (A.Object v))
-
-{-
-    - id: "PIP::black-requirementstest_requirements:de510478d9b12490eddf93a785494f726897363b"
-      definition_file_path: "test_requirements.txt"
-      declared_licenses:
-      - "MIT"
-      - "MIT License"
-      declared_licenses_processed:
-        spdx_expression: "MIT"
-        mapped:
-          MIT License: "MIT"
       vcs:
         type: ""
         url: ""
@@ -113,102 +48,128 @@ packageJsonToComponent v = let
         url: "https://github.com/psf/black.git"
         revision: "de510478d9b12490eddf93a785494f726897363b"
         path: ""
-      homepage_url: "https://github.com/psf/black"
-      scopes:
-      - name: "install"
-        dependencies:
-        - id: "PyPI::coverage:5.3.1"
-        - id: "PyPI::parameterized:0.8.1"
-        - id: "PyPI::pre-commit:2.9.3"
-          dependencies:
-          - id: "PyPI::cfgv:3.2.0"
-          - id: "PyPI::identify:1.5.12"
-          - id: "PyPI::importlib-metadata:3.4.0"
-            dependencies:
-            - id: "PyPI::typing-extensions:3.7.4.3"
-            - id: "PyPI::zipp:3.4.0"
-          - id: "PyPI::importlib-resources:5.0.0"
-            dependencies:
-            - id: "PyPI::zipp:3.4.0"
-          - id: "PyPI::nodeenv:1.5.0"
-          - id: "PyPI::pyyaml:5.3.1"
-          - id: "PyPI::toml:0.10.2"
-          - id: "PyPI::virtualenv:20.3.1"
-            dependencies:
-            - id: "PyPI::appdirs:1.4.4"
-            - id: "PyPI::distlib:0.3.1"
-            - id: "PyPI::filelock:3.0.12"
-            - id: "PyPI::importlib-metadata:3.4.0"
-              dependencies:
-              - id: "PyPI::typing-extensions:3.7.4.3"
-              - id: "PyPI::zipp:3.4.0"
-            - id: "PyPI::importlib-resources:5.0.0"
-              dependencies:
-              - id: "PyPI::zipp:3.4.0"
-            - id: "PyPI::six:1.15.0"
-        - id: "PyPI::pytest-cases:3.1.1"
-          dependencies:
-          - id: "PyPI::decopatch:1.4.8"
-            dependencies:
-            - id: "PyPI::makefun:1.9.5"
-          - id: "PyPI::makefun:1.9.5"
-        - id: "PyPI::pytest-mock:3.5.1"
-          dependencies:
-          - id: "PyPI::pytest:6.2.1"
-            dependencies:
-            - id: "PyPI::attrs:20.3.0"
-            - id: "PyPI::importlib-metadata:3.4.0"
-              dependencies:
-              - id: "PyPI::typing-extensions:3.7.4.3"
-              - id: "PyPI::zipp:3.4.0"
-            - id: "PyPI::iniconfig:1.1.1"
-            - id: "PyPI::packaging:20.8"
-              dependencies:
-              - id: "PyPI::pyparsing:2.4.7"
-            - id: "PyPI::pluggy:0.13.1"
-              dependencies:
-              - id: "PyPI::importlib-metadata:3.4.0"
-                dependencies:
-                - id: "PyPI::typing-extensions:3.7.4.3"
-                - id: "PyPI::zipp:3.4.0"
-            - id: "PyPI::py:1.10.0"
-            - id: "PyPI::toml:0.10.2"
-        - id: "PyPI::tox:3.21.1"
-          dependencies:
-          - id: "PyPI::filelock:3.0.12"
-          - id: "PyPI::importlib-metadata:3.4.0"
-            dependencies:
-            - id: "PyPI::typing-extensions:3.7.4.3"
-            - id: "PyPI::zipp:3.4.0"
-          - id: "PyPI::packaging:20.8"
-            dependencies:
-            - id: "PyPI::pyparsing:2.4.7"
-          - id: "PyPI::pluggy:0.13.1"
-            dependencies:
-            - id: "PyPI::importlib-metadata:3.4.0"
-              dependencies:
-              - id: "PyPI::typing-extensions:3.7.4.3"
-              - id: "PyPI::zipp:3.4.0"
-          - id: "PyPI::py:1.10.0"
-          - id: "PyPI::six:1.15.0"
-          - id: "PyPI::toml:0.10.2"
-          - id: "PyPI::virtualenv:20.3.1"
-            dependencies:
-            - id: "PyPI::appdirs:1.4.4"
-            - id: "PyPI::distlib:0.3.1"
-            - id: "PyPI::filelock:3.0.12"
-            - id: "PyPI::importlib-metadata:3.4.0"
-              dependencies:
-              - id: "PyPI::typing-extensions:3.7.4.3"
-              - id: "PyPI::zipp:3.4.0"
-            - id: "PyPI::importlib-resources:5.0.0"
-              dependencies:
-              - id: "PyPI::zipp:3.4.0"
-            - id: "PyPI::six:1.15.0"
+ -}
+parseVcs :: A.Object -> A.Parser (Maybe Identifier)
+parseVcs v = let
+  parseVcsGH vcsUrl vcsRevision vcsPath =
+      if "https://github.com/" `List.isPrefixOf` vcsUrl
+        then Just $ let
+        path = case List.stripPrefix "https://github.com/" vcsUrl of
+          Just postfix -> postfix
+          Nothing -> vcsUrl
+        namespace = FP.takeDirectory path
+        name = FP.takeBaseName path
+        in PURL
+           (Just "pkg")
+           (Just "github")
+           (Just namespace)
+           name
+           (Just vcsRevision)
+           Nothing
+           (Just vcsPath)
+        else Nothing
+  in do
+  vcsProcessed <- v A..:? "vcs_processed"
+  vcsRaw <- v A..:? "vcs"
+  let vcs = case vcsProcessed of
+        Just vcs -> Just vcs
+        Nothing -> case vcsRaw of
+          Just vcs -> Just vcs
+          Nothing -> Nothing
+  case vcs of
+    Just vcs' -> do
+      vcsType <- vcs' A..: "type" :: A.Parser String
+      vcsUrl <- vcs' A..: "url" :: A.Parser String
+      vcsRevision <- vcs' A..: "revision" :: A.Parser String
+      vcsPath <- vcs' A..: "path" :: A.Parser String
+      case parseVcsGH vcsUrl vcsRevision vcsPath of
+        Just i -> return (Just i)
+        Nothing -> if vcsUrl /= "" && vcsRevision /= ""
+          then return (Just (Identifier (vcsType ++ "+" ++ vcsUrl ++ "@" ++ vcsRevision ++ "#" ++ vcsPath)))
+          else return Nothing
+    Nothing -> return Nothing
+
+{-
+    - package:
+        id: "PyPI::babel:2.9.0"
+        purl: "pkg:pypi/babel@2.9.0"
+        declared_licenses:
+        - "BSD"
+        - "BSD License"
+        declared_licenses_processed:
+          spdx_expression: "BSD-3-Clause"
+          mapped:
+            BSD: "BSD-3-Clause"
+            BSD License: "BSD-3-Clause"
+        description: "Internationalization utilities"
+        homepage_url: "http://babel.pocoo.org/"
+        binary_artifact:
+          url: "https://files.pythonhosted.org/packages/dd/a5/81076e10b5ef74493cf08a8e419e61b64324c9c55db4aa7f89c0240c4873/Babel-2.9.0-py2.py3-none-any.whl"
+          hash:
+            value: "f4ed917cb45bcc760a4f652890bdffa8"
+            algorithm: "MD5"
+        source_artifact:
+          url: "https://files.pythonhosted.org/packages/41/1b/5ed6e564b9ca54318df20ebe5d642ab25da4118df3c178247b8c4b26fa13/Babel-2.9.0.tar.gz"
+          hash:
+            value: "bfc803874aa71e9e9bd54bdd1ce944ba"
+            algorithm: "MD5"
+        vcs:
+          type: ""
+          url: ""
+          revision: ""
+          path: ""
+        vcs_processed:
+          type: ""
+          url: ""
+          revision: ""
+          path: ""
 -}
+packageJsonToComponent :: A.Object -> A.Parser (Component, [Relation])
+packageJsonToComponent v = let
+    packageParser = v A..: "package"
+    idParser = fmap Identifier (packageParser >>= (A..: "id"))
+    purlParser = fmap parsePURL (packageParser >>= (A..: "purl"))
+    parseArtifact :: A.Object -> A.Parser Identifier
+    parseArtifact v = do
+      urlId <- fmap (maybeToList . fmap UrlIdentifier) (v A..:? "url") :: A.Parser [Identifier]
+      hash <- v A..:? "hash"
+      hashId <- case hash of
+        Just hash' -> do
+          hashValue <- hash' A..: "value" :: A.Parser String
+          hashAlgorithm <- hash' A..:? "algorithm" :: A.Parser (Maybe String)
+          return [Hash hashAlgorithm hashValue]
+        _ -> return []
+      return (mconcat (urlId ++ hashId))
+  in do
+  id1 <- idParser
+  id2 <- purlParser
+
+  relFromVcs <- fmap (map (\vcs -> Relation vcs CONTAINS id1) . maybeToList) (packageParser >>= parseVcs)
+  relFromBinaryArtifact <- do
+    artifact <- packageParser >>= (A..:? "binary_artifact") :: A.Parser (Maybe A.Object)
+    case artifact of
+      Just artifact' -> do
+        artId <- parseArtifact artifact'
+        return [Relation id1 GENERATES artId]
+      Nothing -> return []
+  relFromSourceArtifact <- do
+    artifact <- packageParser >>= (A..:? "source_artifact") :: A.Parser (Maybe A.Object)
+    case artifact of
+      Just artifact' -> do
+        artId <- parseArtifact artifact'
+        return [Relation id1 GENERATED_FROM artId]
+      Nothing -> return []
+  let rels = relFromVcs ++ relFromBinaryArtifact ++ relFromSourceArtifact
+  c <- Component
+     <$> pure (id1 <> id2)
+     <*> fmap parseLicenses (packageParser >>= (A..: "declared_licenses"))
+     <*> pure (V.singleton (A.Object v))
+  return (c, rels)
+
 projectJsonToComponentWithRelations :: A.Object -> A.Parser (Component, [Relation])
 projectJsonToComponentWithRelations v = let
     idParser = fmap Identifier (v A..: "id")
+
     componentParser cId = do
       Component
         <$> pure cId
@@ -220,7 +181,8 @@ projectJsonToComponentWithRelations v = let
   component <- componentParser cId
   definedIn <- definedInParser cId
   scopes <- (v A..: "scopes") >>= scopesJsonToRelations cId
-  return (component, definedIn : scopes)
+  relFromVcs <- fmap (map (\vcs -> Relation vcs CONTAINS cId) . maybeToList) (parseVcs v)
+  return (component, definedIn : scopes ++ relFromVcs)
 
 {-
   "scopes" : [ {
@@ -238,44 +200,40 @@ projectJsonToComponentWithRelations v = let
    } ]
 -}
 scopesJsonToRelations :: Identifier -> A.Array -> A.Parser [Relation]
-scopesJsonToRelations src v = let
+scopesJsonToRelations target v = let
   scopesJsonToRelations' :: A.Value -> A.Parser [Relation]
   scopesJsonToRelations' = A.withObject "" $ \v' -> do
-    maybeId <- fmap ((src `fromMaybe`) . (fmap Identifier)) (v' A..:? "id")
+
+    scopeName <- v' A..:? "name" :: A.Parser (Maybe String)
+    let relationType = case scopeName of
+          Just "build" -> BUILD_DEPENDENCY_OF
+          Just "dev" -> DEV_DEPENDENCY_OF
+          Just "optional" -> OPTIONAL_DEPENDENCY_OF
+          Just "provided" -> PROVIDED_DEPENDENCY_OF
+          Just "test" -> TEST_DEPENDENCY_OF
+          Just "runtime" -> RUNTIME_DEPENDENCY_OF
+          _ -> DEPENDENCY_OF
+
     dependencies <- v' A..:? "dependencies" :: A.Parser (Maybe A.Array)
     case dependencies of
       Just dependencies' -> do
-        deps1 <- fmap (map (Relation src DEPENDS_ON)
+        deps1 <- fmap (map (\src -> Relation src relationType target)
                         . map Identifier)
                 (mapM (A.withObject "" (A..: "id")) (V.toList dependencies'))
-        otherDeps <- scopesJsonToRelations maybeId dependencies'
+
+        target' <- fmap ((target `fromMaybe`) . (fmap Identifier)) (v' A..:? "id")
+        otherDeps <- scopesJsonToRelations target' dependencies'
         return (deps1 ++ otherDeps)
       Nothing -> return []
   in do
   fmap concat $ mapM scopesJsonToRelations' v
 
--- scopesJsonToRelations :: Identifier -> A.Array -> A.Parser [Relation]
--- scopesJsonToRelations cId v = let
---   parseDependencies :: A.Value -> A.Parser [Relation]
---   parseDependencies = A.withObject "" $ \v' -> do
---     maybeId <- fmap ((cId `fromMaybe`) . (fmap Identifier)) (v' A..:? "id")
---     deps <- v' A..: "dependencies"
---     undefined
---   in do
---   rs <- mapM parseDependencies v
---   return [] -- TODO
-
--- data OrtRepository
---   = OrtRepository
---   deriving (Generic, Eq, Show)
--- instance A.FromJSON OrtRepository where
---   parseJSON = A.withObject "OrtRepository" $ \v -> OrtRepository
 data OrtResult
   = OrtResult
   { _or_start_time :: String
   , _or_end_time :: String
   , _or_projects :: Vector (Component, [Relation])
-  , _or_packages :: Vector Component
+  , _or_packages :: Vector (Component, [Relation])
   } deriving (Show)
 instance A.FromJSON OrtResult where
   parseJSON = A.withObject "OrtResult" $ \v -> let
@@ -288,12 +246,16 @@ instance A.FromJSON OrtResult where
 
 data OrtFile
   = OrtFile
-  { _of_Analyzer :: OrtResult
+  { _of_Root :: Maybe Identifier
+  , _of_Analyzer :: OrtResult
   -- , _of_Scanner :: Maybe OrtResult
   } deriving (Show)
 instance A.FromJSON OrtFile where
-  parseJSON = A.withObject "OrtFile" $ \v -> OrtFile
-        <$> v A..: "analyzer"
+  parseJSON = A.withObject "OrtFile" $ \v -> do
+    r <- v A..: "repository"
+    OrtFile
+        <$> parseVcs r
+        <*> v A..: "analyzer"
         -- <*> v A..:? "scanner"
 
 parseOrtFile :: FilePath -> YACP ()
@@ -301,10 +263,15 @@ parseOrtFile path = do
   bs <- MTL.liftIO $ B.readFile path
   parseOrtBS bs
 parseOrtBS :: B.ByteString -> YACP ()
-parseOrtBS bs = do
+parseOrtBS bs =
   case (A.eitherDecode bs :: Either String OrtFile) of
-    Right (OrtFile{_of_Analyzer = analyzerResult}) -> case analyzerResult of
-      (OrtResult{_or_projects = ps, _or_packages = cs}) -> do
-         addComponents cs
-         addComponentsWithRelations ps
+    Right (OrtFile{_of_Root = root, _of_Analyzer = analyzerResult}) -> case analyzerResult of
+      OrtResult{_or_projects = ps, _or_packages = cs} -> do
+        addComponentsWithRelations cs
+        addComponentsWithRelations ps
+        let projectIds = V.map (\(c,_) -> (getIdentifier c)) ps
+        case root of
+          Just root' -> addRelations $ V.map (\pId -> Relation root' CONTAINS pId) projectIds
+          Nothing -> return ()
+        addRoots projectIds
     Left err     -> stderrLog err

@@ -96,3 +96,4 @@ tests:
     - hspec
     - QuickCheck
     - file-embed
+    - temporary

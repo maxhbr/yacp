@@ -29,6 +29,7 @@ data Identifier
   = Identifier String
   | UuidIdentifier UUID
   | PathIdentifier FilePath -- path of file
+  | UrlIdentifier String
   | PURL (Maybe String) -- scheme
          (Maybe String) -- type
          (Maybe String) -- namespace
@@ -43,6 +44,7 @@ data Identifier
 instance Show Identifier where
   show (Identifier str) = str
   show (UuidIdentifier uuid) = show uuid
+  show (UrlIdentifier url) = url
   show (PURL pScheme
             pType
             pNamespace
@@ -59,12 +61,13 @@ instance Show Identifier where
               ++ [pName ++ (""`fromMaybe` (fmap ('@':) pVersion))]
             )
           , URI.uriQuery = "" `fromMaybe` pQualifier
-          , URI.uriFragment = "" `fromMaybe` pSubpath
+          , URI.uriFragment = "" `fromMaybe` (fmap ('#':) pSubpath)
           }
     in show uri
   show (PathIdentifier fp) = fp
   show (Hash (Just t) h) = t ++ ":" ++ h
   show (Hash Nothing h) = h
+  show (Identifiers [i]) = show i
   show (Identifiers is) = show is
 flattenIdentifierToList :: Identifier -> [Identifier]
 flattenIdentifierToList (Identifiers is) = nub $ concatMap flattenIdentifierToList is
