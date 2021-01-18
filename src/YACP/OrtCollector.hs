@@ -10,6 +10,7 @@ module YACP.OrtCollector
   ) where
 
 import YACP.Core
+import YACP.ParserHelper
 
 import qualified Data.ByteString.Lazy as B
 import qualified Data.Aeson as A
@@ -22,19 +23,6 @@ import qualified System.FilePath as FP
 import qualified Control.Monad.State as MTL
 import qualified Distribution.SPDX as SPDX
 import qualified Distribution.Parsec as SPDX
-
-parseLicenses :: [String] -> Maybe SPDX.LicenseExpression
-parseLicenses [] = Nothing
-parseLicenses ls = let
-  parseLicense :: String -> SPDX.LicenseExpression
-  parseLicense str = (`SPDX.ELicense` Nothing) $ case SPDX.eitherParsec str of
-    Right lic -> SPDX.ELicenseId lic
-    _         -> SPDX.ELicenseRef $ SPDX.mkLicenseRef' Nothing str
-
-  parseLicenses' :: [String] -> SPDX.LicenseExpression
-  parseLicenses' [l] = parseLicense l
-  parseLicenses' (l:ls) = parseLicense l `SPDX.EAnd` (parseLicenses' ls)
-  in Just (parseLicenses' ls)
 
 {-
       vcs:

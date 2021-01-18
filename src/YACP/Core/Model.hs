@@ -20,8 +20,10 @@ module YACP.Core.Model
   -- Relations
   , RelationType (..)
   , Relation (..)
+  -- File
+  , File (..)
   -- State
-  , State (..), Components (..), Relations (..)
+  , State (..), Components (..), Relations (..), Files (..)
   , YACP (..), runYACP, runYACP'
   ) where
 
@@ -233,7 +235,7 @@ instance Monoid Component where
 identifierToComponent :: Identifier -> Component
 identifierToComponent i = mempty{_getComponentIdentifier = i}
 
-class Monoid a => Licenseable a where
+class Licenseable a where
   getLicense :: a -> Maybe SPDX.LicenseExpression
   showLicense :: a -> String
   showLicense a = let
@@ -409,11 +411,15 @@ data File
   = File
   { _getFilePath :: FilePath
   , _getFileOtherIdentifier :: Identifier
+  , _getFileLicense :: Maybe SPDX.LicenseExpression
   } deriving (Eq, Show)
 
 instance Identifiable File where
-  getIdentifier f = (PathIdentifier $ _getFilePath f) <> _getFileOtherIdentifier f
-  addIdentifier (f@File{_getFileOtherIdentifier = is}) i = f{_getFileOtherIdentifier = is<>i}
+  getIdentifier f = PathIdentifier (_getFilePath f) <> _getFileOtherIdentifier f
+  addIdentifier f@File{_getFileOtherIdentifier = is} i = f{_getFileOtherIdentifier = is<>i}
+
+instance Licenseable File where
+  getLicense = _getFileLicense
 
 --------------------------------------------------------------------------------
 

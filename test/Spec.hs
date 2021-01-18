@@ -53,7 +53,17 @@ ortSpec = let
 scancodeFileBS :: B.ByteString
 scancodeFileBS = B.fromStrict $(embedFile "test/data/bat.scancode.pp.json")
 
-scancodeSpec = undefined
+scancodeSpec = let
+    scancodeResult = A.eitherDecode scancodeFileBS :: Either String ScancodeFile
+    potentialError = case scancodeResult of
+      Right _ -> Nothing
+      Left err -> Just err
+  in do
+  describe "ScancodeCollector" $ do
+    it "parsing should not contain error" $ do
+      potentialError `shouldBe` Nothing
+    it "parsing is successfull" $ do
+      isRight scancodeResult `shouldBe` True
 
 
 graphSpec = let
@@ -86,6 +96,7 @@ plantumlSpec = let
 runSpec = let
   yacp = do
     parseOrtBS ortFileBS
+    parseScancodeBS scancodeFileBS
     ppState
   in do
   describe "YACP" $ do
@@ -93,16 +104,17 @@ runSpec = let
     case _getComponents result of
       Components cs -> do
         it "run is successfull and contains components" $ do
-          V.length cs `shouldBe` 197
+          V.length cs `shouldBe` 354
     case _getRelations result of
       Relations rs -> do
         it "run is successfull and contains relations" $ do
-          V.length rs `shouldBe` 238
+          V.length rs `shouldBe` 393
 
 main :: IO ()
 main = hspec $ do
   identifierSpec
   graphSpec
   ortSpec
+  scancodeSpec
   plantumlSpec
   runSpec

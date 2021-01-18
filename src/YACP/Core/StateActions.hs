@@ -8,7 +8,7 @@ module YACP.Core.StateActions
   ( addRoot, addRoots
   , addComponent, addComponents
   , addRelation, addRelations
-  , addComponentsWithRelations
+  , addFile, addFiles
   -- misc
   , stderrLog
   ) where
@@ -88,7 +88,7 @@ addRelation = let
 addRelations :: Vector Relation -> YACP ()
 addRelations = V.mapM_ addRelation
 
-addComponentsWithRelations :: Vector (Component, [Relation]) -> YACP ()
-addComponentsWithRelations cWRs = do
-  addComponents (V.map (\(c,_) -> c) cWRs)
-  addRelations (V.concatMap (\(_,rs) -> V.fromList rs) cWRs)
+addFile :: File -> YACP ()
+addFile f = MTL.modify (\s@State{_getFiles = Files fs} -> s{_getFiles = Files (f `V.cons` fs)})
+addFiles :: Vector File -> YACP ()
+addFiles = V.mapM_ addFile

@@ -33,6 +33,7 @@ library
       YACP.Core.StateActions
       YACP.Graphviz
       YACP.OrtCollector
+      YACP.ParserHelper
       YACP.Plantuml
       YACP.PPState
       YACP.ScancodeCollector
