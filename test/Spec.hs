@@ -50,6 +50,12 @@ ortSpec = let
           (length ((_or_packages . _of_Analyzer) ortResult')) `shouldBe` 53
       _ -> return ()
 
+scancodeFileBS :: B.ByteString
+scancodeFileBS = B.fromStrict $(embedFile "test/data/bat.scancode.pp.json")
+
+scancodeSpec = undefined
+
+
 graphSpec = let
   yacp = do
     parseOrtBS ortFileBS

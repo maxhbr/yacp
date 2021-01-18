@@ -4,7 +4,7 @@
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE DeriveGeneric #-}
 {-# LANGUAGE LambdaCase #-}
-module YACP.Generators.Graphviz
+module YACP.Graphviz
   ( computeDiagram
   ) where
 

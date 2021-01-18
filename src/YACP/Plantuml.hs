@@ -4,13 +4,13 @@
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE DeriveGeneric #-}
 {-# LANGUAGE LambdaCase #-}
-module YACP.Generators.Plantuml
+module YACP.Plantuml
   ( writePlantuml, writePlantuml'
   , writePlantumlFile
   ) where
 
 import YACP.Core
-import YACP.Processors.ComputeGraph (computeComponentsMapping)
+import YACP.ComputeGraph (computeComponentsMapping)
 
 import System.IO (Handle, hPutStrLn, hClose, stdout)
 import qualified System.IO as IO
@@ -33,13 +33,14 @@ writeComponents h vertToC (lower,upper) roots = let
     in if isRoot c
        then "<<ROOT>>"
        else ""
-  formatPair :: (String, Maybe Component) -> IO ()
-  formatPair (key, Just c) = hPutStrLn h $ unwords ["component"
-                                                   , "\"" ++ show (getIdentifier c) ++ "\\n" ++ showLicense c ++ "\""
-                                                   , tagFromComponent c
-                                                   , "as", key]
-  formatPair _             = return ()
-  in mapM_ formatPair assocs
+  writeComponent :: (String, Maybe Component) -> IO ()
+  writeComponent (key, Just c) = hPutStrLn h $ unwords [ "component"
+                                                       , "\"" ++ ( concatMap ( (++ "\\n") . show) . flattenIdentifierToList . getIdentifier) c ++ showLicense c ++ "\""
+                                                       , tagFromComponent c
+                                                       , "as", key
+                                                       ]
+  writeComponent _             = return ()
+  in mapM_ writeComponent assocs
 
 writeRelations :: Handle -> (Identifier -> Maybe G.Vertex) -> Vector Relation -> IO ()
 writeRelations h iToVert = let

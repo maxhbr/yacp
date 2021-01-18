@@ -26,15 +26,16 @@ source-repository head
 library
   exposed-modules:
       YACP
-      YACP.Collectors.OrtCollector
+      YACP.ComputeGraph
       YACP.Core
       YACP.Core.Model
       YACP.Core.MyPrelude
       YACP.Core.StateActions
-      YACP.Generators.Graphviz
-      YACP.Generators.Plantuml
-      YACP.Processors.ComputeGraph
-      YACP.Processors.PPState
+      YACP.Graphviz
+      YACP.OrtCollector
+      YACP.Plantuml
+      YACP.PPState
+      YACP.ScancodeCollector
   other-modules:
       Paths_yacp
   hs-source-dirs:

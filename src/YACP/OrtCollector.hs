@@ -4,7 +4,7 @@
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE DeriveGeneric #-}
 {-# LANGUAGE LambdaCase #-}
-module YACP.Collectors.OrtCollector
+module YACP.OrtCollector
   (OrtFile (..), OrtResult (..)
   , parseOrtFile, parseOrtBS
   ) where

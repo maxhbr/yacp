@@ -4,7 +4,7 @@
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE DeriveGeneric #-}
 {-# LANGUAGE LambdaCase #-}
-module YACP.Processors.ComputeGraph
+module YACP.ComputeGraph
   ( computeGraph
   , computeComponentsMapping
   ) where
@@ -21,7 +21,7 @@ import qualified Control.Monad.State as MTL
 computeComponentsMapping :: YACP (G.Vertex -> Maybe Component, Identifier -> Maybe G.Vertex, G.Bounds)
 computeComponentsMapping = MTL.gets _getComponents >>= \(Components cs) -> let
   assocs :: [(G.Vertex, Component)]
-  assocs = ((zip [1..])) . V.toList $ cs
+  assocs = (zip [1..]) . V.toList $ cs
   vertToC :: G.Vertex -> Maybe Component
   vertToC v = fmap (\(_,c) -> c) $ List.find (\(i,_) -> i == v) assocs
   iToVert :: Identifier -> Maybe G.Vertex

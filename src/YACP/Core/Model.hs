@@ -9,6 +9,7 @@ module YACP.Core.Model
   -- Identifier
   , Identifier (..)
   , matchesIdentifier
+  , flattenIdentifierToList
   , mkUUID
   , parsePURL
   , Identifiable (..)

@@ -4,12 +4,12 @@
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE DeriveGeneric #-}
 {-# LANGUAGE LambdaCase #-}
-module YACP.Processors.PPState
+module YACP.PPState
   ( ppState
   ) where
 
 import YACP.Core
-import YACP.Processors.ComputeGraph
+import YACP.ComputeGraph
 
 import System.IO (Handle, hPutStrLn, hClose, stdout)
 import qualified Data.List as List
@@ -23,7 +23,7 @@ ppComponents vertToC (lower,upper) = let
   assocs = map (\v -> (v, vertToC v)) [lower..upper]
   formatPair :: (G.Vertex, Maybe Component) -> IO ()
   formatPair (key, Just c) = putStrLn $
-    show key ++ ":\t" ++ show (getIdentifier c)
+    unlines ((show key ++ ":"): ( map ( ('\t':) . show) . flattenIdentifierToList . getIdentifier) c)
   formatPair _             = return ()
   in MTL.liftIO $ mapM_ formatPair assocs
 
