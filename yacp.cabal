@@ -30,11 +30,6 @@ library
       YACP.Generators.Graphviz
       YACP.Generators.Plantuml
       YACP.Model
-      YACP.Model.Component
-      YACP.Model.File
-      YACP.Model.Identifier
-      YACP.Model.Relation
-      YACP.Model.State
       YACP.MyPrelude
       YACP.Processors.ComputeGraph
       YACP.Processors.PPState
