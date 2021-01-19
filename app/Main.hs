@@ -10,7 +10,8 @@ main = let
     parseScancodeFile "test/data/bat.scancode.pp.json"
     parseScancodeFile "test/data/black.scancode.pp.json"
     ppState
-    writePlantumlFile "out.puml"
+    writePlantumlFile "_tmp/plantuml.puml"
+    writeDigraphFile "_tmp/digraph.dot"
   in do
   (_, state) <- runYACP yacp
   return ()

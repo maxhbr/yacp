@@ -8,4 +8,4 @@ extra-deps:
 
 nix:
   enable: true
-  packages: [plantuml]
+  packages: [plantuml, graphviz]

@@ -13,6 +13,7 @@ import qualified Data.Aeson as A
 import qualified Data.Vector as V
 import System.IO.Temp (withSystemTempDirectory)
 import System.Directory (doesFileExist)
+import qualified Data.Graph.Inductive.Graph as G
 
 import YACP
 
@@ -72,9 +73,11 @@ graphSpec = let
     computeGraph
   in do
   describe "Graph" $ do
-    ((graph, vertToC, iToVert, bounds, edgeToRs), result) <- runIO $ runYACP yacp
-    it "bounds should be OK" $ do
-      bounds `shouldBe` (1,197)
+    (graph, result) <- runIO $ runYACP yacp
+    it "num of edges should be OK" $ do
+      length (G.edges graph) `shouldBe` 226
+    it "num of nodes should be OK" $ do
+      length (G.nodes graph) `shouldBe` 197
 
 plantumlSpec = let
   in do

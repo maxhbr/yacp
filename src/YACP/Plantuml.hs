@@ -10,22 +10,21 @@ module YACP.Plantuml
   ) where
 
 import YACP.Core
-import YACP.ComputeGraph (computeComponentsMapping)
+import YACP.ComputeGraph
 
 import System.IO (Handle, hPutStrLn, hClose, stdout)
 import qualified System.IO as IO
-import qualified Data.Graph as G
 import qualified Data.List as List
 import qualified Data.Map as Map
 import qualified Data.Vector as V
 import qualified Control.Monad.State as MTL
 import qualified System.Process as P
+import qualified Data.Graph.Inductive.Graph as G
 
 showVertex = ('C':) . show
 
-writeComponents :: Handle -> (G.Vertex -> Maybe Component) -> G.Bounds -> [Identifier] -> IO ()
-writeComponents h vertToC (lower,upper) roots = let
-  assocs = map (\v -> (showVertex v, vertToC v)) [lower..upper]
+writeComponents :: Handle -> [G.LNode Component] -> [Identifier] -> IO ()
+writeComponents h nodes roots = let
   tagFromComponent :: Component -> String
   tagFromComponent c = let
     isRoot :: Component -> Bool
@@ -33,43 +32,40 @@ writeComponents h vertToC (lower,upper) roots = let
     in if isRoot c
        then "<<ROOT>>"
        else ""
-  writeComponent :: (String, Maybe Component) -> IO ()
-  writeComponent (key, Just c) = hPutStrLn h $ unwords [ "component"
-                                                       , "\"" ++ ( concatMap ( (++ "\\n") . show) . flattenIdentifierToList . getIdentifier) c ++ showLicense c ++ "\""
-                                                       , tagFromComponent c
-                                                       , "as", key
-                                                       ]
-  writeComponent _             = return ()
-  in mapM_ writeComponent assocs
+  writeComponent :: (G.Node, Component) -> IO ()
+  writeComponent (key, c) = hPutStrLn h $
+    unwords [ "component"
+            , "\"" ++ ( concatMap ( (++ "\\n") . show) . flattenIdentifierToList . getIdentifier) c ++ showLicense c ++ "\""
+            , tagFromComponent c
+            , "as", showVertex key
+            ]
+  in mapM_ writeComponent nodes
 
-writeRelations :: Handle -> (Identifier -> Maybe G.Vertex) -> Vector Relation -> IO ()
-writeRelations h iToVert = let
-  writeRelation :: Relation -> IO ()
-  writeRelation (Relation rSrc rType rTarget) = case (iToVert rSrc, iToVert rTarget) of
-    (Just vSrc, Just vTarget) -> let
+writeRelations :: Handle -> [G.LEdge Relation] -> IO ()
+writeRelations h = let
+  writeRelation :: G.LEdge Relation -> IO ()
+  writeRelation (nSrc, nTarget, (Relation _ rType _)) = let
       arrowArgs = case rType of
-        GENERATES -> "-"
-        GENERATED_FROM -> "-"
-        METAFILE_OF -> "-"
+        GENERATES -> ""
+        GENERATED_FROM -> ""
+        METAFILE_OF -> ""
         CONTAINED_BY -> ""
         _ -> ""
       rtlOrLtr = let
-        rtl = [ showVertex vTarget , "<-" ++ arrowArgs ++ "-" , showVertex vSrc ]
-        ltr = [ showVertex vSrc , "-" ++ arrowArgs ++ "->" , showVertex vTarget ]
+        rtl = [ showVertex nTarget , "<-" ++ arrowArgs ++ "-" , showVertex nSrc ]
+        ltr = [ showVertex nSrc , "-" ++ arrowArgs ++ "->" , showVertex nTarget ]
         in case rType of
              GENERATES -> ltr
              GENERATED_FROM -> ltr
              METAFILE_OF -> ltr
              CONTAINED_BY -> ltr
              _ -> rtl
-      in
-      hPutStrLn h $ unwords (rtlOrLtr ++
-                             [ "<<" ++ show rType ++ ">>"
-                             , ( case rType of
-                                   DEPENDENCY_OF -> ""
-                                   _             -> ": " ++ show rType) ])
-    _ -> return ()
-  in V.mapM_ writeRelation
+      in hPutStrLn h $ unwords ( rtlOrLtr ++
+                                 [ "<<" ++ show rType ++ ">>"
+                                 , ( case rType of
+                                       DEPENDENCY_OF -> ""
+                                       _             -> ": " ++ show rType ) ] )
+  in mapM_ writeRelation
 
 
 writePlantuml :: Handle -> YACP ()
@@ -78,7 +74,6 @@ writePlantuml h = MTL.get >>= \(State
                  , _getComponents = (Components cs)
                  , _getRelations = (Relations rs)
                  }) -> let
-  -- writeArrowHeader name style =
   writeHeader = do
     hPutStrLn h "@startuml"
     hPutStrLn h "left to right direction"
@@ -124,11 +119,11 @@ writePlantuml h = MTL.get >>= \(State
   writeFooter = do
     hPutStrLn h "@enduml"
   in do
-  (vertToC, iToVert, bounds) <- computeComponentsMapping
+  graph <- computeGraph
   MTL.liftIO $ do
     writeHeader
-    writeComponents h vertToC bounds roots
-    writeRelations h iToVert rs
+    writeComponents h (G.labNodes graph) roots
+    writeRelations h (G.labEdges graph)
     writeFooter
 
 writePlantuml' :: YACP ()
@@ -136,6 +131,7 @@ writePlantuml' = writePlantuml stdout
 
 writePlantumlFile :: FilePath -> YACP ()
 writePlantumlFile fp = do
+  stderrLog $ "writePlantumlFile " ++ fp
   state <- MTL.get
   MTL.liftIO $ do
     IO.withFile fp IO.WriteMode $
