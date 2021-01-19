@@ -28,6 +28,7 @@ dependencies:
 - spdx # for SDPX.Extra
 - uuid
 - network-uri # URI
+- fgl # Martin Erwig's Functional Graph Library
 # containers
 - vector
 - hashable
@@ -40,7 +41,7 @@ dependencies:
 - aeson
 - aeson-pretty
 # output
-- diagrams-graphviz
+- graphviz
 # misc
 - mtl
 - random

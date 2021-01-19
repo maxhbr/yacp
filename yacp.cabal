@@ -48,9 +48,10 @@ library
     , base >=4.7 && <5
     , bytestring
     , containers
-    , diagrams-graphviz
     , directory
+    , fgl
     , filepath
+    , graphviz
     , hashable
     , mtl
     , network-uri
@@ -79,9 +80,10 @@ executable yacp-exe
     , base >=4.7 && <5
     , bytestring
     , containers
-    , diagrams-graphviz
     , directory
+    , fgl
     , filepath
+    , graphviz
     , hashable
     , mtl
     , network-uri
@@ -113,10 +115,11 @@ test-suite yacp-test
     , base >=4.7 && <5
     , bytestring
     , containers
-    , diagrams-graphviz
     , directory
+    , fgl
     , file-embed
     , filepath
+    , graphviz
     , hashable
     , hspec
     , mtl

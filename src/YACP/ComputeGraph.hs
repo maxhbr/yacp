@@ -15,7 +15,8 @@ import System.IO (Handle, hPutStrLn, hClose, stdout)
 import qualified Data.List as List
 import qualified Data.Map as Map
 import qualified Data.Vector as V
-import qualified Data.Graph as G -- http://hackage.haskell.org/package/containers-0.6.4.1/docs/Data-Graph.html#t:Graph
+-- import qualified Data.Graph as G -- http://hackage.haskell.org/package/containers-0.6.4.1/docs/Data-Graph.html#t:Graph
+import qualified Data.Graph.Inductive.Graph as G
 import qualified Control.Monad.State as MTL
 
 computeComponentsMapping :: YACP (G.Vertex -> Maybe Component, Identifier -> Maybe G.Vertex, G.Bounds)
