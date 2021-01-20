@@ -7,6 +7,7 @@
 module YACP.Graphviz
   ( computeDigraph
   , writeDigraphFile
+  , renderDigraphFile
   ) where
 
 import YACP.Core
@@ -25,7 +26,9 @@ computeDigraph :: YACP (GV.DotGraph G.Node)
 computeDigraph = do
   graph <- computeGraph
   let graphvizParams = GV.nonClusteredParams
-  return (GV.graphToDot graphvizParams graph)
+  let digraph = (GV.graphToDot graphvizParams graph)
+  -- TODO: label and relation styling
+  return digraph
 
 writeDigraphFile :: FilePath -> YACP FilePath
 writeDigraphFile fp = let
@@ -35,4 +38,13 @@ writeDigraphFile fp = let
   digraph <- computeDigraph
   MTL.liftIO $ do
     GV.writeDotFile fp digraph
+    return fp
+
+renderDigraphFile :: FilePath -> YACP FilePath
+renderDigraphFile fp = let
+  format = GV.Svg
+  in do
+  stderrLog $ "writeDigraphFile " ++ fp
+  digraph <- computeDigraph
+  MTL.liftIO $ do
     GV.runGraphviz digraph format (fp ++ "." ++ (show format))

@@ -6,6 +6,7 @@
 {-# LANGUAGE LambdaCase #-}
 module YACP.PPState
   ( ppState
+  , ppFiles
   ) where
 
 import YACP.Core
@@ -32,13 +33,23 @@ ppRelations = let
     putStrLn (show (nSrc,nTarget) ++ ": " ++ show (_getRelationType relation))
   in mapM_ ppEdge
 
+ppFiles :: YACP ()
+ppFiles = let
+  ppFile (f@(File path ids lic)) = putStrLn $
+    path
+    ++ (case showLicense f of
+           "" -> ""
+           l -> "\n\tlicense: " ++ l)
+    ++ (if ids == mempty
+         then ""
+         else "\n\tids: " ++ show ids)
+  in do
+  Files fs <- MTL.gets _getFiles
+  MTL.liftIO $ V.mapM_ ppFile fs
+
+
 ppState :: YACP ()
-ppState = MTL.get >>= \(State
-               { _getRoots = roots
-               , _getComponents = (Components cs)
-               , _getRelations = (Relations rs)
-               }) -> do
+ppState = do
   graph <- computeGraph
   ppComponents (G.labNodes graph)
   ppRelations (G.labEdges graph)
-  -- MTL.liftIO $ G.prettyPrint graph
