@@ -1,0 +1,20 @@
+# GitBook directory and generated docs
+_book/
+*.epub
+*.mobi
+*.pdf
+
+# Build output directory
+dist/
+site/
+
+# Ignore all hidden files/dirs except .gitignore
+.*
+!/.gitignore
+!/.github
+
+# nodeJS
+node_modules/
+
+# Ensure deploy SSH key never get committed
+.travis/deploy-key
