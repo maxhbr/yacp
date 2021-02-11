@@ -1,0 +1,46 @@
+{
+  "images": [
+    {
+      "image": {
+        "layers": [
+          {
+            "packages": [
+              {
+                "name": "image1_layer1_package1",
+                "version": "v_1",
+                "pkg_license": "my_license or MIT"
+              },
+              {
+                "name": "image1_layer1_package2",
+                "version": "image1_layer1_package2-v_2",
+                "pkg_license": "GPL-2.0"
+              }
+            ]
+          },
+          {
+            "packages": [
+              {
+                "name": "image1_layer2_package",
+                "version": "v_3",
+                "pkg_license": "GPL-2.0+"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "image": {
+        "layers": [
+          {
+            "packages": [
+              {
+                "name": "image2_layer_package"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}
