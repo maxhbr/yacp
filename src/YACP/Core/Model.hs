@@ -22,6 +22,7 @@ module YACP.Core.Model
   , Relation (..)
   -- File
   , File (..)
+  , defaultFileRootIdentifier, mkFile
   -- State
   , State (..), Components (..), Relations (..), Files (..)
   , YACP (..), runYACP, runYACP'
@@ -36,6 +37,7 @@ import Data.List.Split (splitOn)
 import Data.Maybe (fromMaybe)
 import Data.UUID (UUID)
 import System.Random (randomIO)
+import Data.String (IsString(..))
 import qualified Control.Monad.State as MTL
 import qualified Data.Aeson as A (Array)
 import qualified Data.Monoid (mconcat)
@@ -66,6 +68,8 @@ data Identifier
          String         -- hash
   | Identifiers [Identifier] -- the best one is the head
   deriving (Eq)
+instance IsString Identifier where
+    fromString = Identifier
 instance Show Identifier where
   show (Identifier str) = str
   show (UuidIdentifier uuid) = show uuid
@@ -409,10 +413,15 @@ instance Show Relation where
 -}
 data File
   = File
-  { _getFilePath :: FilePath
+  { _getFileRootIdentifier :: Identifier
+  , _getFilePath :: FilePath
   , _getFileOtherIdentifier :: Identifier
   , _getFileLicense :: Maybe SPDX.LicenseExpression
   } deriving (Eq, Show)
+defaultFileRootIdentifier :: Identifier
+defaultFileRootIdentifier = PathIdentifier "/"
+mkFile :: FilePath -> File
+mkFile fp = File defaultFileRootIdentifier fp mempty Nothing
 
 instance Identifiable File where
   getIdentifier f = PathIdentifier (_getFilePath f) <> _getFileOtherIdentifier f

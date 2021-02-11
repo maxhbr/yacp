@@ -80,6 +80,7 @@ addRelation = let
   normalizeRelation (r@Relation{_getRelationType = DESCRIBED_BY})     = flipDirection (r{_getRelationType = DESCRIBES})
   normalizeRelation (r@Relation{_getRelationType = CONTAINS})         = flipDirection (r{_getRelationType = CONTAINED_BY})
   normalizeRelation (r@Relation{_getRelationType = HAS_PREREQUISITE}) = flipDirection (r{_getRelationType = PREREQUISITE_FOR})
+  normalizeRelation (r@Relation{_getRelationType = GENERATED_FROM})   = flipDirection (r{_getRelationType = GENERATES})
   normalizeRelation r                                                 = r
 
   in \r -> do

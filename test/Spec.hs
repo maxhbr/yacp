@@ -8,6 +8,7 @@ import Control.Exception (evaluate)
 import System.Exit
 import Data.FileEmbed (embedFile)
 import Data.Either
+import qualified Data.List as List
 import qualified Data.ByteString.Lazy as B
 import qualified Data.Aeson as A
 import qualified Data.Vector as V
@@ -67,17 +68,38 @@ scancodeSpec = let
       isRight scancodeResult `shouldBe` True
 
 
-graphSpec = let
-  yacp = do
-    parseOrtBS ortFileBS
-    computeGraph
-  in do
-  describe "Graph" $ do
+graphSpec = do
+  describe "Graph" $ let
+    yacp = do
+      parseOrtBS ortFileBS
+      computeGraph
+    in do
     (graph, result) <- runIO $ runYACP yacp
     it "num of edges should be OK" $ do
       length (G.edges graph) `shouldBe` 226
     it "num of nodes should be OK" $ do
       length (G.nodes graph) `shouldBe` 197
+  describe "GraphWithDepths" $ let
+    yacp= do
+      addRelation (Relation "a" DEPENDENCY_OF "b")
+      addRelation (Relation "a" DEPENDENCY_OF "c")
+      addRelation (Relation "c" DEPENDENCY_OF "b")
+      addRelation (Relation "b" DEPENDENCY_OF "d")
+      addRelation (Relation "A" DEPENDENCY_OF "B")
+      addRoot "d"
+      addRoot "B"
+      addComponent (Component "-1" Nothing mempty mempty mempty)
+      addComponent (Component ("b" <> "b_2") Nothing mempty mempty mempty)
+      ppGraph
+      computeGraphWithDepths
+    in do
+    (graph, result) <- runIO $ runYACP yacp
+
+    it "hasCorrectDepths" $ let
+      nodes = G.labNodes graph
+      depths = List.sort $ map (\(_,(_,d)) -> d) nodes
+      in depths `shouldBe` [-1,0,0,1,1,2,2]
+
 
 plantumlSpec = let
   in do
@@ -100,7 +122,12 @@ runSpec = let
   yacp = do
     parseOrtBS ortFileBS
     parseScancodeBS scancodeFileBS
-    ppState
+
+    -- ppState
+
+    -- ppGraph
+
+    ppStats
   in do
   describe "YACP" $ do
     (_, result) <- runIO $ runYACP yacp

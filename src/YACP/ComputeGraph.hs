@@ -5,7 +5,7 @@
 {-# LANGUAGE DeriveGeneric #-}
 {-# LANGUAGE LambdaCase #-}
 module YACP.ComputeGraph
-  ( computeGraph
+  ( computeGraph, computeGraphWithDepths
   , ppGraph
   ) where
 
@@ -14,8 +14,10 @@ import YACP.Core
 import System.IO (Handle, hPutStrLn, hClose, stdout)
 import qualified Data.List as List
 import qualified Data.Map as Map
+import Data.Maybe (mapMaybe)
 import qualified Data.Vector as V
 import qualified Data.Graph.Inductive.Graph as G
+import qualified Data.Graph.Inductive.Query.BFS as G
 import qualified Data.Graph.Inductive.PatriciaTree as UG
 import qualified Control.Monad.State as MTL
 
@@ -45,7 +47,24 @@ computeGraph = do
   edges <- computeEdges nodes
   return (G.mkGraph nodes edges)
 
-ppGraph :: YACP()
+computeGraphWithDepths :: YACP (UG.Gr (Component, Int) Relation)
+computeGraphWithDepths = do
+  roots <- MTL.gets _getRoots
+  graph <- computeGraph
+  let nodes = G.labNodes graph
+  let edges = G.labEdges graph
+  let flippedGraph = G.mkGraph nodes (map (\(n1, n2, r) -> (n2, n1, r)) edges) :: (UG.Gr Component Relation)
+  let rootNodes = (map fst . filter (\(_,c) -> any (`matchesIdentifiable` c) roots)) nodes
+  let depths = map (`G.level` flippedGraph) rootNodes
+  let getDepth n = case (map snd . mapMaybe (List.find (\(n',_) -> n == n'))) depths of
+                     [] -> -1
+                     ds -> minimum ds
+  let nodes' = map (\(n, c) -> (n, (c, getDepth n))) nodes
+
+  return $ G.mkGraph nodes' edges
+
+ppGraph :: YACP (UG.Gr Component Relation)
 ppGraph = do
   graph <- computeGraph
-  (MTL.liftIO . G.prettyPrint) graph
+  (MTL.liftIO . G.prettyPrint . G.emap (\(Relation _ r _) -> r) . G.nmap show) graph
+  return graph

@@ -23,20 +23,22 @@ import qualified Data.Graph.Inductive.Graph as G
 
 showVertex = ('C':) . show
 
-writeComponents :: Handle -> [G.LNode Component] -> [Identifier] -> IO ()
+writeComponents :: Handle -> [G.LNode (Component, Int)] -> [Identifier] -> IO ()
 writeComponents h nodes roots = let
-  tagFromComponent :: Component -> String
-  tagFromComponent c = let
+  tagFromComponent :: Component -> Int -> String
+  tagFromComponent c depth = let
     isRoot :: Component -> Bool
     isRoot c' = any (`matchesIdentifiable` c') roots
     in if isRoot c
        then "<<ROOT>>"
-       else ""
-  writeComponent :: (G.Node, Component) -> IO ()
-  writeComponent (key, c) = hPutStrLn h $
+       else case depth of
+              -1 -> ""
+              _  -> "<<DEPTH" ++ show depth ++ ">>"
+  writeComponent :: (G.Node, (Component, Int)) -> IO ()
+  writeComponent (key, (c, depth)) = hPutStrLn h $
     unwords [ "component"
             , "\"" ++ ( concatMap ( (++ "\\n") . show) . flattenIdentifierToList . getIdentifier) c ++ showLicense c ++ "\""
-            , tagFromComponent c
+            , tagFromComponent c depth
             , "as", showVertex key
             ]
   in mapM_ writeComponent nodes
@@ -82,16 +84,30 @@ writePlantuml h = MTL.get >>= \(State
         [ "skinparam component {"
         , "    StereotypeFontSize 20"
         , "    shadowing false"
-        , ""
         , "    StereotypeFontColor #black"
         , "    FontColor #black"
-        , "    BackgroundColor #c0e8b5"
+        , "    BackgroundColor #ffffff"
         , "    BorderColor #073B6F"
         , "}"
         , "skinparam component<<ROOT>> {"
         , "    StereotypeFontSize 0"
         , "    BorderColor #red"
         , "    BackgroundColor #coral"
+        , "}"
+        , "skinparam component<<DEPTH1>> {"
+        , "    BackgroundColor #a9cc9f"
+        , "}"
+        , "skinparam component<<DEPTH2>> {"
+        , "    BackgroundColor #94b38b"
+        , "}"
+        , "skinparam component<<DEPTH3>> {"
+        , "    BackgroundColor #7f9977"
+        , "}"
+        , "skinparam component<<DEPTH4>> {"
+        , "    BackgroundColor #6a8063"
+        , "}"
+        , "skinparam component<<DEPTH5>> {"
+        , "    BackgroundColor #546650"
         , "}"
         , "skinparam Arrow {"
         , "    Color #green"
@@ -119,7 +135,7 @@ writePlantuml h = MTL.get >>= \(State
   writeFooter = do
     hPutStrLn h "@enduml"
   in do
-  graph <- computeGraph
+  graph <- computeGraphWithDepths
   MTL.liftIO $ do
     writeHeader
     writeComponents h (G.labNodes graph) roots

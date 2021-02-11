@@ -7,6 +7,7 @@
 module YACP.PPState
   ( ppState
   , ppFiles
+  , ppStats
   ) where
 
 import YACP.Core
@@ -35,7 +36,7 @@ ppRelations = let
 
 ppFiles :: YACP ()
 ppFiles = let
-  ppFile (f@(File path ids lic)) = putStrLn $
+  ppFile f@(File _ path ids _) = putStrLn $
     path
     ++ (case showLicense f of
            "" -> ""
@@ -47,9 +48,26 @@ ppFiles = let
   Files fs <- MTL.gets _getFiles
   MTL.liftIO $ V.mapM_ ppFile fs
 
+ppStats :: YACP ()
+ppStats = do
+  State
+    { _getRoots = roots
+    , _getComponents = Components components
+    , _getRelations = Relations relations
+    , _getFiles = Files files
+    }  <- MTL.get
+  MTL.liftIO $ do
+    putStrLn $ unwords
+      [ "#roots=" ++ show (length roots)
+      , "#components=" ++ show (V.length components)
+      , "#relations=" ++ show (V.length relations)
+      , "#files=" ++ show (V.length files)
+      ]
 
 ppState :: YACP ()
 ppState = do
   graph <- computeGraph
   ppComponents (G.labNodes graph)
   ppRelations (G.labEdges graph)
+
+  ppStats

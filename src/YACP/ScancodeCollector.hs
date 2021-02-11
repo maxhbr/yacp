@@ -116,7 +116,7 @@ data ScancodeFileEntry
 instance A.FromJSON ScancodeFileEntry where
   parseJSON = A.withObject "ScancodeFileEntry" $ \v -> let
 
-    getHash v' alg = fmap (maybeToList . fmap (Hash (Just alg))) $ v' A..:? (T.pack alg)
+    getHash v' alg = fmap (maybeToList . fmap (Hash (Just alg))) $ v' A..:? T.pack alg
     getPurl v' = fmap (maybeToList . fmap parsePURL) $ v' A..:? "purl"
 
     parsePackage :: Identifier -> A.Object -> A.Parser Component
@@ -141,11 +141,7 @@ instance A.FromJSON ScancodeFileEntry where
                                                         Just lics -> return $ parseLicenses lics
                                                         Nothing -> return Nothing)
 
-      Component <$> pure idFromHashes
-        <*> pure license
-        <*> pure (V.singleton (A.Object v'))
-        <*> pure dependencyRels
-        <*> pure dependencies
+      return $ Component idFromHashes license (V.singleton (A.Object v')) dependencyRels dependencies
 
     in do
     path <- v A..: "path"
@@ -157,13 +153,14 @@ instance A.FromJSON ScancodeFileEntry where
     license <- v A..:? "license_expressions" >>= (\case
                                                      Just lics -> return $ parseLicenses lics
                                                      Nothing -> return Nothing)
-    let file = File path idFromHashes license
+    let file = File defaultFileRootIdentifier path idFromHashes license
     let idFromFile = getIdentifier file
 
     packages <- v A..: "packages"
     components <- mapM (parsePackage idFromFile) packages
-    let relations = map ((Relation idFromFile METAFILE_OF) . getIdentifier) components
+    let relations = map (Relation idFromFile METAFILE_OF . getIdentifier) components
     return (ScancodeFileEntry file components relations)
+
 data ScancodeFile
   = ScancodeFile
   { _scf_files :: [ScancodeFileEntry]
@@ -180,6 +177,7 @@ parseScancodeBS bs =
       cs = V.fromList $ concatMap _scfe_packages scFiles
       rs = V.fromList $ concatMap _scfe_relations scFiles
       in do
+      addRoots (V.map getIdentifier files)
       addFiles files
       addComponents cs
       addRelations rs
