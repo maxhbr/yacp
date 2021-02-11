@@ -25,4 +25,7 @@ import qualified Control.Monad.State as MTL
 import qualified Distribution.SPDX as SPDX
 import qualified Distribution.Parsec as SPDX
 
+data CycloneDXFile
+  = CycloneDXFile
+
 parseCycloneDXBS = undefined
