@@ -31,12 +31,14 @@ library
       YACP.Core.Model
       YACP.Core.MyPrelude
       YACP.Core.StateActions
+      YACP.CycloneDXCollector
       YACP.Graphviz
       YACP.OrtCollector
       YACP.ParserHelper
       YACP.Plantuml
       YACP.PPState
       YACP.ScancodeCollector
+      YACP.SPDXCollector
   other-modules:
       Paths_yacp
   hs-source-dirs:

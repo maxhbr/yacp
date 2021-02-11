@@ -6,7 +6,7 @@
 {-# LANGUAGE LambdaCase #-}
 module YACP.ScancodeCollector
   ( ScancodeFile (..), ScancodeFileEntry (..)
-  , parseScancodeFile, parseScancodeBS
+  , parseScancodeBS
   ) where
 
 import YACP.Core
@@ -182,8 +182,3 @@ parseScancodeBS bs =
       addComponents cs
       addRelations rs
     Left err     -> stderrLog err
-
-parseScancodeFile :: FilePath -> YACP ()
-parseScancodeFile path = do
-  bs <- MTL.liftIO $ B.readFile path
-  parseScancodeBS bs
