@@ -35,3 +35,5 @@ jobs:
       run: stack build
     - name: Run tests
       run: stack test
+    - name: Run main
+      run: stack exec yacp-exe
