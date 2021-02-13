@@ -38,6 +38,15 @@ library
       YACP.Plantuml
       YACP.PPState
       YACP.ScancodeCollector
+      YACP.SPDX.Annotations
+      YACP.SPDX.Common
+      YACP.SPDX.DocumentCreationInformation
+      YACP.SPDX.FileInformation
+      YACP.SPDX.OtherLicensingInformationDetected
+      YACP.SPDX.PackageInformation
+      YACP.SPDX.RelationshipsbetweenSPDXElements
+      YACP.SPDX.SnippetInformation
+      YACP.SPDX.SPDX
       YACP.SPDXCollector
   other-modules:
       Paths_yacp

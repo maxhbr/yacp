@@ -34,12 +34,13 @@ import System.Console.Pretty (color, Color(Green))
 import System.IO (hPutStrLn, stderr)
 import Data.List (nub)
 import Data.List.Split (splitOn)
-import Data.Maybe (fromMaybe)
+import Data.Maybe (fromMaybe, maybeToList)
 import Data.UUID (UUID)
 import System.Random (randomIO)
 import Data.String (IsString(..))
 import qualified Control.Monad.State as MTL
-import qualified Data.Aeson as A (Array)
+import qualified Data.Aeson as A
+import qualified Data.Aeson.Types as A
 import qualified Data.Monoid (mconcat)
 import qualified Data.Vector as V
 import qualified Distribution.SPDX as SPDX
@@ -85,9 +86,9 @@ instance Show Identifier where
           { URI.uriScheme = ("pkg" `fromMaybe` pScheme) ++ ":"
           , URI.uriAuthority = Nothing
           , URI.uriPath = FP.joinPath
-            ( ([] `fromMaybe` (fmap (:[]) pType))
-              ++ ([] `fromMaybe` (fmap (:[]) pNamespace))
-              ++ [pName ++ (""`fromMaybe` (fmap ('@':) pVersion))]
+            ( maybeToList pType
+              ++ maybeToList pNamespace
+              ++ [pName ++ (maybe "" ('@':) pVersion)]
             )
           , URI.uriQuery = "" `fromMaybe` pQualifier
           , URI.uriFragment = "" `fromMaybe` (fmap ('#':) pSubpath)
@@ -392,7 +393,8 @@ data RelationType
     -- An APPLICATION foo.exe has prerequisite or dependency on bar.dll
   | OTHER
     -- Is to be used for a relationship which has not been defined in the formal SPDX specification. A description of the relationship should be included in the Relationship comments field.
-  deriving (Eq, Show)
+  deriving (Eq, Show, Generic)
+instance A.FromJSON RelationType
 
 data Relation
   = Relation

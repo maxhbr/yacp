@@ -6,6 +6,8 @@
 module YACP
   ( module X
   , parseScancodeFile
+  , parseSPDXFile
+  , parseCycloneDXFile
   ) where
 
 import YACP.Core as X
@@ -18,7 +20,10 @@ import YACP.PPState as X
 import YACP.Plantuml as X
 import YACP.Graphviz as X
 
-parseBSFromFile :: (ByteString -> YACP a) -> FilePath -> YACP a
+import qualified Data.ByteString.Lazy as B
+import qualified Control.Monad.State as MTL
+
+parseBSFromFile :: (B.ByteString -> YACP a) -> FilePath -> YACP a
 parseBSFromFile fun path = do
   bs <- MTL.liftIO $ B.readFile path
   fun bs

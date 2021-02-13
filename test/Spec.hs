@@ -48,9 +48,28 @@ ortSpec = let
       Right ortResult' -> do
         it "expected number of project" $ do
           (length ((_or_projects . _of_Analyzer) ortResult')) `shouldBe` 3
-        it "expected number of packagges" $ do
+        it "expected number of packages" $ do
           (length ((_or_packages . _of_Analyzer) ortResult')) `shouldBe` 53
       _ -> return ()
+
+spdxFileBS :: B.ByteString
+spdxFileBS = B.fromStrict $(embedFile "data/spdx-spdx-spec/examples/SPDXJSONExample-v2.2.spdx.json")
+
+spdxSpec = let
+    spdxResult = A.eitherDecode spdxFileBS :: Either String SPDXDocument
+    potentialError = case spdxResult of
+      Right _ -> Nothing
+      Left err -> Just err
+  in do
+  describe "SpdxCollector" $ do
+    it "parsing should not contain error" $ do
+      potentialError `shouldBe` Nothing
+    it "parsing is successfull" $ do
+      isRight spdxResult `shouldBe` True
+    case spdxResult of
+      Right spdxResult' -> do
+        runIO (print spdxResult')
+      Left err -> runIO (print err)
 
 scancodeFileBS :: B.ByteString
 scancodeFileBS = B.fromStrict $(embedFile "test/data/bat.scancode.pp.json")
@@ -122,6 +141,7 @@ runSpec = let
   yacp = do
     parseOrtBS ortFileBS
     parseScancodeBS scancodeFileBS
+    parseSPDXBS spdxFileBS
 
     -- ppState
 
@@ -145,6 +165,7 @@ main = hspec $ do
   identifierSpec
   graphSpec
   ortSpec
+  spdxSpec
   scancodeSpec
   plantumlSpec
   runSpec
