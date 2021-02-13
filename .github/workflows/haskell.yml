@@ -33,7 +33,13 @@ jobs:
 
     - name: Build
       run: stack build
+    - name: Install plantuml
+      run: sudo apt-get install -y plantuml
     - name: Run tests
       run: stack test
     - name: Run main
       run: stack exec yacp-exe
+    - uses: actions/upload-artifact@v2
+        with:
+          name: exec-yacp-exe-result
+          path: _tmp
