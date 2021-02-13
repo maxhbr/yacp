@@ -22,7 +22,7 @@ jobs:
     - name: Cache
       uses: actions/cache@v1
       env:
-        cache-name: cache-cabal
+        cache-name: cache-stack
       with:
         path: ~/.stack-work
         key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/*.stack-work') }}-${{ hashFiles('**/package.yaml') }}
