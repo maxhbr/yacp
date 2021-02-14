@@ -154,11 +154,11 @@ runSpec = let
     case _getComponents result of
       Components cs -> do
         it "run is successfull and contains components" $ do
-          V.length cs `shouldBe` 354
+          V.length cs `shouldBe` 366
     case _getRelations result of
       Relations rs -> do
         it "run is successfull and contains relations" $ do
-          V.length rs `shouldBe` 393
+          V.length rs `shouldBe` 402
 
 main :: IO ()
 main = hspec $ do
