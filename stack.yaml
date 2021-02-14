@@ -7,4 +7,5 @@ extra-deps:
 - spdx-1.0.0.2@sha256:7dfac9b454ff2da0abb7560f0ffbe00ae442dd5cb76e8be469f77e6988a70fed,2008
 
 nix:
+  enable: true
   packages: [plantuml]

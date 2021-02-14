@@ -13,6 +13,13 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+
+    - uses: cachix/install-nix-action@v12
+    - uses: cachix/cachix-action@v8
+      with:
+        name: maxhbr
+        signingKey: '${{ secrets.CACHIX_SIGNING_KEY }}'
+
     - uses: actions/setup-haskell@v1
       with:
         ghc-version: '8.10.3'
@@ -39,9 +46,9 @@ jobs:
         sudo apt-get install -y plantuml
     - name: Run tests
       run: stack test
-    # - name: Run main
-    #   run: stack exec yacp-exe
-    # - uses: actions/upload-artifact@v2
-    #   with:
-    #     name: exec-yacp-exe-result
-    #     path: _tmp
+    - name: Run main
+      run: stack exec yacp-exe
+    - uses: actions/upload-artifact@v2
+      with:
+        name: exec-yacp-exe-result
+        path: _tmp
