@@ -46,8 +46,10 @@ jobs:
         sudo apt-get install -y plantuml
     - name: Run tests
       run: stack test
-    - name: Run main
-      run: stack exec yacp-exe
+    - name: Run yacp-exe
+      run: |
+        mkdir _tmp
+        stack exec yacp-exe
     - uses: actions/upload-artifact@v2
       with:
         name: exec-yacp-exe-result
