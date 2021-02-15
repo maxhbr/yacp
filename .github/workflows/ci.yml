@@ -54,3 +54,7 @@ jobs:
       with:
         name: exec-yacp-exe-result
         path: _tmp
+    - uses: actions/upload-artifact@v2
+      with:
+        name: exec-yacp-exe-result
+        path: _tmp/plantuml.svg
