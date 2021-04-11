@@ -19,6 +19,7 @@ import YACP.ComputeGraph as X
 import YACP.PPState as X
 import YACP.Plantuml as X
 import YACP.Graphviz as X
+import YACP.HHC as X
 
 import qualified Data.ByteString.Lazy as B
 import qualified Control.Monad.State as MTL

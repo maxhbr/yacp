@@ -20,8 +20,7 @@ packages:
     hackage: spdx-1.0.0.2@sha256:7dfac9b454ff2da0abb7560f0ffbe00ae442dd5cb76e8be469f77e6988a70fed,2008
 snapshots:
 - completed:
-    size: 533053
-    url: https://raw.githubusercontent.com/commercialhaskell/stackage-snapshots/master/lts/16/29.yaml
-    sha256: eb8ccc595466edefb9a679f19aec2e283d12f4c6ea5eefded1ebe8bd157d77d1
-  original:
-    url: https://raw.githubusercontent.com/commercialhaskell/stackage-snapshots/master/lts/16/29.yaml
+    size: 567037
+    url: https://raw.githubusercontent.com/commercialhaskell/stackage-snapshots/master/lts/17/9.yaml
+    sha256: d7d8d5106e53d1669964bd8bd2b0f88a5ad192d772f5376384b76738fd992311
+  original: lts-17.9
