@@ -61,7 +61,7 @@ fpToResources isFile = let
                              then HHC_Resources (Map.empty) [f]
                              else HHC_Resources (Map.singleton f mempty) []
     fpToResources' (f : fs) = HHC_Resources (Map.singleton f (fpToResources' fs)) []
-  in fpToResources' . map dropTrailingPathSeparator . splitPath
+  in fpToResources' . splitPath --  . map dropTrailingPathSeparator -- TODO
 fpsToResources :: [FilePath] -> HHC_Resources
 fpsToResources = mconcat . map (fpToResources True)
 
