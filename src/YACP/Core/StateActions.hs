@@ -9,6 +9,7 @@ module YACP.Core.StateActions
   , addComponent, addComponents
   , addRelation, addRelations
   , addFile, addFiles
+  , getForIdentifier
   -- misc
   , stderrLog
   ) where
@@ -93,3 +94,18 @@ addFile :: File -> YACP ()
 addFile f = MTL.modify (\s@State{_getFiles = Files fs} -> s{_getFiles = Files (f `V.cons` fs)})
 addFiles :: Vector File -> YACP ()
 addFiles = V.mapM_ addFile
+
+getForIdentifier :: Identifier -> YACP State
+getForIdentifier identifier = MTL.get >>= \(State
+                 { _getRoots = roots
+                 , _getComponents = Components cs
+                 , _getRelations = Relations rs
+                 , _getFiles = Files fs
+                 }) -> let
+                   rootsMatchingIdentifier = filter (identifier `matchesIdentifier`) roots
+                   componentsMatchigIdentifier = Components (V.filter (identifier `matchesIdentifiable`) cs)
+                   relationsContainingIdentifier = Relations (V.filter (identifier `relationContainsIdentifier`) rs)
+                   filesMatchingIdentifier = Files (V.filter (identifier `matchesIdentifiable`) fs)
+                   in return ( State rootsMatchingIdentifier componentsMatchigIdentifier relationsContainingIdentifier filesMatchingIdentifier
+                             )
+  

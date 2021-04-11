@@ -20,6 +20,7 @@ module YACP.Core.Model
   -- Relations
   , RelationType (..)
   , Relation (..)
+  , relationContainsIdentifier
   -- File
   , File (..)
   , defaultFileRootIdentifier, mkFile
@@ -404,6 +405,9 @@ data Relation
   } deriving (Eq)
 instance Show Relation where
   show (Relation rSrc rType rTarget) = "{{{" ++ show rSrc ++ " >" ++ show rType ++ "> " ++ show rTarget ++ "}}}"
+
+relationContainsIdentifier :: Identifiable a => a -> Relation -> Bool
+relationContainsIdentifier a (Relation src _ target) = any (`matchesIdentifiable` a) [src, target]
 
 {-|
   direction should always be from the smaller to the bigger in which it is included

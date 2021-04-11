@@ -16,6 +16,7 @@ import qualified System.IO as IO
 import qualified Data.List as List
 import qualified Data.Aeson as A
 import qualified Data.Aeson.Types as A
+import qualified Data.Aeson.Encode.Pretty as A
 import qualified Data.Map as Map
 import qualified Data.Text as T
 import qualified Data.Vector as V
@@ -25,6 +26,7 @@ import qualified System.Process as P
 import qualified Data.Graph.Inductive.Graph as G
 import qualified Data.ByteString.Lazy as B
 import Data.UUID (UUID)
+import System.Random (randomIO)
 
 data HHC_Metadata
   = HHC_Metadata
@@ -123,18 +125,12 @@ instance A.ToJSON HHC_ExternalAttribution where
                        , "licenseText" A..= licenseText
                        ] ++ (fromIdentifier identifier))
 
-data HHC_ResourcesToAttributions
-  = HHC_ResourcesToAttributions (Map.Map FilePath [UUID])
-   deriving (Show, Generic)
-instance A.ToJSON HHC_ResourcesToAttributions where
-    toJSON (HHC_ResourcesToAttributions map) = A.toJSON map
-
 data HHC_FrequentLicense
   = HHC_FrequentLicense
   { shortName :: T.Text
   , fullName :: T.Text
   , defaultText :: T.Text
-  } deriving (Show, Generic)
+  } deriving (Eq, Show, Generic)
 instance A.ToJSON HHC_FrequentLicense where
   toJSON (HHC_FrequentLicense sn fn dt) = A.object [ "shortName" A..= sn
                                                    , "fullName" A..= fn
@@ -143,10 +139,10 @@ instance A.ToJSON HHC_FrequentLicense where
 
 data HHC
   = HHC
-  { metadata :: HHC_Metadata
+  { metadata :: Maybe HHC_Metadata
   , resources :: HHC_Resources
   , externalAttributions :: Map.Map UUID HHC_ExternalAttribution
-  , resourcesToAttributions :: HHC_ResourcesToAttributions 
+  , resourcesToAttributions :: Map.Map FilePath [UUID]
   , frequentLicenses :: [HHC_FrequentLicense]
   } deriving (Show, Generic)
 instance A.ToJSON HHC where
@@ -156,33 +152,91 @@ instance A.ToJSON HHC where
         externalAttributions
         resourcesToAttributions
         frequentLicenses) = A.object
-          [  "metadata" A..= metadata
+          [ "metadata" A..= metadata
           , "resources" A..= resources
           , "externalAttributions" A..= externalAttributions
           , "resourcesToAttributions" A..= resourcesToAttributions
           , "frequentLicenses" A..= frequentLicenses
           ]
+instance Semigroup HHC where
+    hhc1 <> hhc2 = let
+          mergedResources = resources hhc1 <> resources hhc2 
+          mergedExternalAttributions = Map.union (externalAttributions hhc1) (externalAttributions hhc2)
+          mergedResourcesToAttributions = Map.unionWith (++) (resourcesToAttributions hhc1) (resourcesToAttributions hhc2) -- TODO: nub
+          mergedFrequentLicenses = List.nub (frequentLicenses hhc1 ++ frequentLicenses hhc2)
+        in HHC (metadata hhc1) 
+               mergedResources
+               mergedExternalAttributions
+               mergedResourcesToAttributions
+               mergedFrequentLicenses
+instance Monoid HHC where
+    mempty = HHC Nothing mempty Map.empty Map.empty []
 
 -- ############################################################################
 
-filesToResources :: Files -> HHC_Resources
-filesToResources (Files files) = mconcat . V.toList $ V.map (fpToResources True . _getFilePath) files
+getHhcFromFiles :: YACP HHC
+getHhcFromFiles = let
+    mkAtt :: (Identifiable a, Licenseable a, Show a) => String -> a -> YACP (UUID, HHC_ExternalAttribution)
+    mkAtt source a = do
+        uuid <- MTL.liftIO randomIO
+        return ( uuid
+               , HHC_ExternalAttribution (HHC_ExternalAttribution_Source source 100)
+                                             100
+                                             (tShow a)
+                                             uuid
+                                             (getIdentifier a)
+                                             ""
+                                             (T.pack $ showLicense a)
+               )
+    mkAttHhc :: (Identifiable a, Licenseable a, Show a) => FilePath -> String -> a -> YACP HHC 
+    mkAttHhc fp source a = do
+        (uuid, att) <- mkAtt source a
+        return $ HHC Nothing mempty (Map.singleton uuid att) (Map.singleton fp [uuid]) []
+
+    getHhcFromFile :: File -> YACP HHC
+    getHhcFromFile = \(f@File {_getFileRootIdentifier = fri
+                            , _getFilePath = fp
+                            , _getFileOtherIdentifier = foi
+                            , _getFileLicense = fl
+                            }) -> do
+        _ <- getForIdentifier foi
+        fHhc <- mkAttHhc fp "YACP-File" f
+        return ((HHC Nothing (fpToResources True fp) Map.empty Map.empty []) <> 
+          (case fl of 
+              Just expr -> fHhc
+                --   let
+                --   att = HHC_ExternalAttribution (HHC_ExternalAttribution_Source "YACP-File" 100)
+                --                                 100
+                --                                 (tShow foi)
+                --                                 uuid
+                --                                 (UuidIdentifier uuid)
+                --                                 ""
+                --                                 (T.pack $ showLicense f)
+                --   in HHC Nothing mempty (Map.singleton uuid att) (Map.singleton fp [uuid]) []
+              Nothing -> mempty
+              ))
+  in MTL.get >>= \(State
+         { _getFiles = Files files
+         , _getComponents = Components cs
+         }) -> do
+  hhcs <- mapM getHhcFromFile (V.toList files)
+  return (mconcat hhcs) 
 
 computeHHC :: YACP HHC  
 computeHHC = MTL.get >>= \(State
                  { _getRoots = roots
-                 , _getComponents = (Components cs)
-                 , _getRelations = (Relations rs)
+                 , _getComponents = Components cs
+                 , _getRelations = Relations rs
                  , _getFiles = files
                  }) -> do
-    let resourcesFromFiles = filesToResources files
-    return (HHC 
-      (HHC_Metadata "projectId" "fileCreationDate")
-      resourcesFromFiles
-      Map.empty
-      (HHC_ResourcesToAttributions Map.empty)
-      []
-      )
+    let hhcMetadata = (HHC (Just $ HHC_Metadata "projectId" "fileCreationDate")
+                           mempty
+                           Map.empty
+                           Map.empty
+                           [])
+    hhcFromFiles <- getHhcFromFiles
+
+    return (hhcMetadata <> hhcFromFiles)
 
 writeHHC :: Handle -> YACP ()
 writeHHC h = MTL.get >>= \(State
@@ -192,7 +246,7 @@ writeHHC h = MTL.get >>= \(State
                  }) -> do
   hhc <- computeHHC
   MTL.liftIO $ do
-    B.hPutStr h (A.encode hhc)
+    B.hPutStr h (A.encodePretty hhc)
 
 writeHHC' :: YACP ()
 writeHHC' = writeHHC stdout
