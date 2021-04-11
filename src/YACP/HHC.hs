@@ -84,7 +84,7 @@ data HHC_ExternalAttribution
   , originId :: UUID
   , identifier :: Identifier
   , copyright :: T.Text
-  , licenseText :: T.Text
+  , licenseName :: T.Text
   } deriving (Show, Generic)
 instance A.ToJSON HHC_ExternalAttribution where
     toJSON (HHC_ExternalAttribution 
@@ -94,7 +94,7 @@ instance A.ToJSON HHC_ExternalAttribution where
         originId
         identifier
         copyright
-        licenseText) = let
+        licenseName) = let
             fromIdentifier = \case
                 Identifier str -> [ "packageName" A..= str ]
                 UuidIdentifier uuid -> [ "packageName" A..= uuid ]
@@ -122,7 +122,7 @@ instance A.ToJSON HHC_ExternalAttribution where
                        , "comment" A..= comment
                        , "originId" A..= originId
                        , "copyright" A..= copyright
-                       , "licenseText" A..= licenseText
+                       , "licenseName" A..= licenseName
                        ] ++ (fromIdentifier identifier))
 
 data HHC_FrequentLicense
@@ -191,7 +191,19 @@ getHhcFromFiles = let
     mkAttHhc :: (Identifiable a, Licenseable a, Show a) => FilePath -> String -> a -> YACP HHC 
     mkAttHhc fp source a = do
         (uuid, att) <- mkAtt source a
-        return $ HHC Nothing mempty (Map.singleton uuid att) (Map.singleton fp [uuid]) []
+        let absFp = if isAbsolute fp
+                    then fp
+                    else "/" ++ fp
+        return $ HHC Nothing mempty (Map.singleton uuid att) (Map.singleton absFp [uuid]) []
+    mkAttsFromState :: FilePath -> Identifier -> YACP HHC
+    mkAttsFromState fp foi =
+        do
+            state@(State { _getComponents = Components cs
+                         , _getRelations = Relations rs
+                         }) <- getForIdentifier foi
+
+            hhcsFromCs <- mapM (mkAttHhc fp "YACP-Component") (V.toList cs)
+            return (mconcat hhcsFromCs)
 
     getHhcFromFile :: File -> YACP HHC
     getHhcFromFile = \(f@File {_getFileRootIdentifier = fri
@@ -199,22 +211,14 @@ getHhcFromFiles = let
                             , _getFileOtherIdentifier = foi
                             , _getFileLicense = fl
                             }) -> do
-        _ <- getForIdentifier foi
+        fStateHhc <- mkAttsFromState fp foi 
         fHhc <- mkAttHhc fp "YACP-File" f
-        return ((HHC Nothing (fpToResources True fp) Map.empty Map.empty []) <> 
-          (case fl of 
-              Just expr -> fHhc
-                --   let
-                --   att = HHC_ExternalAttribution (HHC_ExternalAttribution_Source "YACP-File" 100)
-                --                                 100
-                --                                 (tShow foi)
-                --                                 uuid
-                --                                 (UuidIdentifier uuid)
-                --                                 ""
-                --                                 (T.pack $ showLicense f)
-                --   in HHC Nothing mempty (Map.singleton uuid att) (Map.singleton fp [uuid]) []
-              Nothing -> mempty
-              ))
+        return (mconcat [(HHC Nothing (fpToResources True fp) Map.empty Map.empty [])
+                       , case fl of 
+                            Just expr -> fHhc
+                            Nothing -> mempty
+                       , fStateHhc
+                        ])
   in MTL.get >>= \(State
          { _getFiles = Files files
          , _getComponents = Components cs
