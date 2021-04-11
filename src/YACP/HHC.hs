@@ -20,6 +20,7 @@ import qualified Data.Aeson.Encode.Pretty as A
 import qualified Data.Map as Map
 import qualified Data.Text as T
 import qualified Data.Vector as V
+import qualified Data.Maybe as Maybe
 import qualified Data.HashMap.Strict as HM
 import qualified Control.Monad.State as MTL
 import qualified System.Process as P
@@ -106,10 +107,10 @@ instance A.ToJSON HHC_ExternalAttribution where
                      nameP
                      versionP
                      qualifiersP
-                     subpathP -> [ "packageName" A..= nameP
-                                 , "packageNamespace" A..= namespaceP
-                                 , "packageType" A..= typeP
-                                 , "packageVersion" A..= versionP
+                     subpathP -> Maybe.catMaybes [ Just $ "packageName" A..= nameP
+                                 , fmap ("packageNamespace" A..=) namespaceP
+                                 , fmap ("packageType" A..=) typeP
+                                 , fmap ("packageVersion" A..=) versionP
                                 --  , "packagePURLAppendix" A..= ('?' : qualifiersP ++ ('#' : subpathP)) -- TODO
                      ]
                 Hash typeH
@@ -230,10 +231,11 @@ getHhcFromFiles = let
         fCsHhc <- mkHhcFromComponents fp foi 
         fRsHhc <- mkHhcFromRelations fp foi 
         return (mconcat [(HHC Nothing (fpToResources True fp) Map.empty Map.empty [])
-                       , case fl of 
+                        , case fl of 
                             Just expr -> fHhc
                             Nothing -> mempty
-                       , fCsHhc
+                        , fCsHhc
+                        , fRsHhc
                         ])
   in MTL.get >>= \(State
          { _getFiles = Files files
