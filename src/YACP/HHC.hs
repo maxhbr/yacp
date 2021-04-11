@@ -195,15 +195,30 @@ getHhcFromFiles = let
                     then fp
                     else "/" ++ fp
         return $ HHC Nothing mempty (Map.singleton uuid att) (Map.singleton absFp [uuid]) []
-    mkAttsFromState :: FilePath -> Identifier -> YACP HHC
-    mkAttsFromState fp foi =
+    mkHhcFromComponents :: FilePath -> Identifier -> YACP HHC
+    mkHhcFromComponents fp foi = do
+        Components csForIdentifier <- getCsForIdentifier foi
+        hhcsFromCs <- mapM (mkAttHhc fp "YACP-Component") (V.toList csForIdentifier)
+        return (mconcat hhcsFromCs)
+    mkHhcFromRelations :: FilePath -> Identifier -> YACP HHC
+    mkHhcFromRelations fp foi = let
+        mkHhcForOtherIdentifier :: String -> Identifier -> YACP HHC
+        mkHhcForOtherIdentifier source otherIdentifier = do
+          Components csForIdentifier <- getCsForIdentifier otherIdentifier
+          hhcsFromCs <- mapM (mkAttHhc fp source) (V.toList csForIdentifier)
+          return (mconcat hhcsFromCs)
+        in 
         do
-            state@(State { _getComponents = Components cs
-                         , _getRelations = Relations rs
-                         }) <- getForIdentifier foi
+            Relations rsForIdentifier <- getRsForIdentifier foi
+            hhcsFromRs <- mapM (\r@(Relation src t target) ->
+                if foi `matchesIdentifiable` src
+                then if foi `matchesIdentifiable` target
+                     then return mempty
+                     else mkHhcForOtherIdentifier ("YACP-" ++ show t) target
+                else mkHhcForOtherIdentifier ("YACP-" ++ show t ++ "-inv") src
+                ) (V.toList rsForIdentifier)
+            return (mconcat hhcsFromRs)
 
-            hhcsFromCs <- mapM (mkAttHhc fp "YACP-Component") (V.toList cs)
-            return (mconcat hhcsFromCs)
 
     getHhcFromFile :: File -> YACP HHC
     getHhcFromFile = \(f@File {_getFileRootIdentifier = fri
@@ -211,13 +226,14 @@ getHhcFromFiles = let
                             , _getFileOtherIdentifier = foi
                             , _getFileLicense = fl
                             }) -> do
-        fStateHhc <- mkAttsFromState fp foi 
         fHhc <- mkAttHhc fp "YACP-File" f
+        fCsHhc <- mkHhcFromComponents fp foi 
+        fRsHhc <- mkHhcFromRelations fp foi 
         return (mconcat [(HHC Nothing (fpToResources True fp) Map.empty Map.empty [])
                        , case fl of 
                             Just expr -> fHhc
                             Nothing -> mempty
-                       , fStateHhc
+                       , fCsHhc
                         ])
   in MTL.get >>= \(State
          { _getFiles = Files files
