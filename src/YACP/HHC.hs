@@ -7,6 +7,14 @@
 module YACP.HHC
   ( writeHHC
   , writeHHC',writeHHCFile
+  -- for testing
+  , HHC_Metadata (..)
+  , HHC_Resources (..), countFiles
+  , fpToResources, fpsToResources
+  , HHC_FrequentLicense (..)
+  , HHC_ExternalAttribution (..), HHC_ExternalAttribution_Source (..)
+  , HHC (..)
+  , computeHHC, writeHHCStats
   ) where
 
 import YACP.Core
@@ -44,29 +52,34 @@ data HHC_Resources
   = HHC_Resources 
   { _dirs :: (Map.Map FilePath HHC_Resources) 
   , _files :: [FilePath]
-  } deriving (Show, Generic)
+  } deriving (Show, Generic, Eq)
 instance A.ToJSON HHC_Resources where
     toJSON (HHC_Resources dirs files) = let
         pairsFromDirs = 
             map (\(fragment, resources) -> ((T.pack fragment) A..= (A.toJSON resources)))
             (Map.toList dirs) 
         pairsFromFiles = map (\fragment ->  (T.pack fragment) A..= (1::Int)) files
-      in A.object (pairsFromDirs ++ pairsFromFiles)
+      in A.object (pairsFromFiles ++ pairsFromDirs)
 instance Semigroup HHC_Resources where
-  (HHC_Resources dirs1 files1) <> (HHC_Resources dirs2 files2) =
-      HHC_Resources (Map.unionWith (<>) dirs1 dirs2) (List.nub (files1 ++ files2))
+  (HHC_Resources dirs1 files1) <> (HHC_Resources dirs2 files2) = let
+    dirs = (Map.unionWith (<>) dirs1 dirs2)
+    dirNames = Map.keys dirs
+    files = (filter (\f -> not $ f `elem` dirNames) $ List.nub (files1 ++ files2))
+    in HHC_Resources dirs files
 instance Monoid HHC_Resources where
   mempty = HHC_Resources (Map.empty) []
-fpToResources :: Bool -> FilePath -> HHC_Resources
-fpToResources isFile = let
+fpToResources :: FileType -> FilePath -> HHC_Resources
+fpToResources filetype = let
     fpToResources' :: [FilePath] -> HHC_Resources
-    fpToResources' (f : []) = if isFile 
+    fpToResources' (f : []) = if filetype == FileType_File
                              then HHC_Resources (Map.empty) [f]
                              else HHC_Resources (Map.singleton f mempty) []
     fpToResources' (f : fs) = HHC_Resources (Map.singleton f (fpToResources' fs)) []
-  in fpToResources' . splitPath --  . map dropTrailingPathSeparator -- TODO
+  in fpToResources' . (map dropTrailingPathSeparator) . splitPath
 fpsToResources :: [FilePath] -> HHC_Resources
-fpsToResources = mconcat . map (fpToResources True)
+fpsToResources = mconcat . map (fpToResources FileType_File)
+countFiles :: HHC_Resources -> Int
+countFiles (HHC_Resources dirs files) = length files + ((sum . map countFiles . Map.elems) dirs)
 
 data HHC_ExternalAttribution_Source
   = HHC_ExternalAttribution_Source String Double
@@ -224,13 +237,14 @@ getHhcFromFiles = let
     getHhcFromFile :: File -> YACP HHC
     getHhcFromFile = \(f@File {_getFileRootIdentifier = fri
                             , _getFilePath = fp
+                            , _getFileType = ft
                             , _getFileOtherIdentifier = foi
                             , _getFileLicense = fl
                             }) -> do
         fHhc <- mkAttHhc fp "YACP-File" f
         fCsHhc <- mkHhcFromComponents fp foi 
         fRsHhc <- mkHhcFromRelations fp foi 
-        return (mconcat [(HHC Nothing (fpToResources True fp) Map.empty Map.empty [])
+        return (mconcat [(HHC Nothing (fpToResources FileType_File fp) Map.empty Map.empty [])
                         , case fl of 
                             Just expr -> fHhc
                             Nothing -> mempty
@@ -260,6 +274,19 @@ computeHHC = MTL.get >>= \(State
 
     return (hhcMetadata <> hhcFromFiles)
 
+writeHHCStats :: HHC -> IO ()
+writeHHCStats (HHC { metadata = m
+                   , resources = rs
+                   , externalAttributions = eas
+                   , resourcesToAttributions = rtas
+                   , frequentLicenses = fls
+                   }) = do
+                     putStrLn ("metadata: " ++ show m)
+                     putStrLn ("resources: #files=" ++ (show (countFiles rs)))
+                     putStrLn ("externalAttributions: #=" ++ (show (length eas)))
+                     putStrLn ("resourcesToAttributions: #=" ++ (show (length rtas)))
+                     putStrLn ("frequentLicenses: #=" ++ (show (length fls)))
+
 writeHHC :: Handle -> YACP ()
 writeHHC h = MTL.get >>= \(State
                  { _getRoots = roots
@@ -268,6 +295,7 @@ writeHHC h = MTL.get >>= \(State
                  }) -> do
   hhc <- computeHHC
   MTL.liftIO $ do
+    writeHHCStats hhc
     B.hPutStr h (A.encodePretty hhc)
 
 writeHHC' :: YACP ()

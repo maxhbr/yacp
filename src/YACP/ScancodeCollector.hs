@@ -4,6 +4,7 @@
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE DeriveGeneric #-}
 {-# LANGUAGE LambdaCase #-}
+{-# LANGUAGE ScopedTypeVariables #-}
 module YACP.ScancodeCollector
   ( ScancodeFile (..), ScancodeFileEntry (..)
   , parseScancodeBS
@@ -145,6 +146,9 @@ instance A.FromJSON ScancodeFileEntry where
 
     in do
     path <- v A..: "path"
+    filetype <- (\case 
+      ("file" :: String) -> FileType_File
+      _ -> FileType_Folder) <$> v A..: "type"
     sha1 <- v `getHash` "sha1"
     md5 <- v `getHash` "md5"
     sha256 <- v `getHash` "sha256"
@@ -153,7 +157,7 @@ instance A.FromJSON ScancodeFileEntry where
     license <- v A..:? "license_expressions" >>= (\case
                                                      Just lics -> return $ parseLicenses lics
                                                      Nothing -> return Nothing)
-    let file = File defaultFileRootIdentifier path idFromHashes license
+    let file = File defaultFileRootIdentifier path filetype idFromHashes license
     let idFromFile = getIdentifier file
 
     packages <- v A..: "packages"

@@ -36,7 +36,7 @@ ppRelations = let
 
 ppFiles :: YACP ()
 ppFiles = let
-  ppFile f@(File _ path ids _) = putStrLn $
+  ppFile f@(File _ path _ ids _) = putStrLn $
     path
     ++ (case showLicense f of
            "" -> ""

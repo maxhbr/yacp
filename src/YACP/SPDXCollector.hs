@@ -34,6 +34,7 @@ convertSPDXFile spdxFile = let
   in File
   undefined -- _getFileRootIdentifier :: Identifier
   undefined -- _getFilePath :: FilePath
+  undefined
   undefined -- _getFileOtherIdentifier :: Identifier
   undefined -- _getFileLicense :: Maybe SPDX.LicenseExpression
 

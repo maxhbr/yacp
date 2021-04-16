@@ -22,7 +22,7 @@ module YACP.Core.Model
   , Relation (..)
   , relationContainsIdentifier
   -- File
-  , File (..)
+  , File (..), FileType (..)
   , defaultFileRootIdentifier, mkFile
   -- State
   , State (..), Components (..), Relations (..), Files (..)
@@ -417,17 +417,23 @@ relationContainsIdentifier a (Relation src _ target) = any (`matchesIdentifiable
 {-|
  class for File
 -}
+data FileType = FileType_File | FileType_Folder
+  deriving (Eq)
+instance Show FileType where
+  show FileType_File = "file"
+  show FileType_Folder = "folder"
 data File
   = File
   { _getFileRootIdentifier :: Identifier
   , _getFilePath :: FilePath
+  , _getFileType :: FileType
   , _getFileOtherIdentifier :: Identifier
   , _getFileLicense :: Maybe SPDX.LicenseExpression
   } deriving (Eq, Show)
 defaultFileRootIdentifier :: Identifier
 defaultFileRootIdentifier = PathIdentifier "/"
 mkFile :: FilePath -> File
-mkFile fp = File defaultFileRootIdentifier fp mempty Nothing
+mkFile fp = File defaultFileRootIdentifier fp FileType_File mempty Nothing
 
 instance Identifiable File where
   getIdentifier f = PathIdentifier (_getFilePath f) <> _getFileOtherIdentifier f
