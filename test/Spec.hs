@@ -9,6 +9,7 @@ import System.Exit
 import Data.FileEmbed (embedFile)
 import Data.Either
 import Data.List (tails, isPrefixOf)
+import qualified Data.Set as Set
 import qualified Data.List as List
 import qualified Data.ByteString.Lazy as B
 import qualified Data.ByteString.Char8 as C
@@ -150,10 +151,10 @@ hhcSpec = let
                         (Map.singleton "root" (HHC_Resources
                                                  (Map.singleton "subfolder" (HHC_Resources
                                                                         Map.empty
-                                                                        [ "file1"
-                                                                        , "file2"]))
-                                                 ["file3"]))
-                        [])
+                                                                        (Set.fromList [ "file1"
+                                                                                      , "file2"])))
+                                                 (Set.singleton "file3")))
+                        (Set.empty))
     serializedResources = B.concat
       [ "{"
       ,   "\"root\":{"
@@ -165,7 +166,7 @@ hhcSpec = let
       ,   "}"
       , "}"
       ]
-    otherResources = HHC_Resources (Map.singleton "root" (HHC_Resources (Map.singleton "other" (HHC_Resources Map.empty ["file4"])) [])) ["file5"]
+    otherResources = HHC_Resources (Map.singleton "root" (HHC_Resources (Map.singleton "other" (HHC_Resources Map.empty (Set.singleton "file4"))) Set.empty)) (Set.singleton "file5")
     allResourcesSerialized = "{\"root\":{\"other\":{\"file4\":1},\"subfolder\":{\"file1\":1,\"file2\":1},\"file3\":1},\"file5\":1}"
     yacp = do
       parseOrtBS ortFileBS
@@ -173,6 +174,17 @@ hhcSpec = let
       computeHHC
   in do
   describe "HHCGenerator" $ do
+    it "testFolderAndFileMerging" $ do
+      (fpToResources FileType_File "path/to/file") <> (fpToResources FileType_Folder "path/other/dir") `shouldBe` 
+        HHC_Resources ( Map.singleton "path" 
+                                      (HHC_Resources ( Map.fromList [("to", HHC_Resources Map.empty (Set.singleton "file"))
+                                                                    ,("other", HHC_Resources (Map.singleton "dir" mempty) Set.empty)]
+                                                     )
+                                                     Set.empty)
+                      )
+                      Set.empty
+      countFiles ((fpToResources FileType_File "path/to/file") <> (fpToResources FileType_Folder "path/other/dir")) `shouldBe` 1
+
     it "testFileListParsing" $ do
       fpsToResources exmpResourses `shouldBe` parsedResources
     it "testFileListSerialization" $ do

@@ -26,6 +26,7 @@ import qualified Data.Aeson as A
 import qualified Data.Aeson.Types as A
 import qualified Data.Aeson.Encode.Pretty as A
 import qualified Data.Map as Map
+import qualified Data.Set as Set
 import qualified Data.Text as T
 import qualified Data.Vector as V
 import qualified Data.Maybe as Maybe
@@ -51,30 +52,30 @@ instance A.ToJSON HHC_Metadata where
 data HHC_Resources
   = HHC_Resources 
   { _dirs :: (Map.Map FilePath HHC_Resources) 
-  , _files :: [FilePath]
+  , _files :: Set.Set FilePath
   } deriving (Show, Generic, Eq)
 instance A.ToJSON HHC_Resources where
     toJSON (HHC_Resources dirs files) = let
         pairsFromDirs = 
             map (\(fragment, resources) -> ((T.pack fragment) A..= (A.toJSON resources)))
             (Map.toList dirs) 
-        pairsFromFiles = map (\fragment ->  (T.pack fragment) A..= (1::Int)) files
+        pairsFromFiles = map (\fragment ->  (T.pack fragment) A..= (1::Int)) $ Set.toList files
       in A.object (pairsFromFiles ++ pairsFromDirs)
 instance Semigroup HHC_Resources where
   (HHC_Resources dirs1 files1) <> (HHC_Resources dirs2 files2) = let
     dirs = (Map.unionWith (<>) dirs1 dirs2)
     dirNames = Map.keys dirs
-    files = (filter (\f -> not $ f `elem` dirNames) $ List.nub (files1 ++ files2))
+    files = Set.filter (\f -> not $ f `elem` dirNames) $ files1 <> files2
     in HHC_Resources dirs files
 instance Monoid HHC_Resources where
-  mempty = HHC_Resources (Map.empty) []
+  mempty = HHC_Resources Map.empty Set.empty
 fpToResources :: FileType -> FilePath -> HHC_Resources
 fpToResources filetype = let
     fpToResources' :: [FilePath] -> HHC_Resources
     fpToResources' (f : []) = if filetype == FileType_File
-                             then HHC_Resources (Map.empty) [f]
-                             else HHC_Resources (Map.singleton f mempty) []
-    fpToResources' (f : fs) = HHC_Resources (Map.singleton f (fpToResources' fs)) []
+                             then HHC_Resources (Map.empty) (Set.singleton f)
+                             else HHC_Resources (Map.singleton f mempty) Set.empty
+    fpToResources' (f : fs) = HHC_Resources (Map.singleton f (fpToResources' fs)) Set.empty
   in fpToResources' . (map dropTrailingPathSeparator) . splitPath
 fpsToResources :: [FilePath] -> HHC_Resources
 fpsToResources = mconcat . map (fpToResources FileType_File)
