@@ -22,6 +22,7 @@ import System.Directory (doesFileExist)
 import qualified Data.Graph.Inductive.Graph as G
 
 import YACP
+import YACP.HHC.HHC
 
 identifierSpec = let
       purl1 = "pkg:pypi/Jinja2@2.11.2"
@@ -173,7 +174,7 @@ hhcSpec = let
       parseScancodeBS scancodeFileBS
       computeHHC
   in do
-  describe "HHCGenerator" $ do
+  describe "HHC Model" $ do
     it "testFolderAndFileMerging" $ do
       (fpToResources FileType_File "path/to/file") <> (fpToResources FileType_Folder "path/other/dir") `shouldBe` 
         HHC_Resources ( Map.singleton "path" 
@@ -192,6 +193,7 @@ hhcSpec = let
     it "testMergeAndFileListSerialization" $ do
       A.encode (parsedResources <> otherResources) `shouldBe` allResourcesSerialized
 
+  describe "HHCWriter" $ do
     (hhc@(HHC _ rs _ _ _), _) <- runIO $ runYACP yacp
     it "numOfFilesShouldMatch" $ do
       countFiles (resources hhc) `shouldBe` 747

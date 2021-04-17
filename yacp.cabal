@@ -33,7 +33,8 @@ library
       YACP.Core.StateActions
       YACP.CycloneDXCollector
       YACP.Graphviz
-      YACP.HHC
+      YACP.HHC.HHC
+      YACP.HHCWriter
       YACP.OrtCollector
       YACP.ParserHelper
       YACP.Plantuml

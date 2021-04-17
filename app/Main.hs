@@ -10,7 +10,7 @@ main = let
     parseScancodeFile "test/data/bat.scancode.pp.json"
     parseScancodeFile "test/data/black.scancode.pp.json"
     parseScancodeFile "test/data/example.scancode.pp.json"
-    -- parseSPDXFile "data/spdx-spdx-spec/examples/SPDXJSONExample-v2.2.spdx.json"
+    parseSPDXFile "data/spdx-spdx-spec/examples/SPDXJSONExample-v2.2.spdx.json"
     ppState
     writePlantumlFile "_tmp/plantuml.puml"
     writeDigraphFile "_tmp/digraph.dot"
