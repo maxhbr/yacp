@@ -12,6 +12,7 @@ module YACP.HHCWriter
 
 import YACP.Core
 import YACP.HHC.HHC
+import YACP.ComputeGraph
 
 import System.IO (Handle, hPutStrLn, hClose, stdout)
 import qualified System.IO as IO
@@ -20,6 +21,7 @@ import qualified Data.Aeson as A
 import qualified Data.Aeson.Types as A
 import qualified Data.Aeson.Encode.Pretty as A
 import qualified Data.Map as Map
+import qualified Data.Graph.Inductive.Graph as G
 import qualified Data.Set as Set
 import qualified Data.Text as T
 import qualified Data.Vector as V
@@ -82,12 +84,11 @@ getHhcFromFiles = let
     getHhcFromFile = \(f@File {_getFileRootIdentifier = fri
                             , _getFilePath = fp
                             , _getFileType = ft
-                            , _getFileOtherIdentifier = foi
                             , _getFileLicense = fl
                             }) -> do
         fHhc <- mkAttHhc fp "YACP-File" f
-        fCsHhc <- mkHhcFromComponents fp foi 
-        fRsHhc <- mkHhcFromRelations fp foi 
+        fCsHhc <- mkHhcFromComponents fp (getIdentifier f)
+        fRsHhc <- mkHhcFromRelations fp (getIdentifier f) 
         return (mconcat [(HHC Nothing (fpToResources FileType_File fp) Map.empty Map.empty [])
                         , case fl of 
                             Just expr -> fHhc
@@ -114,6 +115,7 @@ computeHHC = MTL.get >>= \(State
                            Map.empty
                            Map.empty
                            [])
+    graph <- computeGraphWithDepths
     hhcFromFiles <- getHhcFromFiles
 
     return (hhcMetadata <> hhcFromFiles)

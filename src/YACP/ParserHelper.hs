@@ -20,13 +20,14 @@ import qualified Control.Monad.State as MTL
 import qualified Distribution.SPDX as SPDX
 import qualified Distribution.Parsec as SPDX
 
+parseLicense :: String -> SPDX.LicenseExpression
+parseLicense str = (`SPDX.ELicense` Nothing) $ case SPDX.eitherParsec str of
+  Right lic -> SPDX.ELicenseId lic
+  _         -> SPDX.ELicenseRef $ SPDX.mkLicenseRef' Nothing str
+
 parseLicenses :: [String] -> Maybe SPDX.LicenseExpression
 parseLicenses [] = Nothing
 parseLicenses ls = let
-  parseLicense :: String -> SPDX.LicenseExpression
-  parseLicense str = (`SPDX.ELicense` Nothing) $ case SPDX.eitherParsec str of
-    Right lic -> SPDX.ELicenseId lic
-    _         -> SPDX.ELicenseRef $ SPDX.mkLicenseRef' Nothing str
 
   parseLicenses' :: [String] -> SPDX.LicenseExpression
   parseLicenses' [l] = parseLicense l
