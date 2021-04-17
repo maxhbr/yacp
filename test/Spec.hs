@@ -143,67 +143,68 @@ plantumlSpec = let
 
     return ()
 
-hhcSpec = let
-    exmpResourses = [ "root" </> "subfolder" </> "file1"
-                    ,  "root" </> "subfolder" </> "file2"
-                    , "root" </> "file3"
-                    ]
-    parsedResources = (HHC_Resources
-                        (Map.singleton "root" (HHC_Resources
-                                                 (Map.singleton "subfolder" (HHC_Resources
-                                                                        Map.empty
-                                                                        (Set.fromList [ "file1"
-                                                                                      , "file2"])))
-                                                 (Set.singleton "file3")))
-                        (Set.empty))
-    serializedResources = B.concat
-      [ "{"
-      ,   "\"root\":{"
-      ,     "\"subfolder\":{"
-      ,       "\"file1\":1,"
-      ,       "\"file2\":1"
-      ,     "},"
-      ,     "\"file3\":1"
-      ,   "}"
-      , "}"
-      ]
-    otherResources = HHC_Resources (Map.singleton "root" (HHC_Resources (Map.singleton "other" (HHC_Resources Map.empty (Set.singleton "file4"))) Set.empty)) (Set.singleton "file5")
-    allResourcesSerialized = "{\"root\":{\"other\":{\"file4\":1},\"subfolder\":{\"file1\":1,\"file2\":1},\"file3\":1},\"file5\":1}"
-    yacp = do
-      parseOrtBS ortFileBS
-      parseScancodeBS scancodeFileBS
-      computeHHC
-  in do
-  describe "HHC Model" $ do
-    it "testFolderAndFileMerging" $ do
-      (fpToResources FileType_File "path/to/file") <> (fpToResources FileType_Folder "path/other/dir") `shouldBe` 
-        HHC_Resources ( Map.singleton "path" 
-                                      (HHC_Resources ( Map.fromList [("to", HHC_Resources Map.empty (Set.singleton "file"))
-                                                                    ,("other", HHC_Resources (Map.singleton "dir" mempty) Set.empty)]
-                                                     )
-                                                     Set.empty)
-                      )
-                      Set.empty
-      countFiles ((fpToResources FileType_File "path/to/file") <> (fpToResources FileType_Folder "path/other/dir")) `shouldBe` 1
+hhcSpec =do
+  describe "HHC Model" $ let 
+      exmpResourses = [ "root" </> "subfolder" </> "file1"
+                      ,  "root" </> "subfolder" </> "file2"
+                      , "root" </> "file3"
+                      ]
+      parsedResources = (HHC_Resources
+                          (Map.singleton "root" (HHC_Resources
+                                                  (Map.singleton "subfolder" (HHC_Resources
+                                                                          Map.empty
+                                                                          (Set.fromList [ "file1"
+                                                                                        , "file2"])))
+                                                  (Set.singleton "file3")))
+                          (Set.empty))
+      serializedResources = B.concat
+        [ "{"
+        ,   "\"root\":{"
+        ,     "\"subfolder\":{"
+        ,       "\"file1\":1,"
+        ,       "\"file2\":1"
+        ,     "},"
+        ,     "\"file3\":1"
+        ,   "}"
+        , "}"
+        ]
+      otherResources = HHC_Resources (Map.singleton "root" (HHC_Resources (Map.singleton "other" (HHC_Resources Map.empty (Set.singleton "file4"))) Set.empty)) (Set.singleton "file5")
+      allResourcesSerialized = "{\"root\":{\"other\":{\"file4\":1},\"subfolder\":{\"file1\":1,\"file2\":1},\"file3\":1},\"file5\":1}"
+    in do
+      it "testFolderAndFileMerging" $ do
+        (fpToResources FileType_File "path/to/file") <> (fpToResources FileType_Folder "path/other/dir") `shouldBe` 
+          HHC_Resources ( Map.singleton "path" 
+                                        (HHC_Resources ( Map.fromList [("to", HHC_Resources Map.empty (Set.singleton "file"))
+                                                                      ,("other", HHC_Resources (Map.singleton "dir" mempty) Set.empty)]
+                                                      )
+                                                      Set.empty)
+                        )
+                        Set.empty
+        countFiles ((fpToResources FileType_File "path/to/file") <> (fpToResources FileType_Folder "path/other/dir")) `shouldBe` 1
 
-    it "testFileListParsing" $ do
-      fpsToResources exmpResourses `shouldBe` parsedResources
-    it "testFileListSerialization" $ do
-      A.encode parsedResources `shouldBe` serializedResources
-    it "testMergeAndFileListSerialization" $ do
-      A.encode (parsedResources <> otherResources) `shouldBe` allResourcesSerialized
+      it "testFileListParsing" $ do
+        fpsToResources exmpResourses `shouldBe` parsedResources
+      it "testFileListSerialization" $ do
+        A.encode parsedResources `shouldBe` serializedResources
+      it "testMergeAndFileListSerialization" $ do
+        A.encode (parsedResources <> otherResources) `shouldBe` allResourcesSerialized
 
-  describe "HHCWriter" $ do
-    (hhc@(HHC _ rs _ _ _), _) <- runIO $ runYACP yacp
-    it "numOfFilesShouldMatch" $ do
-      countFiles (resources hhc) `shouldBe` 747
-    it "numOfFilesShouldMatch" $ do
-      countFiles rs `shouldBe` (length . filter (isPrefixOf ": 1") . tails . C.unpack . B.toStrict . A.encodePretty $ rs)
-    it "numOfExternalAttributionsShouldMatch" $ do
-      length (externalAttributions hhc) `shouldBe` 197
-    it "numOfResourcesToAttributionsShouldMatch" $ do
-      length (resourcesToAttributions hhc) `shouldBe` 41
-    runIO (writeHHCStats hhc)
+  describe "HHCWriter" $ let
+      yacp = do
+        parseOrtBS ortFileBS
+        parseScancodeBS scancodeFileBS
+        computeHHC
+    in do
+      (hhc@(HHC _ rs _ _ _), _) <- runIO $ runYACP yacp
+      it "numOfFilesShouldMatch" $ do
+        countFiles (resources hhc) `shouldBe` 503
+      it "numOfFilesShouldMatch" $ do
+        countFiles rs `shouldBe` (length . filter (isPrefixOf ": 1") . tails . C.unpack . B.toStrict . A.encodePretty $ rs)
+      it "numOfExternalAttributionsShouldMatch" $ do
+        length (externalAttributions hhc) `shouldBe` 197
+      it "numOfResourcesToAttributionsShouldMatch" $ do
+        length (resourcesToAttributions hhc) `shouldBe` 41
+      runIO (writeHHCStats hhc)
 
 
 runSpec = let
