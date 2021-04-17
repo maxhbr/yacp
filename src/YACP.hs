@@ -25,6 +25,7 @@ import YACP.HHCWriter as X
 
 import System.Environment (getArgs)
 import System.IO
+import System.Exit
 import System.Directory (createDirectoryIfMissing)
 import qualified Data.ByteString.Lazy as B
 import qualified Control.Monad.State as MTL
@@ -52,23 +53,26 @@ argsToYACP' [outDir] = do
   writePlantumlFile (outDir </> "plantuml.puml")
   writeDigraphFile (outDir </> "digraph.dot")
   writeHHCFile (outDir </> "hhc.json")
-argsToYACP' ("-sc": (f: oArgs)) = (parseScancodeFile f) >> (argsToYACP' oArgs)
-argsToYACP' ("-ort": (f: oArgs)) = (parseOrtFile f) >> (argsToYACP' oArgs)
-argsToYACP' ("-spdx": (f: oArgs)) = (parseSPDXFile f) >> (argsToYACP' oArgs)
-argsToYACP' (unknown: oArgs) = undefined -- TODO
+argsToYACP' ("--sc": (f: oArgs)) = (parseScancodeFile f) >> (argsToYACP' oArgs)
+argsToYACP' ("--ort": (f: oArgs)) = (parseOrtFile f) >> (argsToYACP' oArgs)
+argsToYACP' ("--spdx": (f: oArgs)) = (parseSPDXFile f) >> (argsToYACP' oArgs)
+argsToYACP' (unknown: oArgs) = MTL.liftIO $ do
+  putStrLn ("failed to parse: " ++ unknown)
+  exitFailure
+
 
 argsToYACP :: IO ()
 argsToYACP = let
     help :: IO()
     help = putStrLn $ unlines
       [ "yacp - yet another compliance platform"
-      , "$0 [-h|--help] <- show this msg"
       , "$0 $inputs $outputFolder"
       , "  where $inputs are multiples of"
-      , "    -sc $scancode_file <- parse scancode file"
-      , "    -ort $scancode_file <- parse ort file"
-      , "    -spdx $scancode_file <- parse spdx json file"
+      , "    --sc $scancode_file <- parse scancode file"
+      , "    --ort $ort_file <- parse ort file"
+      , "    --spdx $spdx_file <- parse spdx json file"
       , "  and $outputFolder <- dir to write files to"
+      , "$0 [-h|--help] <- show this msg"
       ]
   in getArgs >>= \case
     [] -> help
