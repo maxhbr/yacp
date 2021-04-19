@@ -19,6 +19,7 @@ import YACP.SPDXCollector as X
 import YACP.CycloneDXCollector as X
 import YACP.ComputeGraph as X
 import YACP.PPState as X
+import YACP.StateWriter as X
 import YACP.Plantuml as X
 import YACP.Graphviz as X
 import YACP.HHCWriter as X
@@ -50,6 +51,7 @@ argsToYACP' [] = return ()
 argsToYACP' [outDir] = do
   ppState
   MTL.liftIO $ createDirectoryIfMissing True outDir
+  writeStateFile (outDir </> "_state.json")
   writePlantumlFile (outDir </> "plantuml.puml")
   writeDigraphFile (outDir </> "digraph.dot")
   writeHHCFile (outDir </> "hhc.json")

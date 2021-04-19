@@ -44,8 +44,11 @@ import qualified Data.Aeson as A
 import qualified Data.Aeson.Types as A
 import qualified Data.Monoid (mconcat)
 import qualified Data.Vector as V
+import qualified Data.Text as T
 import qualified Distribution.SPDX as SPDX
 import qualified Distribution.SPDX.Extra as SPDX
+import qualified Distribution.SPDX.License as SPDX
+import qualified Distribution.Parsec as SPDX
 import qualified Network.URI as URI
 import qualified System.FilePath as FP
 
@@ -69,7 +72,9 @@ data Identifier
   | Hash (Maybe String) -- type
          String         -- hash
   | Identifiers [Identifier] -- the best one is the head
-  deriving (Eq)
+  deriving (Eq, Generic)
+instance A.ToJSON Identifier
+instance A.FromJSON Identifier
 instance IsString Identifier where
     fromString = Identifier
 instance Show Identifier where
@@ -187,6 +192,15 @@ instance Identifiable Identifier where
   addIdentifier = (<>)
 
 --------------------------------------------------------------------------------
+instance A.ToJSON SPDX.LicenseExpression where
+  toJSON expression = A.String $ tShow expression
+instance A.FromJSON SPDX.LicenseExpression where
+  parseJSON = A.withText "SPDX.LicenseExpression" $ \t -> 
+    case SPDX.eitherParsec (T.unpack t) of 
+      Right exp -> return $ (`SPDX.ELicense` Nothing) exp
+      Left err -> fail err
+
+--------------------------------------------------------------------------------
 {-|
   Class for Component
 -}
@@ -197,7 +211,9 @@ data Component
   , _getComponentPayload :: A.Array
   , _getComponentRelations :: [Relation]
   , _getComponentSubComponents :: [Component]
-  } deriving (Eq)
+  } deriving (Eq, Generic)
+instance A.ToJSON Component
+instance A.FromJSON Component
 instance Show Component where
   show (Component{_getComponentIdentifier = cId, _getComponentLicense = l}) = "{{{" ++  show cId ++ "@" ++ show l ++ "}}}"
 instance Identifiable Component where
@@ -395,6 +411,7 @@ data RelationType
   | OTHER
     -- Is to be used for a relationship which has not been defined in the formal SPDX specification. A description of the relationship should be included in the Relationship comments field.
   deriving (Eq, Show, Generic)
+instance A.ToJSON RelationType
 instance A.FromJSON RelationType
 
 data Relation
@@ -402,7 +419,9 @@ data Relation
   { _getRelationSrc :: Identifier
   , _getRelationType :: RelationType
   , _getRelationTarget :: Identifier
-  } deriving (Eq)
+  } deriving (Eq, Generic)
+instance A.ToJSON Relation
+instance A.FromJSON Relation
 instance Show Relation where
   show (Relation rSrc rType rTarget) = "{{{" ++ show rSrc ++ " >" ++ show rType ++ "> " ++ show rTarget ++ "}}}"
 
@@ -418,7 +437,9 @@ relationContainsIdentifier a (Relation src _ target) = any (`matchesIdentifiable
  class for File
 -}
 data FileType = FileType_File | FileType_Folder
-  deriving (Eq)
+  deriving (Eq, Generic)
+instance A.ToJSON FileType
+instance A.FromJSON FileType
 instance Show FileType where
   show FileType_File = "file"
   show FileType_Folder = "folder"
@@ -429,7 +450,9 @@ data File
   , _getFileType :: FileType
   , _getFileOtherIdentifier :: Identifier
   , _getFileLicense :: Maybe SPDX.LicenseExpression
-  } deriving (Eq, Show)
+  } deriving (Eq, Show, Generic)
+instance A.ToJSON File
+instance A.FromJSON File
 defaultFileRootIdentifier :: Identifier
 defaultFileRootIdentifier = PathIdentifier "/"
 mkFile :: FilePath -> File
@@ -446,15 +469,21 @@ instance Licenseable File where
 
 data Components
   = Components (Vector Component)
-  deriving (Eq, Show)
+  deriving (Eq, Show, Generic)
+instance A.ToJSON Components
+instance A.FromJSON Components
 
 data Relations
   = Relations (Vector Relation)
-  deriving (Eq, Show)
+  deriving (Eq, Show, Generic)
+instance A.ToJSON Relations
+instance A.FromJSON Relations
 
 data Files
   = Files (Vector File)
-  deriving (Eq, Show)
+  deriving (Eq, Show, Generic)
+instance A.ToJSON Files
+instance A.FromJSON Files
 
 data State
   = State
@@ -462,7 +491,9 @@ data State
   , _getComponents :: Components
   , _getRelations :: Relations
   , _getFiles :: Files
-  } deriving (Eq, Show)
+  } deriving (Eq, Show, Generic)
+instance A.ToJSON State
+instance A.FromJSON State
 
 type YACP a
   = MTL.StateT State IO a

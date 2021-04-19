@@ -50,6 +50,7 @@ library
       YACP.SPDX.SnippetInformation
       YACP.SPDX.SPDX
       YACP.SPDXCollector
+      YACP.StateWriter
   other-modules:
       Paths_yacp
   hs-source-dirs:
