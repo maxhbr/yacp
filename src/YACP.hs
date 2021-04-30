@@ -10,6 +10,7 @@ module YACP
   , parseScancodeFile
   , parseSPDXFile
   , parseCycloneDXFile
+  , parseHHCFile
   ) where
 
 import YACP.Core as X
@@ -23,6 +24,7 @@ import YACP.StateWriter as X
 import YACP.Plantuml as X
 import YACP.Graphviz as X
 import YACP.HHCWriter as X
+import YACP.HHCCollector as X
 
 import System.Environment (getArgs)
 import System.IO
@@ -44,6 +46,9 @@ parseSPDXFile = parseBSFromFile parseSPDXBS
 
 parseCycloneDXFile :: FilePath -> YACP ()
 parseCycloneDXFile = parseBSFromFile parseCycloneDXBS
+
+parseHHCFile :: FilePath -> YACP ()
+parseHHCFile = parseBSFromFile parseHHCBS
 
 
 argsToYACP' :: [String] -> YACP ()

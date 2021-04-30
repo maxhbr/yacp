@@ -34,6 +34,7 @@ library
       YACP.CycloneDXCollector
       YACP.Graphviz
       YACP.HHC.HHC
+      YACP.HHCCollector
       YACP.HHCWriter
       YACP.OrtCollector
       YACP.ParserHelper

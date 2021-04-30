@@ -42,11 +42,11 @@ getHhcFromFiles = let
         return ( uuid
                , HHC_ExternalAttribution (HHC_ExternalAttribution_Source source 100)
                                              100
-                                             (tShow a)
-                                             uuid
+                                             (Just $ tShow a)
+                                             (Just uuid)
                                              (getIdentifier a)
-                                             ""
-                                             (T.pack $ showLicense a)
+                                             Nothing
+                                             (Just . T.pack $ showLicense a)
                )
     mkAttHhc :: (Identifiable a, Licenseable a, Show a) => FilePath -> String -> a -> YACP HHC 
     mkAttHhc fp source a = do

@@ -143,6 +143,9 @@ plantumlSpec = let
 
     return ()
 
+hhcFileBS :: B.ByteString
+hhcFileBS = B.fromStrict $(embedFile "test/data/zephyr-bundle.json.hhc.json")
+
 hhcSpec =do
   describe "HHC Model" $ let 
       exmpResourses = [ "root" </> "subfolder" </> "file1"
@@ -186,8 +189,19 @@ hhcSpec =do
         fpsToResources exmpResourses `shouldBe` parsedResources
       it "testFileListSerialization" $ do
         A.encode parsedResources `shouldBe` serializedResources
+      it "testFileListDeSerialization" $ do
+        A.decode serializedResources `shouldBe` (Just parsedResources)
       it "testMergeAndFileListSerialization" $ do
         A.encode (parsedResources <> otherResources) `shouldBe` allResourcesSerialized
+
+  describe "HHC Model deserialization" $ let
+      result = (A.eitherDecode hhcFileBS :: Either String HHC)
+      potentialError = case result of
+        Right _ -> Nothing
+        Left err -> Just err
+    in do
+      it "parsing should be successful"$ do
+        potentialError `shouldBe` Nothing
 
   describe "HHCWriter" $ let
       yacp = do
@@ -205,6 +219,25 @@ hhcSpec =do
       it "numOfResourcesToAttributionsShouldMatch" $ do
         length (resourcesToAttributions hhc) `shouldBe` 41
       runIO (writeHHCStats hhc)
+
+  describe "HHC Collector" $ let
+    yacp = do
+      parseHHCBS hhcFileBS
+    in do
+      (_, result) <- runIO $ runYACP yacp
+      case _getComponents result of
+        Components cs -> do
+          it "run is successfull and contains components" $ do
+            V.length cs `shouldBe` 0
+      case _getRelations result of
+        Relations rs -> do
+          it "run is successfull and contains relations" $ do
+            V.length rs `shouldBe` 0
+      case _getFiles result of
+        Files fs -> do
+          it "run is successfull and contains files" $ do
+            V.length fs `shouldBe` 54143
+      
 
 
 runSpec = let

@@ -44,10 +44,14 @@ instance A.ToJSON HHC_Metadata where
     [ "projectId" A..= (T.pack pid)
     , "fileCreationDate" A..= (T.pack fcd)
     ]
+instance A.FromJSON HHC_Metadata where
+  parseJSON = A.withObject "HHC_FrequentLicense" $ \v -> do
+    HHC_Metadata <$> v A..: "projectId"
+                 <*> v A..: "fileCreationDate"
 
 data HHC_Resources
   = HHC_Resources 
-  { _dirs :: (Map.Map FilePath HHC_Resources) 
+  { _dirs :: Map.Map FilePath HHC_Resources
   , _files :: Set.Set FilePath
   } deriving (Show, Generic, Eq)
 instance A.ToJSON HHC_Resources where
@@ -57,6 +61,23 @@ instance A.ToJSON HHC_Resources where
             (Map.toList dirs) 
         pairsFromFiles = map (\fragment ->  (T.pack fragment) A..= (1::Int)) $ Set.toList files
       in A.object (pairsFromFiles ++ pairsFromDirs)
+instance A.FromJSON HHC_Resources where
+  parseJSON = A.withObject "HHC_Resources" $ \v -> let
+      isObject :: A.Value -> Bool
+      isObject (A.Object _) = True
+      isObject _            = False
+      getFiles :: [(FilePath, A.Value)] -> Set.Set FilePath
+      getFiles = Set.fromList . map (\(fp,_) -> fp) . (filter (\(_,v') -> not (isObject v')))
+      getDirs :: [(FilePath, A.Value)] -> A.Parser (Map.Map FilePath HHC_Resources)
+      getDirs list = do
+        parsedList <- mapM (\(fp,o) -> do 
+          rs <- A.parseJSON o :: A.Parser HHC_Resources
+          return (fp,rs)) (filter (\(_,v') -> isObject v') list)
+        return (Map.fromList parsedList)
+    in do
+      let vList = map (\(t,v') -> (T.unpack t, v')) $ HM.toList v
+      dirs <- getDirs vList
+      return (HHC_Resources dirs (getFiles vList))
 instance Semigroup HHC_Resources where
   (HHC_Resources dirs1 files1) <> (HHC_Resources dirs2 files2) = let
     dirs = (Map.unionWith (<>) dirs1 dirs2)
@@ -86,16 +107,20 @@ instance A.ToJSON HHC_ExternalAttribution_Source where
         A.object [ "name" A..= (T.pack source)
                  , "documentConfidence" A..= documentConfidence
                  ]
+instance A.FromJSON HHC_ExternalAttribution_Source where
+    parseJSON = A.withObject "HHC_ExternalAttribution_Source" $ \v -> do
+        HHC_ExternalAttribution_Source <$> v A..: "name"
+                                       <*> v A..: "documentConfidence"
 
 data HHC_ExternalAttribution
   = HHC_ExternalAttribution
-  { source :: HHC_ExternalAttribution_Source
-  , attributionConfidence :: Double
-  , comment :: T.Text
-  , originId :: UUID
-  , identifier :: Identifier
-  , copyright :: T.Text
-  , licenseName :: T.Text
+  { _source :: HHC_ExternalAttribution_Source
+  , _attributionConfidence :: Double
+  , _comment :: Maybe T.Text
+  , _originId :: Maybe UUID
+  , _identifier :: Identifier
+  , _copyright :: Maybe T.Text
+  , _licenseName :: Maybe T.Text
   } deriving (Show, Generic)
 instance A.ToJSON HHC_ExternalAttribution where
     toJSON (HHC_ExternalAttribution 
@@ -127,14 +152,37 @@ instance A.ToJSON HHC_ExternalAttribution where
                      hashH -> [ "packageName" A..= hashH ]
                 Identifiers (i:_) -> fromIdentifier i
                 Identifiers [] -> []
+            fromOriginID = \case 
+                Just uuid -> ["originId" A..= uuid]
+                Nothing   -> []
 
           in A.object ([ "source" A..= source
                        , "attributionConfidence" A..= attributionConfidence
                        , "comment" A..= comment
-                       , "originId" A..= originId
                        , "copyright" A..= copyright
                        , "licenseName" A..= licenseName
-                       ] ++ (fromIdentifier identifier))
+                       ] ++ (fromOriginID originId)
+                         ++ (fromIdentifier identifier))
+instance A.FromJSON HHC_ExternalAttribution where
+  parseJSON = A.withObject "HHC_ExternalAttribution" $ \v -> let 
+      getIdentifierFromJSON = do
+        packageName <- v A..:? "packageName"
+        packageNamespace <- v A..:? "packageNamespace"
+        packageType <- v A..:? "packageType"
+        packageVersion <- v A..:? "packageVersion"
+        return $ case packageName of 
+          Just packageName' -> PURL Nothing packageType packageNamespace packageName' packageVersion Nothing Nothing
+          Nothing           -> Identifiers [] -- TODO?
+    in do
+    source <- v A..: "source"
+    attributionConfidence <- v A..:? "attributionConfidence"
+    comment <- v A..:? "comment"
+    originId <- v A..:? "originId"
+    identifier <- getIdentifierFromJSON
+    copyright <- v A..:? "copyright"
+    licenseName <- v A..:? "licenseName"
+
+    return (HHC_ExternalAttribution source (100 `Maybe.fromMaybe` attributionConfidence) comment originId identifier copyright licenseName)
 
 data HHC_FrequentLicense
   = HHC_FrequentLicense
@@ -147,6 +195,11 @@ instance A.ToJSON HHC_FrequentLicense where
                                                    , "fullName" A..= fn
                                                    , "defaultText"  A..= dt
                                                    ]
+instance A.FromJSON HHC_FrequentLicense where
+  parseJSON = A.withObject "HHC_FrequentLicense" $ \v -> do
+    HHC_FrequentLicense <$> v A..: "shortName"
+                        <*> v A..: "fullName"
+                        <*> v A..: "defaultText"
 
 data HHC
   = HHC
@@ -169,6 +222,13 @@ instance A.ToJSON HHC where
           , "resourcesToAttributions" A..= resourcesToAttributions
           , "frequentLicenses" A..= frequentLicenses
           ]
+instance A.FromJSON HHC where
+  parseJSON = A.withObject "HHC" $ \v -> do
+    HHC <$> v A..: "metadata"
+        <*> v A..: "resources"
+        <*> v A..: "externalAttributions"
+        <*> v A..: "resourcesToAttributions"
+        <*> v A..: "frequentLicenses"
 instance Semigroup HHC where
     hhc1 <> hhc2 = let
           mergedResources = resources hhc1 <> resources hhc2 
