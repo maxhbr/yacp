@@ -4,6 +4,7 @@
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE DeriveGeneric #-}
 {-# LANGUAGE LambdaCase #-}
+{-# LANGUAGE StrictData #-}
 module YACP.Core.Model
   ( module X
   -- Identifier

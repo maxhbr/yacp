@@ -4,12 +4,15 @@
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE DeriveGeneric #-}
 {-# LANGUAGE LambdaCase #-}
+{-# LANGUAGE Strict #-}
 module YACP.Core.StateActions
   ( addRoot, addRoots
   , addComponent, addComponents
   , addRelation, addRelations
   , addFile, addFiles
   , getForIdentifier, getCsForIdentifier, getRsForIdentifier
+  -- Aeson
+  , objectNoNulls
   -- misc
   , stderrLog
   ) where
@@ -24,7 +27,8 @@ import Data.Maybe (fromMaybe)
 import Data.UUID (UUID)
 import System.Random (randomIO)
 import qualified Control.Monad.State as MTL
-import qualified Data.Aeson as A (Array)
+import qualified Data.Aeson as A
+import qualified Data.Aeson.Types as A
 import qualified Data.Monoid (mconcat)
 import qualified Data.Vector as V
 import qualified Distribution.SPDX as SPDX
@@ -34,6 +38,13 @@ import qualified System.FilePath as FP
 
 stderrLog :: String -> YACP ()
 stderrLog msg = MTL.liftIO $ hPutStrLn stderr (color Green msg)
+
+objectNoNulls :: [A.Pair] -> A.Value
+objectNoNulls = let
+  dropNulls []              = []
+  dropNulls ((_,A.Null):ps) = dropNulls ps
+  dropNulls (p:ps)          = p : (dropNulls ps)
+  in A.object . dropNulls
 
 addRoot :: Identifier -> YACP ()
 addRoot r = MTL.modify (\s@State{_getRoots = rs} -> s{_getRoots = r:rs})

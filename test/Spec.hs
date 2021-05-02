@@ -199,9 +199,20 @@ hhcSpec =do
       potentialError = case result of
         Right _ -> Nothing
         Left err -> Just err
+      hhc = case result of
+        Right hhc' -> hhc'
+        Left _ -> undefined
     in do
       it "parsing should be successful"$ do
         potentialError `shouldBe` Nothing
+      it "num of resources should match" $ do
+        countFiles (_resources hhc) `shouldBe` 58805
+      it "num of externalAttributions should match" $ do
+        length (_externalAttributions hhc) `shouldBe` 13798
+      it "num of resourcesToAttributions should match" $ do
+        length (_resourcesToAttributions hhc) `shouldBe` 36931
+      it "num of frequentLicenses should match" $ do
+        length (_frequentLicenses hhc) `shouldBe` 427
 
   describe "HHCWriter" $ let
       yacp = do
@@ -211,32 +222,32 @@ hhcSpec =do
     in do
       (hhc@(HHC _ rs _ _ _), _) <- runIO $ runYACP yacp
       it "numOfFilesShouldMatch" $ do
-        countFiles (resources hhc) `shouldBe` 503
+        countFiles (_resources hhc) `shouldBe` 503
       it "numOfFilesShouldMatch" $ do
         countFiles rs `shouldBe` (length . filter (isPrefixOf ": 1") . tails . C.unpack . B.toStrict . A.encodePretty $ rs)
       it "numOfExternalAttributionsShouldMatch" $ do
-        length (externalAttributions hhc) `shouldBe` 197
+        length (_externalAttributions hhc) `shouldBe` 197
       it "numOfResourcesToAttributionsShouldMatch" $ do
-        length (resourcesToAttributions hhc) `shouldBe` 41
+        length (_resourcesToAttributions hhc) `shouldBe` 41
       runIO (writeHHCStats hhc)
 
-  describe "HHC Collector" $ let
-    yacp = do
-      parseHHCBS hhcFileBS
-    in do
-      (_, result) <- runIO $ runYACP yacp
-      case _getComponents result of
-        Components cs -> do
-          it "run is successfull and contains components" $ do
-            V.length cs `shouldBe` 0
-      case _getRelations result of
-        Relations rs -> do
-          it "run is successfull and contains relations" $ do
-            V.length rs `shouldBe` 0
-      case _getFiles result of
-        Files fs -> do
-          it "run is successfull and contains files" $ do
-            V.length fs `shouldBe` 54143
+  -- describe "HHC Collector" $ let
+  --   yacp = do
+  --     parseHHCBS hhcFileBS
+  --   in do
+  --     (_, result) <- runIO $ runYACP yacp
+  --     case _getComponents result of
+  --       Components cs -> do
+  --         it "run is successfull and contains components" $ do
+  --           V.length cs `shouldBe` 117144 -- TODO 
+  --     case _getRelations result of
+  --       Relations rs -> do
+  --         it "run is successfull and contains relations" $ do
+  --           V.length rs `shouldBe` 80545 -- TODO
+  --     case _getFiles result of
+  --       Files fs -> do
+  --         it "run is successfull and contains files" $ do
+  --           V.length fs `shouldBe` 80545 -- TODO
       
 
 

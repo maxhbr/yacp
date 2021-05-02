@@ -34,16 +34,16 @@ addEAToPath fp (Just ea@(HHC_ExternalAttribution{_identifier=identifier,_license
     file = mkFile fp
   in do
     addFile file
-    identifier' <- MTL.liftIO $ addUuidIfMissing identifier
-    let relation = Relation (getIdentifier file) GENERATES identifier'
-    let component = Component identifier' (fmap (parseLicense . T.unpack) licenseName) (V.singleton (A.toJSON ea)) [relation] []
-    _ <- addComponent component
+    let component = Component identifier (fmap (parseLicense . T.unpack) licenseName) (V.singleton (A.toJSON ea)) [] []
+    componentIdentifier <- addComponent component
+    let relation = Relation (getIdentifier file) GENERATES componentIdentifier
+    addRelation relation
     pure ()
 
 parseHHCBS :: B.ByteString -> YACP ()
 parseHHCBS bs =
   case (A.eitherDecode bs :: Either String HHC) of
-    Right (result@HHC{resourcesToAttributions=rtas, externalAttributions=eas}) -> do
+    Right (result@HHC{_resourcesToAttributions=rtas, _externalAttributions=eas}) -> do
       MTL.liftIO $ writeHHCStats result
       mapM_ (\(path, vals) -> mapM_ (\val -> addEAToPath path (val `Map.lookup` eas)) vals)
             (Map.toList rtas)

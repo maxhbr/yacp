@@ -121,11 +121,11 @@ computeHHC = MTL.get >>= \(State
     return (hhcMetadata <> hhcFromFiles)
 
 writeHHCStats :: HHC -> IO ()
-writeHHCStats (HHC { metadata = m
-                   , resources = rs
-                   , externalAttributions = eas
-                   , resourcesToAttributions = rtas
-                   , frequentLicenses = fls
+writeHHCStats (HHC { _metadata = m
+                   , _resources = rs
+                   , _externalAttributions = eas
+                   , _resourcesToAttributions = rtas
+                   , _frequentLicenses = fls
                    }) = do
                      putStrLn ("metadata: " ++ show m)
                      putStrLn ("resources: #files=" ++ (show (countFiles rs)))

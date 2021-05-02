@@ -4,6 +4,7 @@
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE DeriveGeneric #-}
 {-# LANGUAGE LambdaCase #-}
+{-# LANGUAGE StrictData #-}
 module YACP.HHC.HHC
   ( HHC_Metadata (..)
   , HHC_Resources (..), countFiles
@@ -101,7 +102,7 @@ countFiles (HHC_Resources dirs files) = length files + ((sum . map countFiles . 
 
 data HHC_ExternalAttribution_Source
   = HHC_ExternalAttribution_Source String Double
-  deriving (Show, Generic)
+  deriving (Show, Generic, Eq)
 instance A.ToJSON HHC_ExternalAttribution_Source where
     toJSON (HHC_ExternalAttribution_Source source documentConfidence) =
         A.object [ "name" A..= (T.pack source)
@@ -152,17 +153,13 @@ instance A.ToJSON HHC_ExternalAttribution where
                      hashH -> [ "packageName" A..= hashH ]
                 Identifiers (i:_) -> fromIdentifier i
                 Identifiers [] -> []
-            fromOriginID = \case 
-                Just uuid -> ["originId" A..= uuid]
-                Nothing   -> []
-
-          in A.object ([ "source" A..= source
-                       , "attributionConfidence" A..= attributionConfidence
-                       , "comment" A..= comment
-                       , "copyright" A..= copyright
-                       , "licenseName" A..= licenseName
-                       ] ++ (fromOriginID originId)
-                         ++ (fromIdentifier identifier))
+          in objectNoNulls ([ "source" A..= source
+                            , "attributionConfidence" A..= attributionConfidence
+                            , "comment" A..= comment
+                            , "copyright" A..= copyright
+                            , "licenseName" A..= licenseName
+                            , "originId" A..= originId
+                            ] ++ (fromIdentifier identifier))
 instance A.FromJSON HHC_ExternalAttribution where
   parseJSON = A.withObject "HHC_ExternalAttribution" $ \v -> let 
       getIdentifierFromJSON = do
@@ -203,11 +200,11 @@ instance A.FromJSON HHC_FrequentLicense where
 
 data HHC
   = HHC
-  { metadata :: Maybe HHC_Metadata
-  , resources :: HHC_Resources
-  , externalAttributions :: Map.Map UUID HHC_ExternalAttribution
-  , resourcesToAttributions :: Map.Map FilePath [UUID]
-  , frequentLicenses :: [HHC_FrequentLicense]
+  { _metadata :: Maybe HHC_Metadata
+  , _resources :: HHC_Resources
+  , _externalAttributions :: Map.Map UUID HHC_ExternalAttribution
+  , _resourcesToAttributions :: Map.Map FilePath [UUID]
+  , _frequentLicenses :: [HHC_FrequentLicense]
   } deriving (Show, Generic)
 instance A.ToJSON HHC where
     toJSON (HHC
@@ -215,7 +212,7 @@ instance A.ToJSON HHC where
         resources
         externalAttributions
         resourcesToAttributions
-        frequentLicenses) = A.object
+        frequentLicenses) = objectNoNulls
           [ "metadata" A..= metadata
           , "resources" A..= resources
           , "externalAttributions" A..= externalAttributions
@@ -224,18 +221,23 @@ instance A.ToJSON HHC where
           ]
 instance A.FromJSON HHC where
   parseJSON = A.withObject "HHC" $ \v -> do
-    HHC <$> v A..: "metadata"
-        <*> v A..: "resources"
-        <*> v A..: "externalAttributions"
-        <*> v A..: "resourcesToAttributions"
-        <*> v A..: "frequentLicenses"
+    resources <- v A..: "resources"
+    externalAttributions <- v A..: "externalAttributions"
+    resourcesToAttributions <- v A..: "resourcesToAttributions"
+    HHC <$> v A..:? "metadata"
+        <*> (pure resources)
+        <*> (pure externalAttributions)
+        <*> (pure resourcesToAttributions)
+        <*> (fmap (\case 
+            Just fls -> fls
+            Nothing -> []) (v A..:? "frequentLicenses"))
 instance Semigroup HHC where
     hhc1 <> hhc2 = let
-          mergedResources = resources hhc1 <> resources hhc2 
-          mergedExternalAttributions = Map.union (externalAttributions hhc1) (externalAttributions hhc2)
-          mergedResourcesToAttributions = Map.unionWith (++) (resourcesToAttributions hhc1) (resourcesToAttributions hhc2) -- TODO: nub
-          mergedFrequentLicenses = List.nub (frequentLicenses hhc1 ++ frequentLicenses hhc2)
-        in HHC (metadata hhc1) 
+          mergedResources = _resources hhc1 <> _resources hhc2 
+          mergedExternalAttributions = Map.union (_externalAttributions hhc1) (_externalAttributions hhc2)
+          mergedResourcesToAttributions = Map.unionWith (++) (_resourcesToAttributions hhc1) (_resourcesToAttributions hhc2) -- TODO: nub
+          mergedFrequentLicenses = List.nub (_frequentLicenses hhc1 ++ _frequentLicenses hhc2)
+        in HHC (_metadata hhc1) 
                mergedResources
                mergedExternalAttributions
                mergedResourcesToAttributions
