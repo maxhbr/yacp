@@ -7,6 +7,9 @@
 {-# LANGUAGE StrictData #-}
 module YACP.HHC.HHCUtils
   ( clusterifyHHC 
+  , unDot
+  , dropDir
+  , computeMergedHHC
   ) where
 
 import YACP.Core
@@ -25,16 +28,17 @@ import qualified Data.Vector as V
 import qualified Data.Maybe as Maybe
 import qualified Data.HashMap.Strict as HM
 import qualified Control.Monad.State as MTL
+import qualified System.FilePath as FP
 import qualified System.Process as P
 import qualified Data.Graph.Inductive.Graph as G
 import qualified Data.ByteString.Lazy as B
 import Data.UUID (UUID)
 import System.Random (randomIO)
 
-mergyfyCopyright :: Maybe Text -> Maybe Text -> Maybe Text
-mergyfyCopyright left Nothing = left
-mergyfyCopyright Nothing right = right
-mergyfyCopyright (Just c) (Just c') = Just . T.unlines . List.nub $ (T.lines c) ++ (T.lines c')
+mergifyCopyright :: Maybe Text -> Maybe Text -> Maybe Text
+mergifyCopyright left Nothing = left
+mergifyCopyright Nothing right = right
+mergifyCopyright (Just c) (Just c') = Just . T.unlines . List.nub $ (T.lines c) ++ (T.lines c')
 
 cleanupLicense :: Maybe Text -> Maybe Text
 cleanupLicense Nothing  = Nothing
@@ -43,8 +47,8 @@ cleanupLicense (Just t) = case T.stripPrefix ", " t of
     Nothing -> Just t
     t'      -> t'
 
-mergyfyEA :: HHC_ExternalAttribution -> HHC_ExternalAttribution -> Maybe HHC_ExternalAttribution
-mergyfyEA
+mergifyEA :: HHC_ExternalAttribution -> HHC_ExternalAttribution -> Maybe HHC_ExternalAttribution
+mergifyEA
   left@(HHC_ExternalAttribution
   { _source = HHC_ExternalAttribution_Source source _
   , _attributionConfidence = attributionConfidence
@@ -67,7 +71,7 @@ mergyfyEA
            , identifier `matchesIdentifier` identifier'
            , (cleanupLicense licenseName) == (cleanupLicense licenseName')])
    then Just (left{ _attributionConfidence = (attributionConfidence `min` attributionConfidence')
-                  , _copyright = mergyfyCopyright copyright copyright'
+                  , _copyright = mergifyCopyright copyright copyright'
                   , _licenseName = cleanupLicense licenseName
                   })
    else Nothing
@@ -85,7 +89,7 @@ clusterifyEAMap = let
             clusterifyEAMap'' (uuid, ea) []                              = [(uuid, ea, [])]
             clusterifyEAMap'' (uuid, ea) (ins@(in'@(uuid', ea', uuids):ins')) 
                 | uuid == uuid' = ins
-                | otherwise     = case mergyfyEA ea ea' of
+                | otherwise     = case mergifyEA ea ea' of
                     Just mergedEA -> (uuid', mergedEA, uuid : uuids):ins'
                     Nothing -> in' : (clusterifyEAMap'' (uuid, ea) ins')
             in clusterifyEAMap' ins (clusterifyEAMap'' i out)
@@ -101,3 +105,39 @@ clusterifyHHC (hhc@HHC { _externalAttributions = eas , _resourcesToAttributions 
   in hhc { _externalAttributions = newEas
          , _resourcesToAttributions = newRtas
          }
+
+unDot :: HHC -> HHC
+unDot (hhc@HHC { _resources = rs , _resourcesToAttributions = rtas }) = let
+  undotResources (rs@HHC_Resources { _dirs = dirs }) = let
+    contentOfDot = Map.findWithDefault mempty "." dirs
+    dirsWithoutDot = Map.delete "." dirs
+    in rs {_dirs = dirsWithoutDot} <> contentOfDot
+  undotRTAS = Map.mapKeys (\k -> case List.stripPrefix "/." k of
+    Nothing -> k
+    Just k' -> k')
+  in hhc{ _resources = undotResources rs , _resourcesToAttributions = undotRTAS rtas }
+
+dropDir :: FilePath -> HHC -> HHC
+dropDir directoryName (hhc@HHC{ _resources = rs, _resourcesToAttributions = rtas}) = let
+  filterResources (rs@HHC_Resources { _dirs = dirs }) = let
+    filteredDirs = Map.filterWithKey (\key -> const (not (directoryName == key))) dirs
+    filteredAndCleanedDirs = Map.map filterResources filteredDirs
+    in rs{ _dirs = filteredAndCleanedDirs }
+  filterRTAS = Map.filterWithKey (\key -> const (not (directoryName `List.isSubsequenceOf` key))) 
+  in hhc{ _resources = filterResources rs, _resourcesToAttributions = filterRTAS rtas}
+
+computeMergedHHC :: [FilePath] -> IO B.ByteString
+computeMergedHHC inputPaths = let
+    parseHHC :: FP.FilePath -> IO HHC
+    parseHHC fp = do
+      hPutStrLn stderr ("parse: " ++ fp)
+      bs <- B.readFile fp
+      case (A.eitherDecode' bs) of
+        Right hhc -> return hhc
+        Left err  -> do
+            hPutStrLn stderr err
+            undefined
+  in do
+    hhcs <- mapM parseHHC inputPaths
+    let finalHHC = clusterifyHHC $ mconcat (map unDot hhcs)
+    return (A.encodePretty finalHHC)

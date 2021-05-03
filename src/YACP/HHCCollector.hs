@@ -11,6 +11,7 @@ module YACP.HHCCollector
 
 import YACP.Core
 import YACP.HHC.HHC
+import YACP.HHC.HHCUtils
 import YACP.ParserHelper
 import YACP.HHCWriter (writeHHCStats)
 
@@ -43,8 +44,10 @@ addEAToPath fp (Just ea@(HHC_ExternalAttribution{_identifier=identifier,_license
 parseHHCBS :: B.ByteString -> YACP ()
 parseHHCBS bs =
   case (A.eitherDecode bs :: Either String HHC) of
-    Right (result@HHC{_resourcesToAttributions=rtas, _externalAttributions=eas}) -> do
+    Right result -> do
       MTL.liftIO $ writeHHCStats result
+      let (merged@HHC{_resourcesToAttributions=rtas, _externalAttributions=eas}) = clusterifyHHC result
+      MTL.liftIO $ writeHHCStats merged
       mapM_ (\(path, vals) -> mapM_ (\val -> addEAToPath path (val `Map.lookup` eas)) vals)
             (Map.toList rtas)
     Left err -> stderrLog err

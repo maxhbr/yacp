@@ -83,15 +83,6 @@ executables:
     - -with-rtsopts=-N
     dependencies:
     - yacp
-  hhc-merger-exe:
-    main:                Main.hs
-    source-dirs:         app/hhc_merger
-    ghc-options:
-    - -threaded
-    - -rtsopts
-    - -with-rtsopts=-N
-    dependencies:
-    - yacp
 
 tests:
   yacp-test:
