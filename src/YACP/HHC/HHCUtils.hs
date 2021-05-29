@@ -10,6 +10,7 @@ module YACP.HHC.HHCUtils
   , unDot
   , dropDir
   , computeMergedHHC
+  , mergifyEA
   ) where
 
 import YACP.Core
@@ -57,6 +58,7 @@ mergifyEA
   , _identifier = identifier
   , _copyright = copyright
   , _licenseName = licenseName
+  , _preselected = preselected
   }) 
   (HHC_ExternalAttribution
   { _source = HHC_ExternalAttribution_Source source' _
@@ -66,6 +68,7 @@ mergifyEA
   , _identifier = identifier'
   , _copyright = copyright'
   , _licenseName = licenseName'
+  , _preselected = preselected'
   }) 
  = if (and [ source == source'
            , identifier `matchesIdentifier` identifier'
@@ -73,6 +76,7 @@ mergifyEA
    then Just (left{ _attributionConfidence = (attributionConfidence `min` attributionConfidence')
                   , _copyright = mergifyCopyright copyright copyright'
                   , _licenseName = cleanupLicense licenseName
+                  , _preselected = preselected || preselected'
                   })
    else Nothing
 

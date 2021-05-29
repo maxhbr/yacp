@@ -122,7 +122,8 @@ data HHC_ExternalAttribution
   , _identifier :: Identifier
   , _copyright :: Maybe T.Text
   , _licenseName :: Maybe T.Text
-  } deriving (Show, Generic)
+  , _preselected :: Bool
+  } deriving (Show, Generic, Eq)
 instance A.ToJSON HHC_ExternalAttribution where
     toJSON (HHC_ExternalAttribution 
         source
@@ -131,7 +132,8 @@ instance A.ToJSON HHC_ExternalAttribution where
         originId
         identifier
         copyright
-        licenseName) = let
+        licenseName
+        preselected) = let
             fromIdentifier = \case
                 Identifier str -> [ "packageName" A..= str ]
                 UuidIdentifier uuid -> [ "packageName" A..= uuid ]
@@ -153,12 +155,16 @@ instance A.ToJSON HHC_ExternalAttribution where
                      hashH -> [ "packageName" A..= hashH ]
                 Identifiers (i:_) -> fromIdentifier i
                 Identifiers [] -> []
+            maybePreselected = if preselected
+              then Just True
+              else Nothing
           in objectNoNulls ([ "source" A..= source
                             , "attributionConfidence" A..= attributionConfidence
                             , "comment" A..= comment
                             , "copyright" A..= copyright
                             , "licenseName" A..= licenseName
                             , "originId" A..= originId
+                            , "preSelected" A..= maybePreselected
                             ] ++ (fromIdentifier identifier))
 instance A.FromJSON HHC_ExternalAttribution where
   parseJSON = A.withObject "HHC_ExternalAttribution" $ \v -> let 
@@ -172,14 +178,17 @@ instance A.FromJSON HHC_ExternalAttribution where
           Nothing           -> Identifiers [] -- TODO?
     in do
     source <- v A..: "source"
-    attributionConfidence <- v A..:? "attributionConfidence"
+    attributionConfidence <- fmap (100 `Maybe.fromMaybe`) (v A..:? "attributionConfidence")
     comment <- v A..:? "comment"
     originId <- v A..:? "originId"
     identifier <- getIdentifierFromJSON
     copyright <- v A..:? "copyright"
-    licenseName <- v A..:? "licenseName"
+    licenseName <- fmap (\case
+      Just "" -> Nothing
+      l -> l) (v A..:? "licenseName")
+    preselected <- fmap (False `Maybe.fromMaybe`) (v A..:? "preSelected")
 
-    return (HHC_ExternalAttribution source (100 `Maybe.fromMaybe` attributionConfidence) comment originId identifier copyright licenseName)
+    return (HHC_ExternalAttribution source attributionConfidence comment originId identifier copyright licenseName preselected)
 
 data HHC_FrequentLicense
   = HHC_FrequentLicense

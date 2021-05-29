@@ -47,6 +47,7 @@ getHhcFromFiles = let
                                              (getIdentifier a)
                                              Nothing
                                              (Just . T.pack $ showLicense a)
+                                             False
                )
     mkAttHhc :: (Identifiable a, Licenseable a, Show a) => FilePath -> String -> a -> YACP HHC 
     mkAttHhc fp source a = do

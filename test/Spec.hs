@@ -23,6 +23,7 @@ import qualified Data.Graph.Inductive.Graph as G
 
 import YACP
 import YACP.HHC.HHC
+import YACP.HHC.HHCUtils
 
 identifierSpec = let
       purl1 = "pkg:pypi/Jinja2@2.11.2"
@@ -203,6 +204,68 @@ hhcSpec =do
         Right hhc' -> hhc'
         Left _ -> undefined
     in do
+
+      it "parsing of EA works, case 1" $ do
+        let ea_str = B.fromStrict $ C.unlines
+              [ "{"
+              , "    \"packageName\": \"adduser\","
+              , "    \"packageVersion\": \"3.118\","
+              , "    \"url\": \"\","
+              , "    \"licenseName\": \"MIT AND GPL-2.0-or-later\","
+              , "    \"copyright\": \"Some Copyright\","
+              , "    \"source\": {"
+              , "        \"name\": \"tern\","
+              , "        \"documentConfidence\": 100"
+              , "    }"
+              , "}"
+              ]
+            expected_source = HHC_ExternalAttribution_Source "tern" 100
+            expected_identifier = PURL Nothing Nothing Nothing "adduser" (Just "3.118") Nothing Nothing
+            expected_ea = HHC_ExternalAttribution
+              expected_source
+              100
+              Nothing
+              Nothing
+              expected_identifier
+              (Just "Some Copyright")
+              (Just "MIT AND GPL-2.0-or-later")
+              False
+        ea <- case (A.eitherDecode ea_str :: Either String HHC_ExternalAttribution) of 
+              Right ea' -> return ea'
+              Left err -> fail err
+        ea `shouldBe` expected_ea
+
+      it "parsing of EA works, case 2" $ do
+        let ea_str = B.fromStrict $ C.unlines
+              [ "{"
+              , "    \"packageName\": \"adduser\","
+              , "    \"packageVersion\": \"3.118\","
+              , "    \"url\": \"\","
+              , "    \"licenseName\": \"\","
+              , "    \"copyright\": \"Some Copyright\","
+              , "    \"source\": {"
+              , "        \"name\": \"tern\","
+              , "        \"documentConfidence\": 100"
+              , "    },"
+              , "    \"preSelected\": true"
+              , "}"
+              ]
+            expected_source = HHC_ExternalAttribution_Source "tern" 100
+            expected_identifier = PURL Nothing Nothing Nothing "adduser" (Just "3.118") Nothing Nothing
+            expected_ea = HHC_ExternalAttribution
+              expected_source
+              100
+              Nothing
+              Nothing
+              expected_identifier
+              (Just "Some Copyright")
+              Nothing
+              True
+        ea <- case (A.eitherDecode ea_str :: Either String HHC_ExternalAttribution) of 
+              Right ea' -> return ea'
+              Left err -> fail err
+        ea `shouldBe` expected_ea
+
       it "parsing should be successful"$ do
         potentialError `shouldBe` Nothing
       it "num of resources should match" $ do
@@ -213,6 +276,18 @@ hhcSpec =do
         length (_resourcesToAttributions hhc) `shouldBe` 36931
       it "num of frequentLicenses should match" $ do
         length (_frequentLicenses hhc) `shouldBe` 427
+
+  describe "HHC Utils" $ let
+      source = HHC_ExternalAttribution_Source "test" 100
+      identifier version = PURL Nothing Nothing Nothing "name" (Just version) Nothing Nothing
+      ea1 = HHC_ExternalAttribution source 100 Nothing Nothing (identifier "1.2") Nothing Nothing False
+      ea2 = HHC_ExternalAttribution source 100 Nothing Nothing (identifier "1.3") Nothing Nothing False
+      ea3 = HHC_ExternalAttribution source 100 Nothing Nothing (identifier "1.2") Nothing Nothing True
+    in do
+      it "mergifyEA" $ do
+        (ea1 `mergifyEA` ea1) `shouldBe` (Just ea1)
+        (ea1 `mergifyEA` ea2) `shouldBe` Nothing
+        (ea1 `mergifyEA` ea3) `shouldBe` (Just ea3)
 
   describe "HHCWriter" $ let
       yacp = do
