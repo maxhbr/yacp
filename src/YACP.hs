@@ -29,12 +29,15 @@ import YACP.HHCCollector as X
 import System.Environment (getArgs)
 import System.IO
 import System.Exit
-import System.Directory (createDirectoryIfMissing)
+import System.Directory (createDirectoryIfMissing, doesFileExist)
 import qualified Data.ByteString.Lazy as B
 import qualified Control.Monad.State as MTL
 
 parseBSFromFile :: (B.ByteString -> YACP a) -> FilePath -> YACP a
 parseBSFromFile fun path = do
+  fileExist <- MTL.liftIO $ doesFileExist path
+  unless fileExist $
+    fail ("The file " ++ path ++ " was not found")
   bs <- MTL.liftIO $ B.readFile path
   fun bs
 
@@ -50,7 +53,6 @@ parseCycloneDXFile = parseBSFromFile parseCycloneDXBS
 parseHHCFile :: FilePath -> YACP ()
 parseHHCFile = parseBSFromFile parseHHCBS
 
-
 argsToYACP' :: [String] -> YACP ()
 argsToYACP' [] = return ()
 argsToYACP' [outDir] = do
@@ -58,11 +60,12 @@ argsToYACP' [outDir] = do
   MTL.liftIO $ createDirectoryIfMissing True outDir
   writeStateFile (outDir </> "_state.json")
   writePlantumlFile (outDir </> "plantuml.puml")
-  writeDigraphFile (outDir </> "digraph.dot")
+  _ <- writeDigraphFile (outDir </> "digraph.dot")
   writeHHCFile (outDir </> "hhc.json")
-argsToYACP' ("--sc": (f: oArgs)) = (parseScancodeFile f) >> (argsToYACP' oArgs)
-argsToYACP' ("--ort": (f: oArgs)) = (parseOrtFile f) >> (argsToYACP' oArgs)
-argsToYACP' ("--spdx": (f: oArgs)) = (parseSPDXFile f) >> (argsToYACP' oArgs)
+argsToYACP' ("--sc": (f: oArgs)) = parseScancodeFile f >> argsToYACP' oArgs
+argsToYACP' ("--ort": (f: oArgs)) = parseOrtFile f >> argsToYACP' oArgs
+argsToYACP' ("--spdx": (f: oArgs)) = parseSPDXFile f >> argsToYACP' oArgs
+argsToYACP' ("--hhc": (f: oArgs)) = parseHHCFile f >> argsToYACP' oArgs
 argsToYACP' (unknown: oArgs) = MTL.liftIO $ do
   putStrLn ("failed to parse: " ++ unknown)
   exitFailure

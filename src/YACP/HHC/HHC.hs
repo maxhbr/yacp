@@ -230,13 +230,14 @@ instance A.ToJSON HHC where
           ]
 instance A.FromJSON HHC where
   parseJSON = A.withObject "HHC" $ \v -> do
-    resources <- v A..: "resources"
-    externalAttributions <- v A..: "externalAttributions"
-    resourcesToAttributions <- v A..: "resourcesToAttributions"
+    let
+      resourcesParser = fmap (mempty `Maybe.fromMaybe`) $ v A..:? "resources"
+      externalAttributionsParser = fmap (mempty `Maybe.fromMaybe`) $ v A..:? "externalAttributions"
+      resourcesToAttributionsParser = fmap (mempty `Maybe.fromMaybe`) $ v A..:? "resourcesToAttributions"
     HHC <$> v A..:? "metadata"
-        <*> (pure resources)
-        <*> (pure externalAttributions)
-        <*> (pure resourcesToAttributions)
+        <*> resourcesParser
+        <*> externalAttributionsParser
+        <*> resourcesToAttributionsParser
         <*> (fmap (\case 
             Just fls -> fls
             Nothing -> []) (v A..:? "frequentLicenses"))

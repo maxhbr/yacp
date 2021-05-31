@@ -136,11 +136,10 @@ computeMergedHHC inputPaths = let
     parseHHC fp = do
       hPutStrLn stderr ("parse: " ++ fp)
       bs <- B.readFile fp
-      case (A.eitherDecode' bs) of
+      case A.eitherDecode' bs of
         Right hhc -> return hhc
         Left err  -> do
-            hPutStrLn stderr err
-            undefined
+            fail err
   in do
     hhcs <- mapM parseHHC inputPaths
     let finalHHC = clusterifyHHC $ mconcat (map unDot hhcs)
