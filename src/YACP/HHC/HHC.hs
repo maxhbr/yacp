@@ -182,7 +182,9 @@ instance A.FromJSON HHC_ExternalAttribution where
     source <- v A..: "source"
     attributionConfidence <- fmap (100 `Maybe.fromMaybe`) (v A..:? "attributionConfidence")
     comment <- v A..:? "comment"
-    originId <- v A..:? "originId"
+    originId <- fmap (fmap read . (\case
+      Just "" -> Nothing
+      x       -> x)) (v A..:? "originId" :: A.Parser (Maybe String))
     identifier <- getIdentifierFromJSON
     copyright <- v A..:? "copyright"
     licenseName <- fmap (\case

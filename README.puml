@@ -1,0 +1,30 @@
+@startmindmap
+<style>
+mindmapDiagram {
+  node {
+    BackgroundColor white
+    ' Shadowing 0.0
+  }
+  :depth(0) {
+    FontSize 20
+  }
+  :depth(1) {
+      BackGroundColor white
+  }
+  # boxless {
+  #   FontColor darkgreen
+  # }
+}
+</style>
+* <b>YACP</b>
+-- SPDX 2.2 JSON or YAML
+-- ORT analyze or scan result
+-- Scancode
+-- (WIP) CycloneDX
+-- HHC
+--_ Raw Data as JSON
+++_ Raw Data as JSON
+++ Graph
+++ Graphviz / Plantuml
+++ HHC
+@endmindmap
