@@ -18,6 +18,7 @@ module YACP.Core.Model
   , Component (..)
   , identifierToComponent
   , Licenseable (..)
+  , renderSpdxLicense
   -- Relations
   , RelationType (..)
   , Relation (..)
@@ -258,6 +259,15 @@ instance Monoid Component where
 identifierToComponent :: Identifier -> Component
 identifierToComponent i = mempty{_getComponentIdentifier = i}
 
+renderSpdxLicense :: SPDX.LicenseExpression -> String
+renderSpdxLicense (SPDX.ELicense l _) = let
+  renderSpdxLicense' :: SPDX.SimpleLicenseExpression -> String
+  renderSpdxLicense' (SPDX.ELicenseId l') = show l'
+  renderSpdxLicense' (SPDX.ELicenseRef l') = SPDX.licenseRef l'
+  in renderSpdxLicense' l
+renderSpdxLicense (SPDX.EAnd l r) = unwords ["(", renderSpdxLicense l, "AND", renderSpdxLicense r, ")"]
+renderSpdxLicense (SPDX.EOr l r) = unwords ["(", renderSpdxLicense l, "OR", renderSpdxLicense r, ")"]
+
 class Licenseable a where
   getLicense :: a -> Maybe SPDX.LicenseExpression
   showLicense :: a -> String
@@ -271,7 +281,7 @@ class Licenseable a where
     showLicense' (SPDX.EAnd l r) = unwords ["(", showLicense' l, "AND", showLicense' r, ")"]
     showLicense' (SPDX.EOr l r) = unwords ["(", showLicense' l, "OR", showLicense' r, ")"]
     in case getLicense a of
-      Just l -> showLicense' l
+      Just l -> renderSpdxLicense l
       Nothing -> ""
 
 instance Licenseable Component where

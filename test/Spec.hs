@@ -15,6 +15,7 @@ import qualified Data.ByteString.Lazy as B
 import qualified Data.ByteString.Char8 as C
 import qualified Data.Aeson as A
 import qualified Data.Aeson.Encode.Pretty as A
+import qualified Data.Yaml as Y
 import qualified Data.Vector as V
 import qualified Data.Map as Map
 import System.IO.Temp (withSystemTempDirectory)
@@ -40,6 +41,9 @@ identifierSpec = let
 ortFileBS :: B.ByteString
 ortFileBS = B.fromStrict $(embedFile "test/data/analyzer-result.json")
 
+ortScanFileBS :: B.ByteString
+ortScanFileBS = B.fromStrict $(embedFile "test/data/scan-result.json")
+
 ortSpec = let
     ortResult = A.eitherDecode ortFileBS :: Either String OrtFile
     potentialError = case ortResult of
@@ -61,6 +65,9 @@ ortSpec = let
 
 spdxFileBS :: B.ByteString
 spdxFileBS = B.fromStrict $(embedFile "data/spdx-spdx-spec/examples/SPDXJSONExample-v2.2.spdx.json")
+
+spdxYamlFileBS :: B.ByteString
+spdxYamlFileBS = B.fromStrict $(embedFile "test/data/document.spdx.yml")
 
 spdxSpec = let
     spdxResult = A.eitherDecode spdxFileBS :: Either String SPDXDocument
@@ -283,15 +290,29 @@ hhcSpec =do
       ea1 = HHC_ExternalAttribution source 100 Nothing Nothing (identifier "1.2") Nothing Nothing False
       ea2 = HHC_ExternalAttribution source 100 Nothing Nothing (identifier "1.3") Nothing Nothing False
       ea3 = HHC_ExternalAttribution source 100 Nothing Nothing (identifier "1.2") Nothing Nothing True
+
     in do
       it "mergifyEA" $ do
         (ea1 `mergifyEA` ea1) `shouldBe` (Just ea1)
         (ea1 `mergifyEA` ea2) `shouldBe` Nothing
         (ea1 `mergifyEA` ea3) `shouldBe` (Just ea3)
 
+      hhc_from_ort <- runIO $ case (Y.decodeEither' (B.toStrict spdxYamlFileBS) :: Either Y.ParseException SPDXDocument) of
+        Right spdxFile -> spdxToHHC spdxFile
+        Left err -> fail (show err)
+
+      it "num of resources from spdx should match" $ do
+        countFiles (_resources hhc_from_ort) `shouldBe` 0
+      it "num of externalAttributions from spdx should match" $ do
+        length (_externalAttributions hhc_from_ort) `shouldBe` 352
+      it "num of resourcesToAttributions from spdx should match" $ do
+        length (_resourcesToAttributions hhc_from_ort) `shouldBe` 298
+      it "num of frequentLicenses should from spdx match" $ do
+        length (_frequentLicenses hhc_from_ort) `shouldBe` 0
+
   describe "HHCWriter" $ let
       yacp = do
-        parseOrtBS ortFileBS
+        parseOrtBS ortScanFileBS
         parseScancodeBS scancodeFileBS
         computeHHC
     in do

@@ -13,7 +13,6 @@ import YACP.Core
 import YACP.HHC.HHC
 import YACP.HHC.HHCUtils
 import YACP.ParserHelper
-import YACP.HHCWriter (writeHHCStats)
 
 import qualified Data.ByteString.Lazy as B
 import qualified Data.Aeson as A

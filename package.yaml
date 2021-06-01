@@ -40,6 +40,7 @@ dependencies:
 # parsing and file handling
 - aeson
 - aeson-pretty
+- yaml
 # output
 - graphviz
 # misc

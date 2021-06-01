@@ -13,6 +13,8 @@ import YACP.SPDX.Common
 import qualified Data.Aeson as A
 import qualified Data.Aeson.Types as A
 import qualified Data.Vector as V
+import qualified Distribution.SPDX as SPDX
+import qualified Distribution.Parsec as SPDX
 
 data SPDXFileType
   = OTHER
@@ -170,6 +172,7 @@ data SPDXFile
   , _SPDXFile_fileName :: String
   , _SPDXFile_fileTypes :: Maybe [SPDXFileType]
   , _SPDXFile_checksums :: [SPDXChecksum]
+  , _SPDXFile_LicenseConcluded :: SPDXMaybe SPDX.LicenseExpression
   , _SPDXFile_licenseInfoInFiles :: [String]
   , _SPDXFile_licenseInfoFromFiles :: Maybe [String]
   , _SPDXFile_licenseComments :: Maybe String
@@ -192,7 +195,7 @@ instance A.FromJSON SPDXFile where
     <*> v A..: "fileName" -- 4.1
     <*> v A..:? "fileTypes" -- 4.3
     <*> v A..: "checksums" -- 4.4
-    -- 4.5 Concluded License <a name="4.5">
+    <*> fmap parseLicenseExpression (v A..: "licenseConcluded") -- 4.5
     <*> v A..: "licenseInfoInFiles" -- 4.6
     <*> v A..:? "licenseInfoFromFiles" -- ?
     <*> v A..:? "licenseComments" -- 4.7

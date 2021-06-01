@@ -7,7 +7,7 @@
 module YACP.HHCWriter
   ( writeHHC
   , writeHHC',writeHHCFile
-  , computeHHC, writeHHCStats
+  , computeHHC
   ) where
 
 import YACP.Core
@@ -105,41 +105,18 @@ getHhcFromFiles = let
   return (mconcat hhcs) 
 
 computeHHC :: YACP HHC  
-computeHHC = MTL.get >>= \(State
-                 { _getRoots = roots
-                 , _getComponents = Components cs
-                 , _getRelations = Relations rs
-                 , _getFiles = files
-                 }) -> do
+computeHHC = do
     let hhcMetadata = (HHC (Just $ HHC_Metadata "projectId" "fileCreationDate")
                            mempty
                            Map.empty
                            Map.empty
                            [])
-    graph <- computeGraphWithDepths
     hhcFromFiles <- getHhcFromFiles
 
     return (hhcMetadata <> hhcFromFiles)
 
-writeHHCStats :: HHC -> IO ()
-writeHHCStats (HHC { _metadata = m
-                   , _resources = rs
-                   , _externalAttributions = eas
-                   , _resourcesToAttributions = rtas
-                   , _frequentLicenses = fls
-                   }) = do
-                     putStrLn ("metadata: " ++ show m)
-                     putStrLn ("resources: #files=" ++ (show (countFiles rs)))
-                     putStrLn ("externalAttributions: #=" ++ (show (length eas)))
-                     putStrLn ("resourcesToAttributions: #=" ++ (show (length rtas)))
-                     putStrLn ("frequentLicenses: #=" ++ (show (length fls)))
-
 writeHHC :: Handle -> YACP ()
-writeHHC h = MTL.get >>= \(State
-                 { _getRoots = roots
-                 , _getComponents = (Components cs)
-                 , _getRelations = (Relations rs)
-                 }) -> do
+writeHHC h = do
   hhc <- computeHHC
   MTL.liftIO $ do
     writeHHCStats hhc

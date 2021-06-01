@@ -37,6 +37,7 @@ library
       YACP.HHC.HHCUtils
       YACP.HHCCollector
       YACP.HHCWriter
+      YACP.ORT.ORT
       YACP.OrtCollector
       YACP.ParserHelper
       YACP.Plantuml
@@ -80,6 +81,7 @@ library
     , unordered-containers
     , uuid
     , vector
+    , yaml
   default-language: Haskell2010
 
 executable yacp-exe
@@ -113,6 +115,7 @@ executable yacp-exe
     , uuid
     , vector
     , yacp
+    , yaml
   default-language: Haskell2010
 
 test-suite yacp-test
@@ -151,4 +154,5 @@ test-suite yacp-test
     , uuid
     , vector
     , yacp
+    , yaml
   default-language: Haskell2010

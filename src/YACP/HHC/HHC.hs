@@ -12,6 +12,7 @@ module YACP.HHC.HHC
   , HHC_FrequentLicense (..)
   , HHC_ExternalAttribution (..), HHC_ExternalAttribution_Source (..)
   , HHC (..)
+  , writeHHCStats
   ) where
 
 import YACP.Core
@@ -90,10 +91,11 @@ instance Monoid HHC_Resources where
 fpToResources :: FileType -> FilePath -> HHC_Resources
 fpToResources filetype = let
     fpToResources' :: [FilePath] -> HHC_Resources
-    fpToResources' (f : []) = if filetype == FileType_File
-                             then HHC_Resources (Map.empty) (Set.singleton f)
-                             else HHC_Resources (Map.singleton f mempty) Set.empty
-    fpToResources' (f : fs) = HHC_Resources (Map.singleton f (fpToResources' fs)) Set.empty
+    fpToResources' (f : [])  = if filetype == FileType_File
+                               then HHC_Resources (Map.empty) (Set.singleton f)
+                               else HHC_Resources (Map.singleton f mempty) Set.empty
+    fpToResources' ("/": fs) = fpToResources' fs
+    fpToResources' (f : fs)  = HHC_Resources (Map.singleton f (fpToResources' fs)) Set.empty
   in fpToResources' . (map dropTrailingPathSeparator) . splitPath
 fpsToResources :: [FilePath] -> HHC_Resources
 fpsToResources = mconcat . map (fpToResources FileType_File)
@@ -254,3 +256,16 @@ instance Semigroup HHC where
                mergedFrequentLicenses
 instance Monoid HHC where
     mempty = HHC Nothing mempty Map.empty Map.empty []
+
+writeHHCStats :: HHC -> IO ()
+writeHHCStats (HHC { _metadata = m
+                   , _resources = rs
+                   , _externalAttributions = eas
+                   , _resourcesToAttributions = rtas
+                   , _frequentLicenses = fls
+                   }) = do
+                     putStrLn ("metadata: " ++ show m)
+                     putStrLn ("resources: #files=" ++ (show (countFiles rs)))
+                     putStrLn ("externalAttributions: #=" ++ (show (length eas)))
+                     putStrLn ("resourcesToAttributions: #=" ++ (show (length rtas)))
+                     putStrLn ("frequentLicenses: #=" ++ (show (length fls)))

@@ -9,6 +9,7 @@ module YACP.SPDX.PackageInformation
 
 import YACP.Core
 import YACP.SPDX.Common
+import YACP.ParserHelper
 
 import qualified Data.Aeson as A
 import qualified Data.Aeson.Types as A
@@ -43,7 +44,7 @@ instance A.FromJSON SPDXPackageVerificationCode where
   parseJSON = A.withObject "SPDXPackageVerificationCode" $ \v ->
     SPDXPackageVerificationCode
     <$> v A..: "packageVerificationCodeValue"
-    <*> v A..: "packageVerificationCodeExcludedFiles"
+    <*> v .:?! "packageVerificationCodeExcludedFiles"
 
 data SPDXPackage
 --         "packages" : {

@@ -20,6 +20,8 @@ import qualified Control.Monad.State as MTL
 import qualified Distribution.SPDX as SPDX
 import qualified Distribution.Parsec as SPDX
 
+(.:?!) v k = fmap (mempty `fromMaybe`) $ v A..:? k
+
 parseLicense :: String -> SPDX.LicenseExpression
 parseLicense str = (`SPDX.ELicense` Nothing) $ case SPDX.eitherParsec str of
   Right lic -> SPDX.ELicenseId lic

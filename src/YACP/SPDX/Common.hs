@@ -42,6 +42,10 @@ parseLicenseExpression str           = case SPDX.eitherParsec str :: Either Stri
   Right SPDX.NONE        -> NONE
   Right (SPDX.License l) -> SPDXJust l
 
+renderLicenseExpression :: SPDXMaybe SPDX.LicenseExpression -> Maybe String
+renderLicenseExpression (SPDXJust l) = Just $ renderSpdxLicense l
+renderLicenseExpression _            = Nothing
+
 data SPDXChecksumAlgorithm
   = SHA256
   | SHA1

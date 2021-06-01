@@ -7,6 +7,8 @@
 module YACP.SPDX.SPDX
   ( module X
   , SPDXDocument (..)
+  , parseSPDXDocument
+  , spdxDocumentToGraph
   ) where
 
 import YACP.Core
@@ -14,7 +16,14 @@ import YACP.ParserHelper
 
 import qualified Data.Aeson as A
 import qualified Data.Aeson.Types as A
+import qualified Data.Map as Map
+import qualified Data.List as List
+import qualified Data.Yaml as Y
 import qualified Data.Text as T
+import qualified Data.Maybe as Maybe
+import qualified Data.ByteString.Lazy as B
+import qualified Data.Graph.Inductive.Graph as G
+import qualified Data.Graph.Inductive.PatriciaTree as UG
 
 import YACP.SPDX.Common as X
 import YACP.SPDX.DocumentCreationInformation as X
@@ -52,10 +61,57 @@ instance A.FromJSON SPDXDocument where
     <*> v A..: "dataLicense"
     <*> v A..: "documentDescribes" -- or "describesPackages"
 
-    <*> v A..: "files"
-    <*> v A..: "packages"
+    <*> fmap ([] `Maybe.fromMaybe`) (v A..:? "files")
+    <*> fmap ([] `Maybe.fromMaybe`) (v A..: "packages")
     -- <*> v A..: "hasExtractedLicensingInfos"
     -- <*> v A..: "snippets"
-    <*> v A..: "relationships"
+    <*> fmap ([] `Maybe.fromMaybe`) (v A..: "relationships")
     -- <*> v A..: "revieweds"
     -- <*> v A..: "annotations"
+
+parseSPDXDocument :: FilePath -> IO SPDXDocument
+parseSPDXDocument p = do
+  bs <- B.readFile p
+  case A.eitherDecode' bs of
+    Right spdx -> return spdx
+    Left err   -> case Y.decodeEither' (B.toStrict bs) of
+      Right spdx -> return spdx
+      Left err'  -> fail (show [err, show err'])
+
+spdxDocumentToGraph :: SPDXDocument 
+                    -> (UG.Gr (Either SPDXFile SPDXPackage) SPDXRelationship
+                       , Map.Map String Int
+                       , Map.Map Int String)
+spdxDocumentToGraph = let
+    spdxFileToNode :: Map.Map String Int -> SPDXFile -> G.LNode (Either SPDXFile SPDXPackage)
+    spdxFileToNode idsToIdxs (f@SPDXFile { _SPDXFile_SPDXID = spdxid}) =
+      (Map.findWithDefault (-1) spdxid idsToIdxs, Left f) 
+
+    spdxPackageToNode :: Map.Map String Int -> SPDXPackage -> G.LNode (Either SPDXFile SPDXPackage)
+    spdxPackageToNode idsToIdxs (p@SPDXPackage { _SPDXPackage_SPDXID = spdxid }) =
+       (Map.findWithDefault (-1) spdxid idsToIdxs, Right p) 
+       
+    spdxRelationToEdge :: Map.Map String Int -> SPDXRelationship -> G.LEdge SPDXRelationship
+    spdxRelationToEdge idsToIdxs (r@SPDXRelationship
+      { _SPDXRelationship_comment = _
+      , _SPDXRelationship_relationshipType = _
+      , _SPDXRelationship_relatedSpdxElement = source
+      , _SPDXRelationship_spdxElementId = target
+      }) = (Map.findWithDefault (-1) source idsToIdxs, Map.findWithDefault (-1) target idsToIdxs, r)
+  in \(SPDXDocument
+  { _SPDX_comment = _
+  , _SPDX_creationInfo = _
+  , _SPDX_name = name
+  , _SPDX_documentDescribes = roots
+  , _SPDX_files = files
+  , _SPDX_packages = packages
+  , _SPDX_relationships = relationships
+  }) -> let
+    idsToIdxs = Map.fromList (zip (List.nub $ roots ++ map _SPDXPackage_SPDXID packages ++ map _SPDXFile_SPDXID files) [1..])
+    nodes = let
+        nodesFromFiles = map (spdxFileToNode idsToIdxs) files
+        nodesFromPackages = map (spdxPackageToNode idsToIdxs) packages
+      in nodesFromFiles ++ nodesFromPackages
+    nodesMap = Map.fromList nodes
+    edges = map (spdxRelationToEdge idsToIdxs) relationships
+  in (G.mkGraph nodes edges, idsToIdxs, (Map.fromList . map (\(k,v) -> (v,k)) . Map.toList) idsToIdxs)
