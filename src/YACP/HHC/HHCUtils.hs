@@ -64,6 +64,7 @@ mergifyEA
   , _identifier = identifier
   , _copyright = copyright
   , _licenseName = licenseName
+  , _licenseText = licenseText
   , _preselected = preselected
   }) 
   (HHC_ExternalAttribution
@@ -74,6 +75,7 @@ mergifyEA
   , _identifier = identifier'
   , _copyright = copyright'
   , _licenseName = licenseName'
+  , _licenseText = licenseText'
   , _preselected = preselected'
   }) 
  = if (and [ source == source'
@@ -82,6 +84,9 @@ mergifyEA
    then Just (left{ _attributionConfidence = (attributionConfidence `min` attributionConfidence')
                   , _copyright = mergifyCopyright copyright copyright'
                   , _licenseName = cleanupLicense licenseName
+                  , _licenseText = case licenseText of
+                    Just lt -> Just lt
+                    _       -> licenseText'
                   , _preselected = preselected || preselected'
                   })
    else Nothing
@@ -179,6 +184,7 @@ spdxToHHC = let
             , _identifier = mempty
             , _copyright = Just $ T.pack copyright 
             , _licenseName = Just $ T.pack $ show license -- TODO
+            , _licenseText = Nothing -- TODO
             , _preselected = False
             }
 
@@ -217,6 +223,7 @@ spdxToHHC = let
             SPDXJust copyright' -> (Just . T.pack)  copyright'
             _                   -> Nothing
           , _licenseName = Just $ T.pack $ show license -- TODO
+          , _licenseText = Nothing -- TODO
           , _preselected = True
           } 
 

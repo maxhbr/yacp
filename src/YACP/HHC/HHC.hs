@@ -124,6 +124,7 @@ data HHC_ExternalAttribution
   , _identifier :: Identifier
   , _copyright :: Maybe T.Text
   , _licenseName :: Maybe T.Text
+  , _licenseText :: Maybe T.Text
   , _preselected :: Bool
   } deriving (Show, Generic, Eq)
 instance A.ToJSON HHC_ExternalAttribution where
@@ -135,6 +136,7 @@ instance A.ToJSON HHC_ExternalAttribution where
         identifier
         copyright
         licenseName
+        licenseText
         preselected) = let
             fromIdentifier = \case
                 Identifier str -> [ "packageName" A..= str ]
@@ -165,6 +167,7 @@ instance A.ToJSON HHC_ExternalAttribution where
                             , "comment" A..= comment
                             , "copyright" A..= copyright
                             , "licenseName" A..= licenseName
+                            , "licenseText" A..= licenseText 
                             , "originId" A..= originId
                             , "preSelected" A..= maybePreselected
                             ] ++ (fromIdentifier identifier))
@@ -190,9 +193,12 @@ instance A.FromJSON HHC_ExternalAttribution where
     licenseName <- fmap (\case
       Just "" -> Nothing
       l -> l) (v A..:? "licenseName")
+    licenseText <- fmap (\case
+      Just "" -> Nothing
+      l -> l) (v A..:? "licenseText")
     preselected <- fmap (False `Maybe.fromMaybe`) (v A..:? "preSelected")
 
-    return (HHC_ExternalAttribution source attributionConfidence comment originId identifier copyright licenseName preselected)
+    return (HHC_ExternalAttribution source attributionConfidence comment originId identifier copyright licenseName licenseText preselected)
 
 data HHC_FrequentLicense
   = HHC_FrequentLicense
