@@ -27,7 +27,7 @@ jobs:
         stack-version: 'latest'
 
     - name: Cache
-      uses: actions/cache@v1
+      uses: actions/cache@v1.1
       env:
         cache-name: cache-stack
       with:
