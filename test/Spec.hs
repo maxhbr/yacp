@@ -236,6 +236,7 @@ hhcSpec =do
               expected_identifier
               (Just "Some Copyright")
               (Just "MIT AND GPL-2.0-or-later")
+              Nothing
               False
         ea <- case (A.eitherDecode ea_str :: Either String HHC_ExternalAttribution) of 
               Right ea' -> return ea'
@@ -267,6 +268,7 @@ hhcSpec =do
               expected_identifier
               (Just "Some Copyright")
               Nothing
+              Nothing
               True
         ea <- case (A.eitherDecode ea_str :: Either String HHC_ExternalAttribution) of 
               Right ea' -> return ea'
@@ -287,9 +289,9 @@ hhcSpec =do
   describe "HHC Utils" $ let
       source = HHC_ExternalAttribution_Source "test" 100
       identifier version = PURL Nothing Nothing Nothing "name" (Just version) Nothing Nothing
-      ea1 = HHC_ExternalAttribution source 100 Nothing Nothing (identifier "1.2") Nothing Nothing False
-      ea2 = HHC_ExternalAttribution source 100 Nothing Nothing (identifier "1.3") Nothing Nothing False
-      ea3 = HHC_ExternalAttribution source 100 Nothing Nothing (identifier "1.2") Nothing Nothing True
+      ea1 = HHC_ExternalAttribution source 100 Nothing Nothing (identifier "1.2") Nothing Nothing Nothing False
+      ea2 = HHC_ExternalAttribution source 100 Nothing Nothing (identifier "1.3") Nothing Nothing Nothing False
+      ea3 = HHC_ExternalAttribution source 100 Nothing Nothing (identifier "1.2") Nothing Nothing Nothing True
 
     in do
       it "mergifyEA" $ do
