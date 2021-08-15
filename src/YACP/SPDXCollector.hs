@@ -65,7 +65,7 @@ convertSPDXRelationship (SPDXRelationship _ t target src)
 
 parseSPDXBS :: B.ByteString -> YACP (Maybe YACPIssue)
 parseSPDXBS bs =
-  case (A.eitherDecode bs :: Either String SPDXDocument) of
+  case parseSPDXDocumentBS bs of
     Right spdx -> do
       addRoots (V.fromList (map spdxidToIdentifier (_SPDX_documentDescribes spdx)))
       addFiles (V.fromList (map convertSPDXFile (_SPDX_files spdx)))

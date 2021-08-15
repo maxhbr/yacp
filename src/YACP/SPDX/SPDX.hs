@@ -7,7 +7,7 @@
 module YACP.SPDX.SPDX
   ( module X
   , SPDXDocument (..)
-  , parseSPDXDocument
+  , parseSPDXDocument, parseSPDXDocumentBS
   , spdxDocumentToGraph
   ) where
 
@@ -72,11 +72,15 @@ instance A.FromJSON SPDXDocument where
 parseSPDXDocument :: FilePath -> IO SPDXDocument
 parseSPDXDocument p = do
   bs <- B.readFile p
-  case A.eitherDecode' bs of
+  case parseSPDXDocumentBS bs of 
+    Left err -> fail err
     Right spdx -> return spdx
-    Left err   -> case Y.decodeEither' (B.toStrict bs) of
-      Right spdx -> return spdx
-      Left err'  -> fail (show [err, show err'])
+parseSPDXDocumentBS :: B.ByteString -> Either String SPDXDocument
+parseSPDXDocumentBS bs = case A.eitherDecode' bs of
+  Right spdx -> Right spdx
+  Left err   -> case Y.decodeEither' (B.toStrict bs) of
+    Right spdx -> Right spdx
+    Left err'  -> Left (show [err, show err'])
 
 spdxDocumentToGraph :: SPDXDocument 
                     -> (UG.Gr (Either SPDXFile SPDXPackage) SPDXRelationship
