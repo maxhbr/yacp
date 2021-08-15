@@ -65,7 +65,7 @@ instance A.FromJSON SPDXDocument where
     <*> fmap ([] `Maybe.fromMaybe`) (v A..: "packages")
     -- <*> v A..: "hasExtractedLicensingInfos"
     -- <*> v A..: "snippets"
-    <*> fmap ([] `Maybe.fromMaybe`) (v A..: "relationships")
+    <*> fmap ([] `Maybe.fromMaybe`) (v A..:? "relationships")
     -- <*> v A..: "revieweds"
     -- <*> v A..: "annotations"
 
