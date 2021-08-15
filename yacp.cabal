@@ -43,6 +43,7 @@ library
       YACP.Plantuml
       YACP.PPState
       YACP.ScancodeCollector
+      YACP.ScanossCollector
       YACP.SPDX.Annotations
       YACP.SPDX.Common
       YACP.SPDX.DocumentCreationInformation

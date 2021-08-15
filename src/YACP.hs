@@ -73,7 +73,7 @@ failOnIssue = do
 argsToYACP' :: [String] -> YACP ()
 argsToYACP' [] = return ()
 argsToYACP' [outDir] = do
-  ppState
+  -- ppState
   MTL.liftIO $ createDirectoryIfMissing True outDir
   writeStateFile (outDir </> "_state.json")
   writePlantumlFile (outDir </> "plantuml.puml")
