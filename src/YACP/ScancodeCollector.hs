@@ -173,7 +173,7 @@ instance A.FromJSON ScancodeFile where
   parseJSON = A.withObject "ScancodeFile" $ \v -> do
     ScancodeFile <$> v A..: "files"
 
-parseScancodeBS :: B.ByteString -> YACP ()
+parseScancodeBS :: B.ByteString -> YACP (Maybe YACPIssue)
 parseScancodeBS bs =
   case (A.eitherDecode bs :: Either String ScancodeFile) of
     Right (ScancodeFile scFiles) -> let
@@ -185,4 +185,7 @@ parseScancodeBS bs =
       addFiles files
       addComponents cs
       addRelations rs
-    Left err     -> stderrLog err
+      return Nothing
+    Left err   -> do
+      stderrLog err
+      return (Just (YACPParsingIssue err))

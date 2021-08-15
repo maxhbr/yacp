@@ -6,7 +6,7 @@
 {-# LANGUAGE LambdaCase #-}
 module YACP.OrtCollector
   (OrtFile (..), OrtResult (..)
-  , parseOrtFile, parseOrtBS
+  , parseOrtBS
   ) where
 
 import YACP.Core
@@ -25,11 +25,7 @@ import qualified Control.Monad.State as MTL
 import qualified Distribution.SPDX as SPDX
 import qualified Distribution.Parsec as SPDX
 
-parseOrtFile :: FilePath -> YACP ()
-parseOrtFile path = do
-  bs <- MTL.liftIO $ B.readFile path
-  parseOrtBS bs
-parseOrtBS :: B.ByteString -> YACP ()
+parseOrtBS :: B.ByteString -> YACP (Maybe YACPIssue)
 parseOrtBS bs =
   case (A.eitherDecode bs :: Either String OrtFile) of
     Right (OrtFile{_of_Root = root, _of_Analyzer = analyzerResult, _of_Scanner = scannerResult}) -> case analyzerResult `fromMaybe` scannerResult of
@@ -41,4 +37,7 @@ parseOrtBS bs =
           Just root' -> addRelations $ V.map (\pId -> Relation root' CONTAINS pId) projectIds
           Nothing -> return ()
         addRoots projectIds
-    Left err     -> stderrLog err
+        return Nothing
+    Left err     -> do
+      stderrLog err
+      return (Just (YACPParsingIssue err))

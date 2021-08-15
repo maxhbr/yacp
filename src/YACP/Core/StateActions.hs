@@ -11,6 +11,7 @@ module YACP.Core.StateActions
   , addRelation, addRelations
   , addFile, addFiles
   , getForIdentifier, getCsForIdentifier, getRsForIdentifier
+  , addYACPIssue
   -- Aeson
   , objectNoNulls
   -- misc
@@ -126,6 +127,12 @@ getForIdentifier identifier = do
                  }) -> let
                    rootsMatchingIdentifier = filter (identifier `matchesIdentifier`) roots
                    filesMatchingIdentifier = Files (V.filter (identifier `matchesIdentifiable`) fs)
-                   in return ( State rootsMatchingIdentifier csForIdentifier rsForIdentifier filesMatchingIdentifier
+                   in return ( State rootsMatchingIdentifier csForIdentifier rsForIdentifier filesMatchingIdentifier []
                              )
   
+addYACPIssue :: YACPIssue -> YACP ()
+addYACPIssue i = do
+  case i of 
+    YACPParsingIssue err -> stderrLog ("Parsing failed with: " ++ err)
+    YACPFileParsingIssue fp err -> stderrLog ("Parsing of " ++ fp ++ " failed with: " ++ err)
+  MTL.modify (\s@State{_getYacpIssues = is} -> s{_getYacpIssues = i:is})

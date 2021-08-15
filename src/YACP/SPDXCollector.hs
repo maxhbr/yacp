@@ -63,7 +63,7 @@ convertSPDXRelationship :: SPDXRelationship -> Relation
 convertSPDXRelationship (SPDXRelationship _ t target src)
   = Relation (spdxidToIdentifier src) t (spdxidToIdentifier target)
 
-parseSPDXBS :: B.ByteString -> YACP ()
+parseSPDXBS :: B.ByteString -> YACP (Maybe YACPIssue)
 parseSPDXBS bs =
   case (A.eitherDecode bs :: Either String SPDXDocument) of
     Right spdx -> do
@@ -71,4 +71,7 @@ parseSPDXBS bs =
       addFiles (V.fromList (map convertSPDXFile (_SPDX_files spdx)))
       addComponents (V.fromList (map convertSPDXPackage (_SPDX_packages spdx)))
       addRelations (V.fromList (map convertSPDXRelationship (_SPDX_relationships spdx)))
-    Left err   -> stderrLog err
+      return Nothing
+    Left err   -> do
+      stderrLog err
+      return (Just (YACPParsingIssue err))

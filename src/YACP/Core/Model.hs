@@ -27,7 +27,7 @@ module YACP.Core.Model
   , File (..), FileType (..)
   , defaultFileRootIdentifier, mkFile
   -- State
-  , State (..), Components (..), Relations (..), Files (..)
+  , State (..), Components (..), Relations (..), Files (..), YACPIssue (..)
   , YACP (..), runYACP, runYACP'
   ) where
 
@@ -496,12 +496,20 @@ data Files
 instance A.ToJSON Files
 instance A.FromJSON Files
 
+data YACPIssue
+  = YACPParsingIssue String
+  | YACPFileParsingIssue FilePath String
+  deriving (Eq, Show, Generic)
+instance A.ToJSON YACPIssue
+instance A.FromJSON YACPIssue
+
 data State
   = State
   { _getRoots :: [Identifier]
   , _getComponents :: Components
   , _getRelations :: Relations
-  , _getFiles :: Files
+  , _getFiles :: Files  
+  , _getYacpIssues :: [YACPIssue]
   } deriving (Eq, Show, Generic)
 instance A.ToJSON State
 instance A.FromJSON State
@@ -510,7 +518,7 @@ type YACP a
   = MTL.StateT State IO a
 runYACP :: YACP a -> IO (a, State)
 runYACP yacp = let
-  initialState = State [] (Components V.empty) (Relations V.empty) (Files V.empty)
+  initialState = State [] (Components V.empty) (Relations V.empty) (Files V.empty) []
   in runYACP' yacp initialState
 runYACP' :: YACP a -> State -> IO (a, State)
 runYACP' yacp initialState = MTL.runStateT yacp initialState

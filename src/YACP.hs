@@ -33,13 +33,20 @@ import System.Directory (createDirectoryIfMissing, doesFileExist)
 import qualified Data.ByteString.Lazy as B
 import qualified Control.Monad.State as MTL
 
-parseBSFromFile :: (B.ByteString -> YACP a) -> FilePath -> YACP a
+parseBSFromFile :: (B.ByteString -> YACP (Maybe YACPIssue)) -> FilePath -> YACP ()
 parseBSFromFile fun path = do
   fileExist <- MTL.liftIO $ doesFileExist path
   unless fileExist $
     fail ("The file " ++ path ++ " was not found")
   bs <- MTL.liftIO $ B.readFile path
-  fun bs
+  maybeIssue <- fun bs
+  case maybeIssue of 
+    Nothing                     -> pure ()
+    Just (YACPParsingIssue err) -> addYACPIssue (YACPFileParsingIssue path err)
+    Just issue                  -> addYACPIssue issue
+
+parseOrtFile :: FilePath -> YACP ()
+parseOrtFile  = parseBSFromFile parseOrtBS
 
 parseScancodeFile :: FilePath -> YACP ()
 parseScancodeFile = parseBSFromFile parseScancodeBS
@@ -53,6 +60,16 @@ parseCycloneDXFile = parseBSFromFile parseCycloneDXBS
 parseHHCFile :: FilePath -> YACP ()
 parseHHCFile = parseBSFromFile parseHHCBS
 
+failOnIssue :: YACP ()
+failOnIssue = do
+  issues <- MTL.gets (_getYacpIssues)
+  case issues of
+    [] -> pure ()
+    is -> do 
+      stderrLog ("Failed with " ++ (show (length is)) ++ " issues")
+      MTL.liftIO exitFailure
+
+
 argsToYACP' :: [String] -> YACP ()
 argsToYACP' [] = return ()
 argsToYACP' [outDir] = do
@@ -62,6 +79,7 @@ argsToYACP' [outDir] = do
   writePlantumlFile (outDir </> "plantuml.puml")
   _ <- writeDigraphFile (outDir </> "digraph.dot")
   writeHHCFile (outDir </> "hhc.json")
+  failOnIssue
 argsToYACP' ("--sc": (f: oArgs)) = parseScancodeFile f >> argsToYACP' oArgs
 argsToYACP' ("--ort": (f: oArgs)) = parseOrtFile f >> argsToYACP' oArgs
 argsToYACP' ("--spdx": (f: oArgs)) = parseSPDXFile f >> argsToYACP' oArgs

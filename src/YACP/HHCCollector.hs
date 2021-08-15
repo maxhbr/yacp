@@ -40,7 +40,7 @@ addEAToPath fp (Just ea@(HHC_ExternalAttribution{_identifier=identifier,_license
     addRelation relation
     pure ()
 
-parseHHCBS :: B.ByteString -> YACP ()
+parseHHCBS :: B.ByteString -> YACP (Maybe YACPIssue)
 parseHHCBS bs =
   case (A.eitherDecode bs :: Either String HHC) of
     Right result -> do
@@ -49,4 +49,7 @@ parseHHCBS bs =
       MTL.liftIO $ writeHHCStats merged
       mapM_ (\(path, vals) -> mapM_ (\val -> addEAToPath path (val `Map.lookup` eas)) vals)
             (Map.toList rtas)
-    Left err -> stderrLog err
+      return Nothing
+    Left err   -> do
+      stderrLog err
+      return (Just (YACPParsingIssue err))
