@@ -271,18 +271,9 @@ renderSpdxLicense (SPDX.EOr l r) = unwords ["(", renderSpdxLicense l, "OR", rend
 class Licenseable a where
   getLicense :: a -> Maybe SPDX.LicenseExpression
   showLicense :: a -> String
-  showLicense a = let
-    showLicense' :: SPDX.LicenseExpression -> String
-    showLicense' (SPDX.ELicense l _) = let
-      showLicense'' :: SPDX.SimpleLicenseExpression -> String
-      showLicense'' (SPDX.ELicenseId l') = show l'
-      showLicense'' (SPDX.ELicenseRef l') = SPDX.licenseRef l'
-      in showLicense'' l
-    showLicense' (SPDX.EAnd l r) = unwords ["(", showLicense' l, "AND", showLicense' r, ")"]
-    showLicense' (SPDX.EOr l r) = unwords ["(", showLicense' l, "OR", showLicense' r, ")"]
-    in case getLicense a of
-      Just l -> renderSpdxLicense l
-      Nothing -> ""
+  showLicense a = case getLicense a of
+    Just l -> renderSpdxLicense l
+    Nothing -> ""
 
 instance Licenseable Component where
   getLicense = _getComponentLicense
