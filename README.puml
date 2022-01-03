@@ -18,13 +18,15 @@ mindmapDiagram {
 </style>
 * <b>YACP</b>
 -- SPDX 2.2 JSON or YAML
--- ORT analyze or scan result
+--[#gray] ORT result
+--[#gray] (WIP) ORT evaluated model
 -- Scancode
 -- (WIP) CycloneDX
--- HHC
+-- Opossum
+-- ...
 --_ Raw Data as JSON
 ++_ Raw Data as JSON
 ++ Graph
 ++ Graphviz / Plantuml
-++ HHC
+++ Opossum
 @endmindmap
