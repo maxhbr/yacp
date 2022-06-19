@@ -7,36 +7,47 @@ packages:
 - completed:
     name: opossum-lib
     pantry-tree:
-      sha256: 294ef9b9b9fe913db8efd2e548494355f4b831fc59bbe671f8c67adaaee498f7
-      size: 1807
-    commit: 83fff5852727d2d2d826aa9900bf22ae09f10858
+      sha256: 353258048ffb4335f64b9a499d690c5176ed4f7ebc385296ff1d3e1672781e28
+      size: 2000
+    commit: 5726e6fd98764e21e339aed6993db7c3059f2c83
     git: https://github.com/opossum-tool/opossum.lib.hs
     version: 0.1.0.0
   original:
-    commit: 83fff5852727d2d2d826aa9900bf22ae09f10858
+    commit: 5726e6fd98764e21e339aed6993db7c3059f2c83
     git: https://github.com/opossum-tool/opossum.lib.hs
 - completed:
     name: spdx-tools
     pantry-tree:
-      sha256: d15a2856bfe4f0163bdcdd4fffcd8a718df1699d99f1d09625d22737ecec06b1
-      size: 6315
-    commit: b8a036747b9be077942880243258ebb1279af616
+      sha256: d0e987bb11e8a3eb06b5b254fce8909ce305b5d6a5afd61e2c4ad4df1f0dd593
+      size: 6385
+    commit: cbf3583bdb6af620f54285af3662dc2d89c88568
     git: https://github.com/maxhbr/spdx-tools-hs
     version: 0.1.0.0
   original:
-    commit: b8a036747b9be077942880243258ebb1279af616
+    commit: cbf3583bdb6af620f54285af3662dc2d89c88568
     git: https://github.com/maxhbr/spdx-tools-hs
 - completed:
     name: packageurl
     pantry-tree:
-      sha256: f51f1e469594528921baa6fd2cc1e4812af57e26055e6478d3039fe29564c68d
-      size: 570
-    commit: 5d4de0e17311e033e90c89afc6249722b42ce5a1
+      sha256: 8b6fd73871ec59b03fbe2878db98dac0769ffd37e7f8d75de142cdcfc4181257
+      size: 519
+    commit: 81d3701a1a630e529862d3c639a69e09848f7cf6
     git: https://github.com/maxhbr/packageurl-hs
     version: 0.1.0.0
   original:
-    commit: 5d4de0e17311e033e90c89afc6249722b42ce5a1
+    commit: 81d3701a1a630e529862d3c639a69e09848f7cf6
     git: https://github.com/maxhbr/packageurl-hs
+- completed:
+    name: spdx
+    pantry-tree:
+      sha256: 00df55038fd4b10d8a86e3edd4c9cc4f9eb9622136db8cc9252b480a220d5fe1
+      size: 1462
+    commit: ef1807e08299150e4b42dfb33e87e2982be8d49c
+    git: https://github.com/phadej/spdx
+    version: 1.0.0.3
+  original:
+    commit: ef1807e08299150e4b42dfb33e87e2982be8d49c
+    git: https://github.com/phadej/spdx
 - completed:
     pantry-tree:
       sha256: c7f310199441f885ec6063af6cf316130be4672170b9c258eab488496b55124b
@@ -44,17 +55,10 @@ packages:
     hackage: diagrams-graphviz-1.4.1.1@sha256:e71afa8f89904c2a6a2cb490dba7108c6425779c2174b90bd90dbaf507a9d3dc,1388
   original:
     hackage: diagrams-graphviz-1.4.1.1@sha256:e71afa8f89904c2a6a2cb490dba7108c6425779c2174b90bd90dbaf507a9d3dc,1388
-- completed:
-    pantry-tree:
-      sha256: 42983d9d32b1d9a09196543a0062eac3fee7546a308f9b99159cb78f1be0665d
-      size: 569
-    hackage: spdx-1.0.0.2@sha256:7dfac9b454ff2da0abb7560f0ffbe00ae442dd5cb76e8be469f77e6988a70fed,2008
-  original:
-    hackage: spdx-1.0.0.2@sha256:7dfac9b454ff2da0abb7560f0ffbe00ae442dd5cb76e8be469f77e6988a70fed,2008
 snapshots:
 - completed:
-    sha256: d9e658a22cfe8d87a64fdf219885f942fef5fe2bcb156a9800174911c5da2443
-    size: 586268
-    url: https://raw.githubusercontent.com/commercialhaskell/stackage-snapshots/master/lts/18/13.yaml
+    sha256: fb634b19f31da06684bb07ce02a20c75a3162138f279b388905b03ebd57bb50f
+    size: 618876
+    url: https://raw.githubusercontent.com/commercialhaskell/stackage-snapshots/master/lts/19/6.yaml
   original:
-    url: https://raw.githubusercontent.com/commercialhaskell/stackage-snapshots/master/lts/18/13.yaml
+    url: https://raw.githubusercontent.com/commercialhaskell/stackage-snapshots/master/lts/19/6.yaml
