@@ -1,6 +1,6 @@
 cabal-version: 1.12
 
--- This file has been generated from package.yaml by hpack version 0.34.4.
+-- This file has been generated from package.yaml by hpack version 0.34.7.
 --
 -- see: https://github.com/sol/hpack
 
@@ -26,35 +26,32 @@ source-repository head
 library
   exposed-modules:
       YACP
+      YACP.Collector.CycloneDXCollector
+      YACP.Collector.HHCCollector
+      YACP.Collector.ORT.ORT
+      YACP.Collector.OrtCollector
+      YACP.Collector.ScancodeCollector
+      YACP.Collector.ScanossCollector
+      YACP.Collector.SPDXCollector
       YACP.ComputeGraph
       YACP.Core
       YACP.Core.Model
       YACP.Core.MyPrelude
       YACP.Core.StateActions
-      YACP.CycloneDXCollector
-      YACP.Graphviz
-      YACP.HHC.HHC
-      YACP.HHC.HHCUtils
-      YACP.HHCCollector
-      YACP.HHCWriter
-      YACP.ORT.ORT
-      YACP.OrtCollector
+      YACP.Model
+      YACP.Model.Component
+      YACP.Model.File
+      YACP.Model.Identifier
+      YACP.Model.Licenseable
+      YACP.Model.Relation
+      YACP.Model.State
       YACP.ParserHelper
-      YACP.Plantuml
       YACP.PPState
-      YACP.ScancodeCollector
-      YACP.ScanossCollector
-      YACP.SPDX.Annotations
-      YACP.SPDX.Common
-      YACP.SPDX.DocumentCreationInformation
-      YACP.SPDX.FileInformation
-      YACP.SPDX.OtherLicensingInformationDetected
-      YACP.SPDX.PackageInformation
-      YACP.SPDX.RelationshipsbetweenSPDXElements
-      YACP.SPDX.SnippetInformation
-      YACP.SPDX.SPDX
-      YACP.SPDXCollector
-      YACP.StateWriter
+      YACP.Writer.GraphvizWriter
+      YACP.Writer.HHCWriter
+      YACP.Writer.PlantumlWriter
+      YACP.Writer.StateWriter
+      YACP.YacpPrelude
   other-modules:
       Paths_yacp
   hs-source-dirs:
