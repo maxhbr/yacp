@@ -27,14 +27,7 @@ library
   exposed-modules:
       YACP
       YACP.Model
-      YACP.Model.Component
-      YACP.Model.File
-      YACP.Model.Identifier
-      YACP.Model.License
-      YACP.Model.Origin
-      YACP.Model.Relation
       YACP.MyPrelude
-      YACP.State
   other-modules:
       Paths_yacp
   hs-source-dirs:
