@@ -42,6 +42,7 @@ dependencies:
 # parsing and file handling
 - aeson
 - aeson-pretty
+- cassava
 - yaml
 # output
 - graphviz

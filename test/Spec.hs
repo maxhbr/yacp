@@ -1,4 +1,7 @@
 {-# LANGUAGE DeriveGeneric #-}
+{-# LANGUAGE LambdaCase #-}
+{-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE TemplateHaskell #-}
 import           Control.Exception              ( evaluate )
 import qualified Data.Aeson                    as A
 import qualified Data.Aeson.Encode.Pretty      as A
@@ -27,7 +30,6 @@ import           Test.QuickCheck
 
 import           YACP
 
-
 identifierSpec =
   let purl1 = "pkg:pypi/Jinja2@2.11.2"
       purl2 =
@@ -35,7 +37,7 @@ identifierSpec =
   in  describe "Identifier" $ do
         it ("parse purl1=" ++ purl1) $ do
           parsePURL purl1
-            `shouldBe` (PURL
+            `shouldBe` (PurlIdentifier
                          (PURL.PURL (Just "pkg")
                                     (Just (PURL.parsePURL_Type "pypi"))
                                     Nothing
@@ -47,7 +49,7 @@ identifierSpec =
                        )
         it ("parse purl2=" ++ purl2) $ do
           parsePURL purl2
-            `shouldBe` (PURL
+            `shouldBe` (PurlIdentifier
                          (PURL.PURL (Just "pkg")
                                     (Just (PURL.parsePURL_Type "maven"))
                                     (Just "org.apache.xmlgraphics")
@@ -60,6 +62,42 @@ identifierSpec =
         it ("test show of purl2=" ++ purl2) $ do
           show (parsePURL purl2) `shouldBe` purl2
 
+componentDetectionSpec =
+  let componentDetectionFileBS :: B.ByteString
+      componentDetectionFileBS =
+        B.fromStrict
+          $(embedFile "test/data/component-detection/component-detection.json")
+  in  describe "ComponentDetectionReader" $ do
+        let parsed = parseComponentDetectionBS componentDetectionFileBS
+        it ("parsing should succeed") $ do
+          when (isLeft parsed) $ parsed `shouldBe` (Left (YACPParsingIssue ""))
+          isRight parsed `shouldBe` True
+
+fosslightDependencyReportSpec =
+  let fosslightFileBS :: B.ByteString
+      fosslightFileBS =
+        B.fromStrict
+          $(embedFile "test/data/fosslight/fosslight_dependency-Report_SRC.csv")
+  in describe "FosslightDependencyReportReader" $ do
+        let parsed = parseFosslightDepRepBS fosslightFileBS
+        it ("parsing should succeed") $ do
+          when (isLeft parsed) $ parsed `shouldBe` (Left (YACPParsingIssue ""))
+          isRight parsed `shouldBe` True
+
+itDependsReportSpec =
+  let itDependsFileBS :: B.ByteString
+      itDependsFileBS =
+        B.fromStrict
+          $(embedFile "test/data/it-depends/it-depends.json")
+  in describe "ItDependsReportReader" $ do
+        let parsed = parseItDependsBS itDependsFileBS
+        it ("parsing should succeed") $ do
+          when (isLeft parsed) $ parsed `shouldBe` (Left (YACPParsingIssue ""))
+          isRight parsed `shouldBe` True
+
 main :: IO ()
 main = hspec $ do
   identifierSpec
+  componentDetectionSpec
+  fosslightDependencyReportSpec
+  itDependsReportSpec

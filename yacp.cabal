@@ -31,8 +31,11 @@ library
       YACP.Core.MyPrelude
       YACP.Core.State
       YACP.Reader.ComponentDetectionReader
+      YACP.Reader.FosslightDependencyReportReader
+      YACP.Reader.ItDependsReader
       YACP.Reader.ScanossReader
       YACP.Reader.StateReader
+      YACP.Writer.CSVWriter
       YACP.Writer.StateWriter
   other-modules:
       Paths_yacp
@@ -44,6 +47,7 @@ library
     , aeson-pretty
     , base >=4.7 && <5
     , bytestring
+    , cassava
     , containers
     , directory
     , fgl
@@ -79,6 +83,7 @@ executable yacp-exe
     , aeson-pretty
     , base >=4.7 && <5
     , bytestring
+    , cassava
     , containers
     , directory
     , fgl
@@ -117,6 +122,7 @@ test-suite yacp-test
     , aeson-pretty
     , base >=4.7 && <5
     , bytestring
+    , cassava
     , containers
     , directory
     , fgl

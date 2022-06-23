@@ -7,12 +7,14 @@
 {-# LANGUAGE StrictData #-}
 module YACP.Core.Model
   ( module X
+  , module PURL
   -- Identifier
   , Identifier (..)
   , matchesIdentifier
   , flattenIdentifierToList
   , mkUUID
   , parsePURL
+  , nameAndVersion
   , Identifiable (..)
   -- Relations
   , RelationType (..)
@@ -23,14 +25,19 @@ module YACP.Core.Model
   -- Statement
   , Origin (..)
   , StatementMetadata (..)
+  , StatementContent (..)
   , Statemental (..)
   , Statement (..)
+  , setOirigin1
   , Statements (..)
+  , setOirigin
+  , clusterifyStatements
   ) where
 
 import YACP.Core.MyPrelude
 import SPDX.Document.RelationshipTypes as X
 import SPDX.LicenseExpression as X
+import PURL.PURL hiding (parsePURL)
 import qualified PURL.PURL as PURL
 
 import System.Console.Pretty (color, Color(Green))
@@ -39,6 +46,7 @@ import Data.List (nub)
 import Data.List.Split (splitOn)
 import Data.Maybe (fromMaybe, maybeToList)
 import Data.UUID (UUID)
+import qualified Data.Map                      as Map
 import System.Random (randomIO)
 import Data.String (IsString(..))
 import qualified Control.Monad.State as MTL
@@ -62,7 +70,7 @@ data Identifier
   | AbsolutePathIdentifier FilePath -- path of file
   | RelativePathIdentifier Identifier FilePath
   | UrlIdentifier String
-  | PURL PURL.PURL -- all coordinates should be converted to purls
+  | PurlIdentifier PURL.PURL -- all coordinates should be converted to purls
   | Hash (Maybe String) -- type
          String         -- hash
   -- | CPE -- TODO, (sometimes) not a good Identifier?
@@ -76,7 +84,7 @@ instance Show Identifier where
   show (Identifier str) = str
   show (UuidIdentifier uuid) = show uuid
   show (UrlIdentifier url) = url
-  show (PURL purl) = show purl
+  show (PurlIdentifier purl) = show purl
   show (AbsolutePathIdentifier fp) = fp
   show (RelativePathIdentifier _ fp) = fp
   show (Hash (Just t) h) = t ++ ":" ++ h
@@ -87,6 +95,9 @@ flattenIdentifierToList :: Identifier -> [Identifier]
 flattenIdentifierToList (Identifiers is) = nub $ concatMap flattenIdentifierToList is
 flattenIdentifierToList i                = [i]
 
+nameAndVersion :: String -> String -> Identifier
+nameAndVersion name version = PurlIdentifier (PURL (Just "pkg") Nothing Nothing name (Just version) Nothing Nothing)
+
 mkUUID :: IO Identifier
 mkUUID = do
   uuid <- randomIO
@@ -94,7 +105,7 @@ mkUUID = do
 
 parsePURL :: String -> Identifier
 parsePURL uriStr = case PURL.parsePURL uriStr of
-  Just purl -> PURL purl
+  Just purl -> PurlIdentifier purl
   Nothing  -> Identifier uriStr
 
 instance Semigroup Identifier where
@@ -111,7 +122,7 @@ matchesIdentifier :: Identifier -> Identifier -> Bool
 matchesIdentifier i1 i2 = let
     matchesIdentifier' :: Identifier -> Identifier -> Bool
     matchesIdentifier' (Hash _ h1) (Hash _ h2) = h1 == h2 -- ignore type
-    matchesIdentifier' (PURL p1) (PURL p2) = 
+    matchesIdentifier' (PurlIdentifier p1) (PurlIdentifier p2) = 
       and [ PURL._PURL_type p1 == PURL._PURL_type p2 
           , PURL._PURL_namespace p1 == PURL._PURL_namespace p2 
           , PURL._PURL_name p1 == PURL._PURL_name p2       
@@ -161,6 +172,9 @@ class IdentifierProvider a where
           Nothing -> V.singleton i
       in V.foldl' fun V.empty
     in clusterifyIdentifiers . getIdentifiers
+instance IdentifierProvider a => IdentifierProvider (Maybe a) where
+  getIdentifiers (Just a) = getIdentifiers a
+  getIdentifiers Nothing  = mempty
 
 data Relation
   = Relation
@@ -231,7 +245,7 @@ instance Identifiable Origin where
 instance IdentifierProvider Origin where
   getIdentifiers (Origin i _) = V.singleton i
 
-data StatementMetadata = StatementMetadata Identifier Origin
+data StatementMetadata = StatementMetadata Identifier (Maybe Origin)
     deriving (Eq, Show, Generic)
 instance A.ToJSON StatementMetadata
 instance A.FromJSON StatementMetadata
@@ -243,7 +257,7 @@ class (IdentifierProvider a) => Statemental a where
     getStatementSubject :: a -> Identifier
     getStatementSubject a = case  getStatementMetadata a of
         StatementMetadata i _ -> i
-    getStatementOrigin :: a -> Origin
+    getStatementOrigin :: a -> Maybe Origin
     getStatementOrigin a = case  getStatementMetadata a of
         StatementMetadata _ o -> o
     getStatementRelations' :: a -> Relations
@@ -255,9 +269,10 @@ class (IdentifierProvider a) => Statemental a where
 data StatementContent
     = FoundManifestFile Identifier
     | FoundDependent Identifier
+    | FoundDependency Identifier
     | ComponentUrl String
     | ComponentLicense MaybeLicenseExpression
-    | ComponentVuln String
+    | ComponentVulnerability String
     deriving (Eq, Show, Generic)
 instance A.ToJSON StatementContent
 instance A.FromJSON StatementContent
@@ -271,6 +286,9 @@ data Statement
 instance A.ToJSON Statement
 instance A.FromJSON Statement
 
+setOirigin1 :: Origin -> Statement -> Statement
+setOirigin1 o (Statement (StatementMetadata i _) sc) = Statement (StatementMetadata i (Just o)) sc
+
 instance IdentifierProvider Statement where
   getIdentifiers s@(Statement sm sc) = let
       identifiersFromMetatada = getIdentifiers sm
@@ -282,6 +300,7 @@ instance Statemental Statement where
     getStatementMetadata (Statement sm _) = sm
 
     getStatementRelations' s@(Statement _ (FoundDependent src)) = Relations . pure $ Relation src DEPENDS_ON (getStatementSubject s)
+    getStatementRelations' s@(Statement _ (FoundDependency trg)) = Relations . pure $ Relation (getStatementSubject s) DEPENDS_ON trg
     getStatementRelations' _ = mempty
 
 data Statements
@@ -295,6 +314,9 @@ instance Monoid Statements where
     mempty = Statements mempty
 instance IdentifierProvider Statements where
   getIdentifiers (Statements ss) = V.concatMap getIdentifiers ss
+
+setOirigin :: Origin -> Statements -> Statements
+setOirigin o (Statements ss) = Statements (V.map (setOirigin1 o) ss)
 
 clusterifyStatements :: Statements -> V.Vector (Identifier, Statements)
 clusterifyStatements (ss@(Statements ss')) = let

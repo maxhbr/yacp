@@ -7,7 +7,8 @@
 {-# LANGUAGE TypeFamilies              #-}
 
 module YACP.Core.State
-  ( State(..)
+  ( YACPIssue(..)
+  , State(..)
   , YACP(..)
   , runYACP
   , runYACP'
@@ -15,7 +16,9 @@ module YACP.Core.State
   , stderrLog
   , addRoot
   , addStatement
+  , addStatements
   , addYACPIssue
+  , readBSFromFile
   ) where
 
 import           YACP.Core.Model
@@ -47,6 +50,12 @@ import           System.IO                      ( hPutStrLn
                                                 , stderr
                                                 )
 import           System.Random                  ( randomIO )
+
+import qualified Control.Monad.State           as MTL
+import qualified Data.ByteString.Lazy          as B
+import           System.Directory               ( createDirectoryIfMissing
+                                                , doesFileExist
+                                                )
 
 
 data YACPIssue
@@ -85,7 +94,14 @@ addRoot r =
   MTL.modify (\s@State { _getRoots = rs } -> s { _getRoots = r : rs })
 
 addStatement :: Statement -> YACP ()
-addStatement = undefined
+addStatement st = MTL.modify
+  (\s@State { _getStatements = Statements sts } ->
+    s { _getStatements = Statements (st `V.cons` sts) }
+  )
+
+addStatements :: Statements -> YACP ()
+addStatements sts = MTL.modify
+  (\s@State { _getStatements = sts' } -> s { _getStatements = sts' <> sts })
 
 addYACPIssue :: YACPIssue -> YACP ()
 addYACPIssue i = do
@@ -97,3 +113,15 @@ addYACPIssue i = do
 
 stderrLog :: String -> YACP ()
 stderrLog msg = MTL.liftIO $ hPutStrLn stderr (color Green msg)
+
+readBSFromFile
+  :: (B.ByteString -> YACP (Maybe YACPIssue)) -> FilePath -> YACP ()
+readBSFromFile fun path = do
+  fileExist <- MTL.liftIO $ doesFileExist path
+  unless fileExist $ fail ("The file " ++ path ++ " was not found")
+  bs         <- MTL.liftIO $ B.readFile path
+  maybeIssue <- fun bs
+  case maybeIssue of
+    Nothing                     -> pure ()
+    Just (YACPParsingIssue err) -> addYACPIssue (YACPFileParsingIssue path err)
+    Just issue                  -> addYACPIssue issue

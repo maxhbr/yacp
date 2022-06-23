@@ -12,8 +12,11 @@ module YACP
 import           YACP.Core                     as X
 import           YACP.Reader.ComponentDetectionReader
                                                as X
+import YACP.Reader.FosslightDependencyReportReader as X
 import           YACP.Reader.ScanossReader     as X
 import           YACP.Reader.StateReader       as X
+import YACP.Reader.ItDependsReader as X
+import           YACP.Writer.CSVWriter         as X
 import           YACP.Writer.StateWriter       as X
 
 import qualified Control.Monad.State           as MTL
@@ -40,16 +43,22 @@ argsToYACP' [outDir] = do
   -- ppState
   MTL.liftIO $ createDirectoryIfMissing True outDir
   writeStateFile (outDir </> "_state.json")
+  writeCSVFile (outDir </> "out.csv")
   -- writePlantumlFile (outDir </> "plantuml.puml")
   -- _ <- writeDigraphFile (outDir </> "digraph.dot")
   -- writeHHCFile (outDir </> "hhc.json")
   failOnIssue
 argsToYACP' ("--yacp" : (f : oArgs)) = readStateFile f >> argsToYACP' oArgs
--- argsToYACP' ("--sc": (f: oArgs)) = parseScancodeFile f >> argsToYACP' oArgs
+argsToYACP' ("--component-detection" : (f : oArgs)) =
+  readComponentDetectionFile f >> argsToYACP' oArgs
+argsToYACP' ("--fosslight" : (f : oArgs)) =
+  readFosslightDepRepFile f >> argsToYACP' oArgs
+argsToYACP' ("--it-depends" : (f : oArgs)) =
+  readItDependsFile f >> argsToYACP' oArgs
 -- argsToYACP' ("--ort": (f: oArgs)) = parseOrtFile f >> argsToYACP' oArgs
 -- argsToYACP' ("--spdx": (f: oArgs)) = parseSPDXFile f >> argsToYACP' oArgs
 -- argsToYACP' ("--hhc": (f: oArgs)) = parseHHCFile f >> argsToYACP' oArgs
-argsToYACP' (unknown  : oArgs      ) = MTL.liftIO $ do
+argsToYACP' (unknown : oArgs) = MTL.liftIO $ do
   putStrLn ("failed to parse: " ++ unknown)
   exitFailure
 

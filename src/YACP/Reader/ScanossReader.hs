@@ -138,3 +138,5 @@ instance A.FromJSON ScanossFinding where
 data ScanossFile = ScanossFile (Map.Map FilePath [ScanossFinding])
 
 parseScanossBS = undefined
+
+readScanossFile = undefined
