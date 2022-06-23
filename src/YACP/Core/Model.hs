@@ -5,6 +5,7 @@
 {-# LANGUAGE DeriveGeneric #-}
 {-# LANGUAGE LambdaCase #-}
 {-# LANGUAGE StrictData #-}
+{-# LANGUAGE ScopedTypeVariables #-}
 module YACP.Core.Model
   ( module X
   , module PURL
@@ -44,7 +45,7 @@ import System.Console.Pretty (color, Color(Green))
 import System.IO (hPutStrLn, stderr)
 import Data.List (nub)
 import Data.List.Split (splitOn)
-import Data.Maybe (fromMaybe, maybeToList)
+import Data.Maybe (fromMaybe, maybeToList, catMaybes)
 import Data.UUID (UUID)
 import qualified Data.Map                      as Map
 import System.Random (randomIO)
@@ -61,6 +62,8 @@ import qualified Distribution.SPDX.License as SPDX
 import qualified Distribution.Parsec as SPDX
 import qualified Network.URI as URI
 import qualified System.FilePath as FP
+import Data.Typeable
+import Data.Dynamic
 
 
 --------------------------------------------------------------------------------
@@ -281,23 +284,37 @@ instance IdentifierProvider StatementContent where
   getIdentifiers _ = mempty
 
 data Statement 
-  = Statement StatementMetadata StatementContent
-  deriving (Eq, Show, Generic)
+  = Statement StatementMetadata TypeRep Dynamic
+  deriving (Show, Generic)
 instance A.ToJSON Statement
 instance A.FromJSON Statement
 
+mkStatement :: Typeable a => StatementMetadata -> a -> Statement
+mkStatement sm x = Statement sm (typeOf x) (toDyn x)
+
+unpackStatement :: forall a . Typeable a => Statement -> IO (Maybe a)
+unpackStatement (Statement _ have dyn) = let
+    want = typeRep (Proxy :: Proxy a)
+  in if want == have
+     then case fromDynamic dyn of 
+        Just x -> pure $ Just x
+        _      -> undefined
+     else pure Nothing
+
 setOirigin1 :: Origin -> Statement -> Statement
-setOirigin1 o (Statement (StatementMetadata i _) sc) = Statement (StatementMetadata i (Just o)) sc
+setOirigin1 o (Statement (StatementMetadata i _) t d) = Statement (StatementMetadata i (Just o)) t d
 
 instance IdentifierProvider Statement where
-  getIdentifiers s@(Statement sm sc) = let
+  getIdentifiers s@(Statement sm _ dyn) = let
       identifiersFromMetatada = getIdentifiers sm
-      identifiersFromContent = getIdentifiers sc
+      identifiersFromContent = case fromDynamic dyn of
+        Just x -> getIdentifiers x
+        Nothing -> mempty
       identifiersFromRelations = getIdentifiers (getStatementRelations s)
     in identifiersFromMetatada <> identifiersFromContent <> identifiersFromRelations
 
 instance Statemental Statement where
-    getStatementMetadata (Statement sm _) = sm
+    getStatementMetadata (Statement sm _ _) = sm
 
     getStatementRelations' s@(Statement _ (FoundDependent src)) = Relations . pure $ Relation src DEPENDS_ON (getStatementSubject s)
     getStatementRelations' s@(Statement _ (FoundDependency trg)) = Relations . pure $ Relation (getStatementSubject s) DEPENDS_ON trg
@@ -305,7 +322,7 @@ instance Statemental Statement where
 
 data Statements
   = Statements (Vector Statement)
-  deriving (Eq, Show, Generic)
+  deriving (Show, Generic)
 instance A.ToJSON Statements
 instance A.FromJSON Statements
 instance Semigroup Statements where
@@ -314,6 +331,11 @@ instance Monoid Statements where
     mempty = Statements mempty
 instance IdentifierProvider Statements where
   getIdentifiers (Statements ss) = V.concatMap getIdentifiers ss
+
+unpackStatements :: forall a . Typeable a => Statements -> IO [a]
+unpackStatements (Statements ss) = do
+  xs <- mapM unpackStatement (V.toList ss)
+  return (catMaybes xs)
 
 setOirigin :: Origin -> Statements -> Statements
 setOirigin o (Statements ss) = Statements (V.map (setOirigin1 o) ss)
