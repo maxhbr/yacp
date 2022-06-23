@@ -18,12 +18,14 @@ module YACP.Model
   , RelationType (..)
   , Relation (..)
   , relationContainsIdentifier
+  , normalizeRelation
   , Relations (..)
   -- Statement
   , Origin (..)
   , StatementMetadata (..)
   , Statemental (..)
   , Statement (..)
+  , Statements (..)
   ) where
 
 import YACP.MyPrelude
@@ -170,6 +172,26 @@ relationContainsIdentifier a (Relation src _ target) = any (`matchesIdentifiable
 {-|
   direction should always be from the smaller to the bigger in which it is included
 -}
+normalizeRelation :: Relation -> Relation
+normalizeRelation = let
+    flipDirection :: Relation -> Relation
+    flipDirection (r@Relation { _getRelationSrc = src
+                              , _getRelationTarget = target
+                              }) =
+      r {_getRelationSrc = target, _getRelationTarget = src}
+    normalizeRelation' :: Relation -> Relation
+    normalizeRelation' (r@Relation {_getRelationType = DEPENDS_ON}) =
+      flipDirection (r {_getRelationType = DEPENDENCY_OF})
+    normalizeRelation' (r@Relation {_getRelationType = DESCRIBED_BY}) =
+      flipDirection (r {_getRelationType = DESCRIBES})
+    normalizeRelation' (r@Relation {_getRelationType = CONTAINS}) =
+      flipDirection (r {_getRelationType = CONTAINED_BY})
+    normalizeRelation' (r@Relation {_getRelationType = HAS_PREREQUISITE}) =
+      flipDirection (r {_getRelationType = PREREQUISITE_FOR})
+    normalizeRelation' (r@Relation {_getRelationType = GENERATED_FROM}) =
+      flipDirection (r {_getRelationType = GENERATES})
+    normalizeRelation' r = r
+  in normalizeRelation'
 
 data Relations
   = Relations (Vector Relation)
@@ -182,6 +204,9 @@ instance Monoid Relations where
     mempty = Relations mempty
 instance IdentifierProvider Relations where
   getIdentifiers (Relations rs) = V.concatMap getIdentifiers rs
+
+normalizeRelations :: Relations -> Relations
+normalizeRelations (Relations rs) = Relations (V.map normalizeRelation rs)
 
 data Origin = Origin
   { _getOriginIdentifier :: Identifier
@@ -212,8 +237,10 @@ class (IdentifierProvider a) => Statemental a where
     getStatementOrigin :: a -> Origin
     getStatementOrigin a = case  getStatementMetadata a of
         StatementMetadata _ o -> o
+    getStatementRelations' :: a -> Relations
+    getStatementRelations' _ = mempty
     getStatementRelations :: a -> Relations
-    getStatementRelations _ = mempty
+    getStatementRelations = normalizeRelations . getStatementRelations'
 
 data StatementContent
     = FoundManifestFile Identifier
@@ -244,8 +271,8 @@ instance IdentifierProvider Statement where
 instance Statemental Statement where
     getStatementMetadata (Statement sm _) = sm
 
-    getStatementRelations s@(Statement _ (FoundDependent src)) = Relations . pure $ Relation src DEPENDS_ON (getStatementSubject s)
-    getStatementRelations _ = mempty
+    getStatementRelations' s@(Statement _ (FoundDependent src)) = Relations . pure $ Relation src DEPENDS_ON (getStatementSubject s)
+    getStatementRelations' _ = mempty
 
 data Statements
   = Statements (Vector Statement)

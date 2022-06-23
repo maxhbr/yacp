@@ -28,6 +28,7 @@ library
       YACP
       YACP.Model
       YACP.MyPrelude
+      YACP.State
   other-modules:
       Paths_yacp
   hs-source-dirs:
