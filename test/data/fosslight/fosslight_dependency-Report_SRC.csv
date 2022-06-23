@@ -1,0 +1,11 @@
+ID	Source Name or Path	OSS Name	OSS Version	License	Download Location	Homepage	Copyright Text	Exclude	Comment
+1	go.mod	go:github.com/BurntSushi/toml	0.3.1	MIT	https://github.com/BurntSushi/toml	https://pkg.go.dev/github.com/BurntSushi/toml			transitive
+2	go.mod	go:github.com/cpuguy83/go-md2man/v2	2.0.0	MIT	https://github.com/cpuguy83/go-md2man	https://pkg.go.dev/github.com/cpuguy83/go-md2man/v2			transitive
+3	go.mod	go:github.com/felixge/httpsnoop	1.0.2	MIT	https://github.com/felixge/httpsnoop	https://pkg.go.dev/github.com/felixge/httpsnoop			transitive
+4	go.mod	go:github.com/gorilla/handlers	1.5.1	BSD-2-Clause	https://github.com/gorilla/handlers	https://pkg.go.dev/github.com/gorilla/handlers			direct
+5	go.mod	go:github.com/pmezard/go-difflib	1.0.0	BSD-3-Clause	https://github.com/pmezard/go-difflib	https://pkg.go.dev/github.com/pmezard/go-difflib			transitive
+6	go.mod	go:github.com/russross/blackfriday/v2	2.1.0	BSD-2-Clause	https://github.com/russross/blackfriday	https://pkg.go.dev/github.com/russross/blackfriday/v2			transitive
+7	go.mod	go:github.com/shurcooL/sanitized_anchor_name	1.0.0	MIT	https://github.com/shurcooL/sanitized_anchor_name	https://pkg.go.dev/github.com/shurcooL/sanitized_anchor_name			transitive
+8	go.mod	go:github.com/urfave/cli	1.22.5	MIT	https://github.com/urfave/cli	https://pkg.go.dev/github.com/urfave/cli			direct
+9	go.mod	go:gopkg.in/check.v1	0.0.0-20161208181325-20d25e280405	BSD-2-Clause	https://github.com/go-check/check	https://pkg.go.dev/gopkg.in/check.v1			transitive, Cannot connect https://pkg.go.dev/gopkg.in/check.v1@v0.0.0-20161208181325-20d25e280405, get info from the latest version.
+10	go.mod	go:gopkg.in/yaml.v2	2.2.2	Apache-2.0	https://github.com/go-yaml/yaml	https://pkg.go.dev/gopkg.in/yaml.v2			transitive
