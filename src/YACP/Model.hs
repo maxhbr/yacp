@@ -62,10 +62,10 @@ data Identifier
   | AbsolutePathIdentifier FilePath -- path of file
   | RelativePathIdentifier Identifier FilePath
   | UrlIdentifier String
-  | PURL PURL.PURL
+  | PURL PURL.PURL -- all coordinates should be converted to purls
   | Hash (Maybe String) -- type
          String         -- hash
-  -- | CPE -- TODO
+  -- | CPE -- TODO, (sometimes) not a good Identifier?
   | Identifiers [Identifier] -- the best one is the head
   deriving (Eq, Generic)
 instance A.ToJSON Identifier
@@ -110,7 +110,15 @@ instance Monoid Identifier where
 matchesIdentifier :: Identifier -> Identifier -> Bool
 matchesIdentifier i1 i2 = let
     matchesIdentifier' :: Identifier -> Identifier -> Bool
-    matchesIdentifier' i1' i2' = i1' == i2' -- TODO: better matching? wildcards?
+    matchesIdentifier' (Hash _ h1) (Hash _ h2) = h1 == h2 -- ignore type
+    matchesIdentifier' (PURL p1) (PURL p2) = 
+      and [ PURL._PURL_type p1 == PURL._PURL_type p2 
+          , PURL._PURL_namespace p1 == PURL._PURL_namespace p2 
+          , PURL._PURL_name p1 == PURL._PURL_name p2       
+          , PURL._PURL_version p1 == PURL._PURL_version p2
+          ] -- ignore qualifiers and subpath
+    matchesIdentifier' i1' i2' = i1' == i2' -- TODO: better matching? wildcards? path sanitation?
+
     i1s = flattenIdentifierToList i1
     i2s = flattenIdentifierToList i2
     product = [(a, b) | a <- i1s, b <- i2s]
@@ -123,16 +131,17 @@ class Identifiable a where
 
   addUuidIfMissing :: a -> IO a
   addUuidIfMissing a = let
-    is = flattenIdentifierToList (getIdentifier a)
-    hasIdentifiers = not (null is) :: Bool
+      is = flattenIdentifierToList (getIdentifier a)
+      hasIdentifiers = not (null is) :: Bool
     in if hasIdentifiers
        then return a
        else do
-    uuidID <- mkUUID
-    return (a `addIdentifier` uuidID)
+          uuidID <- mkUUID
+          return (a `addIdentifier` uuidID)
 
   matchesIdentifiable :: Identifier -> a -> Bool
   matchesIdentifiable i a = i `matchesIdentifier` (getIdentifier a)
+
 instance Identifiable Identifier where
   getIdentifier = id
   addIdentifier = (<>)
@@ -242,6 +251,7 @@ class (IdentifierProvider a) => Statemental a where
     getStatementRelations :: a -> Relations
     getStatementRelations = normalizeRelations . getStatementRelations'
 
+-- TODO: would be better to be extensible and not to have a full list here
 data StatementContent
     = FoundManifestFile Identifier
     | FoundDependent Identifier

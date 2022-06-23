@@ -73,6 +73,9 @@ runYACP yacp =
 runYACP' :: YACP a -> State -> IO (a, State)
 runYACP' yacp initialState = MTL.runStateT yacp initialState
 
+{-|
+ - actions
+ -}
 
 addRoot :: Identifier -> YACP ()
 addRoot r = MTL.modify (\s@State {_getRoots = rs} -> s {_getRoots = r : rs})

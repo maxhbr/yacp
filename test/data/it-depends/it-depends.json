@@ -1,0 +1,112 @@
+{
+    "go:github.com/pmezard/go-difflib": {
+        "v1.0.0": {
+            "dependencies": {},
+            "vulnerabilities": [],
+            "source": "go"
+        }
+    },
+    "go:github.com/felixge/httpsnoop": {
+        "v1.0.2": {
+            "dependencies": {},
+            "vulnerabilities": [],
+            "source": "go"
+        },
+        "v1.0.1": {
+            "dependencies": {},
+            "vulnerabilities": [],
+            "source": "go"
+        }
+    },
+    "go:github.com/urfave/cli": {
+        "v1.22.5": {
+            "dependencies": {
+                "go:github.com/cpuguy83/go-md2man/v2": "=v2.0.0-20190314233015-f79a8a8ca69d",
+                "go:gopkg.in/yaml.v2": "=v2.2.2",
+                "go:github.com/BurntSushi/toml": "=v0.3.1"
+            },
+            "vulnerabilities": [],
+            "source": "go"
+        }
+    },
+    "go:github.com/cpuguy83/go-md2man/v2": {
+        "v2.0.0": {
+            "dependencies": {
+                "go:github.com/pmezard/go-difflib": "=v1.0.0",
+                "go:github.com/russross/blackfriday/v2": "=v2.0.1",
+                "go:github.com/shurcooL/sanitized_anchor_name": "=v1.0.0"
+            },
+            "vulnerabilities": [],
+            "source": "go"
+        },
+        "v2.0.0-20190314233015-f79a8a8ca69d": {
+            "dependencies": {
+                "go:github.com/pmezard/go-difflib": "=v1.0.0",
+                "go:github.com/russross/blackfriday/v2": "=v2.0.1",
+                "go:github.com/shurcooL/sanitized_anchor_name": "=v1.0.0"
+            },
+            "vulnerabilities": [],
+            "source": "go"
+        }
+    },
+    "go:github.com/gorilla/handlers": {
+        "v1.5.1": {
+            "dependencies": {
+                "go:github.com/felixge/httpsnoop": "=v1.0.1"
+            },
+            "vulnerabilities": [],
+            "source": "go"
+        }
+    },
+    "go:github.com/BurntSushi/toml": {
+        "v0.3.1": {
+            "dependencies": {},
+            "vulnerabilities": [],
+            "source": "go"
+        }
+    },
+    "go:github.com/fkautz/serve": {
+        "v0.0.0-20220623051318-a1889fd1d6b962a03ef647256aee2ed80e74a96b": {
+            "dependencies": {
+                "go:github.com/cpuguy83/go-md2man/v2": "=v2.0.0",
+                "go:github.com/urfave/cli": "=v1.22.5",
+                "go:github.com/russross/blackfriday/v2": "=v2.1.0",
+                "go:github.com/gorilla/handlers": "=v1.5.1",
+                "go:github.com/felixge/httpsnoop": "=v1.0.2"
+            },
+            "vulnerabilities": [],
+            "source": "go",
+            "is_source_package": true
+        }
+    },
+    "go:github.com/russross/blackfriday/v2": {
+        "v2.1.0": {
+            "dependencies": {},
+            "vulnerabilities": [],
+            "source": "go"
+        },
+        "v2.0.1": {
+            "dependencies": {},
+            "vulnerabilities": [],
+            "source": "go"
+        }
+    },
+    "go:github.com/shurcooL/sanitized_anchor_name": {
+        "v1.0.0": {
+            "dependencies": {},
+            "vulnerabilities": [],
+            "source": "go"
+        }
+    },
+    "go:gopkg.in/yaml.v2": {
+        "v2.2.2": {
+            "dependencies": {},
+            "vulnerabilities": [
+                "GHSA-wxc4-f4m6-wwqv (CVE-2019-11254)",
+                "GO-2021-0061 ()",
+                "GO-2020-0036 (CVE-2019-11254)"
+            ],
+            "source": "go"
+        }
+    }
+}
