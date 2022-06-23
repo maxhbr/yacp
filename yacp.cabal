@@ -28,7 +28,9 @@ library
       YACP
       YACP.Model
       YACP.MyPrelude
+      YACP.Reader.StateReader
       YACP.State
+      YACP.Writer.StateWriter
   other-modules:
       Paths_yacp
   hs-source-dirs:

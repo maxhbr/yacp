@@ -1,4 +1,3 @@
-{-# LANGUAGE LambdaCase #-}
 module Main where
 
 import YACP
@@ -6,5 +5,4 @@ import YACP
 import System.Environment (getArgs)
 
 main :: IO ()
-main = putStrLn "todo"
-
+main = getArgs >>= argsToYACP

@@ -59,9 +59,7 @@ data State =
     , _getYacpIssues :: [YACPIssue]
     }
   deriving (Eq, Show, Generic)
-
 instance A.ToJSON State
-
 instance A.FromJSON State
 
 type YACP a = MTL.StateT State IO a

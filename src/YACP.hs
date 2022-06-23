@@ -6,10 +6,14 @@
 {-# LANGUAGE LambdaCase #-}
 module YACP
   ( module X
+  , argsToYACP
   ) where
 
+import YACP.MyPrelude
 import YACP.Model as X
 import YACP.State as X
+import YACP.Reader.StateReader as X
+import YACP.Writer.StateWriter as X
 
 import System.Environment (getArgs)
 import System.IO
@@ -27,17 +31,17 @@ failOnIssue = do
       stderrLog ("Failed with " ++ (show (length is)) ++ " issues")
       MTL.liftIO exitFailure
 
-
 argsToYACP' :: [String] -> YACP ()
 argsToYACP' [] = return ()
 argsToYACP' [outDir] = do
   -- ppState
   MTL.liftIO $ createDirectoryIfMissing True outDir
-  -- writeStateFile (outDir </> "_state.json")
+  writeStateFile (outDir </> "_state.json")
   -- writePlantumlFile (outDir </> "plantuml.puml")
   -- _ <- writeDigraphFile (outDir </> "digraph.dot")
   -- writeHHCFile (outDir </> "hhc.json")
   failOnIssue
+argsToYACP' ("--yacp": (f: oArgs)) = readStateFile f >> argsToYACP' oArgs
 -- argsToYACP' ("--sc": (f: oArgs)) = parseScancodeFile f >> argsToYACP' oArgs
 -- argsToYACP' ("--ort": (f: oArgs)) = parseOrtFile f >> argsToYACP' oArgs
 -- argsToYACP' ("--spdx": (f: oArgs)) = parseSPDXFile f >> argsToYACP' oArgs
@@ -47,7 +51,7 @@ argsToYACP' (unknown: oArgs) = MTL.liftIO $ do
   exitFailure
 
 
-argsToYACP :: IO ()
+argsToYACP :: [String] -> IO ()
 argsToYACP = let
     help :: IO()
     help = putStrLn $ unlines
@@ -60,7 +64,7 @@ argsToYACP = let
       , "  and $outputFolder <- dir to write files to"
       , "$0 [-h|--help] <- show this msg"
       ]
-  in getArgs >>= \case
+  in \case
     [] -> help
     ["-h"] -> help
     ["--help"] -> help
