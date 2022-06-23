@@ -4,8 +4,9 @@
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE DeriveGeneric #-}
 {-# LANGUAGE LambdaCase #-}
-module YACP.Reader.StateReader
-  ( readStateFile
+module YACP.Reader.ComponentDetectionReader
+  ( readComponentDetectionFile
+  , readComponentDetectionBS
   ) where
 
 import YACP.Core
@@ -18,5 +19,8 @@ import qualified Data.Aeson.Encode.Pretty as A
 import qualified Data.ByteString.Lazy as B
 import qualified Control.Monad.State as MTL
 
-readStateFile :: FilePath -> YACP ()
-readStateFile = undefined
+readComponentDetectionBS :: B.ByteString -> YACP (Maybe YACPIssue)
+readComponentDetectionBS = undefined
+
+readComponentDetectionFile :: FilePath -> YACP ()
+readComponentDetectionFile = undefined

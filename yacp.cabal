@@ -26,10 +26,13 @@ source-repository head
 library
   exposed-modules:
       YACP
-      YACP.Model
-      YACP.MyPrelude
+      YACP.Core
+      YACP.Core.Model
+      YACP.Core.MyPrelude
+      YACP.Core.State
+      YACP.Reader.ComponentDetectionReader
+      YACP.Reader.ScanossReader
       YACP.Reader.StateReader
-      YACP.State
       YACP.Writer.StateWriter
   other-modules:
       Paths_yacp

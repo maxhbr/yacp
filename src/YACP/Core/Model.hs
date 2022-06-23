@@ -5,7 +5,7 @@
 {-# LANGUAGE DeriveGeneric #-}
 {-# LANGUAGE LambdaCase #-}
 {-# LANGUAGE StrictData #-}
-module YACP.Model
+module YACP.Core.Model
   ( module X
   -- Identifier
   , Identifier (..)
@@ -28,7 +28,7 @@ module YACP.Model
   , Statements (..)
   ) where
 
-import YACP.MyPrelude
+import YACP.Core.MyPrelude
 import SPDX.Document.RelationshipTypes as X
 import SPDX.LicenseExpression as X
 import qualified PURL.PURL as PURL

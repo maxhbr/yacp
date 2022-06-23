@@ -6,7 +6,7 @@
 {-# LANGUAGE StrictData                #-}
 {-# LANGUAGE TypeFamilies              #-}
 
-module YACP.State
+module YACP.Core.State
   ( State(..)
   , YACP(..)
   , runYACP
@@ -18,8 +18,8 @@ module YACP.State
   , addYACPIssue
   ) where
 
-import YACP.MyPrelude
-import           YACP.Model
+import YACP.Core.MyPrelude
+import           YACP.Core.Model
 
 
 import qualified Control.Monad.State             as MTL

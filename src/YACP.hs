@@ -9,10 +9,10 @@ module YACP
   , argsToYACP
   ) where
 
-import YACP.MyPrelude
-import YACP.Model as X
-import YACP.State as X
+import YACP.Core as X
 import YACP.Reader.StateReader as X
+import YACP.Reader.ComponentDetectionReader as X
+import YACP.Reader.ScanossReader as X
 import YACP.Writer.StateWriter as X
 
 import System.Environment (getArgs)

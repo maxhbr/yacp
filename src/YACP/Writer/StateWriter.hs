@@ -9,9 +9,7 @@ module YACP.Writer.StateWriter
   , writeState',writeStateFile
   ) where
 
-import YACP.MyPrelude
-import YACP.Model
-import YACP.State
+import YACP.Core
 
 import System.IO (Handle, hPutStrLn, hClose, stdout)
 import qualified System.IO as IO
