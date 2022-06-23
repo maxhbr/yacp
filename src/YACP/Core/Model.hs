@@ -5,6 +5,7 @@
 {-# LANGUAGE DeriveGeneric #-}
 {-# LANGUAGE LambdaCase #-}
 {-# LANGUAGE StrictData #-}
+{-# LANGUAGE StandaloneDeriving #-}
 module YACP.Core.Model
   ( module X
   , module PURL
@@ -25,7 +26,6 @@ module YACP.Core.Model
   -- Statement
   , Origin (..)
   , StatementMetadata (..)
-  , StatementContent (..)
   , Statemental (..)
   , Statement (..)
   , setOirigin1
@@ -44,7 +44,7 @@ import System.Console.Pretty (color, Color(Green))
 import System.IO (hPutStrLn, stderr)
 import Data.List (nub)
 import Data.List.Split (splitOn)
-import Data.Maybe (fromMaybe, maybeToList)
+import Data.Maybe (fromMaybe, maybeToList, catMaybes)
 import Data.UUID (UUID)
 import qualified Data.Map                      as Map
 import System.Random (randomIO)
@@ -61,7 +61,8 @@ import qualified Distribution.SPDX.License as SPDX
 import qualified Distribution.Parsec as SPDX
 import qualified Network.URI as URI
 import qualified System.FilePath as FP
-
+import Data.Typeable
+import Data.Dynamic
 
 --------------------------------------------------------------------------------
 data Identifier
@@ -265,26 +266,61 @@ class (IdentifierProvider a) => Statemental a where
     getStatementRelations :: a -> Relations
     getStatementRelations = normalizeRelations . getStatementRelations'
 
--- TODO: would be better to be extensible and not to have a full list here
-data StatementContent
-    = FoundManifestFile Identifier
-    | FoundDependent Identifier
-    | FoundDependency Identifier
-    | ComponentUrl String
-    | ComponentLicense MaybeLicenseExpression
-    | ComponentVulnerability String
-    deriving (Eq, Show, Generic)
-instance A.ToJSON StatementContent
-instance A.FromJSON StatementContent
-instance IdentifierProvider StatementContent where
-  getIdentifiers (FoundManifestFile i) = V.singleton i
-  getIdentifiers _ = mempty
+class (A.ToJSON a, A.FromJSON a, IdentifierProvider a, Eq a, Show a, Typeable a) => StatementContental a where
+  getTypeRep :: a -> TypeRep
+  getTypeRep = typeOf
+  getDynamic :: a -> Dynamic
+  getDynamic = toDyn
+
+-- -- TODO: would be better to be extensible and not to have a full list here
+-- data StatementContent
+--     = FoundManifestFile Identifier
+--     | FoundDependent Identifier
+--     | FoundDependency Identifier
+--     | ComponentUrl String
+--     | ComponentLicense MaybeLicenseExpression
+--     | ComponentVulnerability String
+--     deriving (Eq, Show, Generic)
+-- instance A.ToJSON StatementContent
+-- instance A.FromJSON StatementContent
+-- instance IdentifierProvider StatementContent where
+--   getIdentifiers (FoundManifestFile i) = V.singleton i
+--   getIdentifiers _ = mempty
+
+data FoundDependent = FoundDependent Identifier
+  deriving (Eq, Show, Generic)
+instance A.ToJSON FoundDependent
+instance A.FromJSON FoundDependent
+instance IdentifierProvider FoundDependent where
+  getIdentifiers (FoundDependent i) = pure i 
+instance StatementContental FoundDependent
+
+data FoundDependency = FoundDependency Identifier
+  deriving (Eq, Show, Generic)
+instance A.ToJSON FoundDependency
+instance A.FromJSON FoundDependency
+instance StatementContental FoundDependency
+instance IdentifierProvider FoundDependency where
+  getIdentifiers (FoundDependency i) = pure i 
 
 data Statement 
-  = Statement StatementMetadata StatementContent
-  deriving (Eq, Show, Generic)
-instance A.ToJSON Statement
-instance A.FromJSON Statement
+  = forall a. StatementContental a => Statement StatementMetadata a
+instance Eq Statement where
+  s1@(Statement sm1 _) == s2@(Statement sm2 _) = undefined
+
+instance Show Statement where
+  show s@(Statement sm _) = show sm
+
+instance A.ToJSON Statement where
+  toJSON (Statement sm a) = A.object ["StatementMetadata" A..= sm
+                                     , "StatementContent" A..= a
+                                     ]
+
+-- instance A.FromJSON Statement where
+--   parseJSON = undefined
+
+unpackStatement :: forall a. Typeable a => Statement -> Maybe a
+unpackStatement (Statement _ x) = (fromDynamic . getDynamic) x
 
 setOirigin1 :: Origin -> Statement -> Statement
 setOirigin1 o (Statement (StatementMetadata i _) sc) = Statement (StatementMetadata i (Just o)) sc
@@ -299,21 +335,28 @@ instance IdentifierProvider Statement where
 instance Statemental Statement where
     getStatementMetadata (Statement sm _) = sm
 
-    getStatementRelations' s@(Statement _ (FoundDependent src)) = Relations . pure $ Relation src DEPENDS_ON (getStatementSubject s)
-    getStatementRelations' s@(Statement _ (FoundDependency trg)) = Relations . pure $ Relation (getStatementSubject s) DEPENDS_ON trg
-    getStatementRelations' _ = mempty
+    getStatementRelations' s = case unpackStatement s :: (Maybe FoundDependent) of
+      Just (FoundDependent src) -> Relations . pure $ Relation src DEPENDS_ON (getStatementSubject s)
+      _ -> case unpackStatement s :: (Maybe FoundDependency) of
+        Just (FoundDependency trg) -> Relations . pure $ Relation (getStatementSubject s) DEPENDS_ON trg
+        _ -> mempty
 
 data Statements
   = Statements (Vector Statement)
-  deriving (Eq, Show, Generic)
+  deriving (Generic)
+deriving instance Eq Statements
+deriving instance Show Statements
 instance A.ToJSON Statements
-instance A.FromJSON Statements
+-- instance A.FromJSON Statements
 instance Semigroup Statements where
     (Statements rs1) <> (Statements rs2) = Statements (vNub (rs1 <> rs2))
 instance Monoid Statements where
     mempty = Statements mempty
 instance IdentifierProvider Statements where
   getIdentifiers (Statements ss) = V.concatMap getIdentifiers ss
+
+unpackStatements :: forall a. Typeable a => Statements -> [a]
+unpackStatements (Statements ss) = (catMaybes . map unpackStatement) (V.toList ss)
 
 setOirigin :: Origin -> Statements -> Statements
 setOirigin o (Statements ss) = Statements (V.map (setOirigin1 o) ss)
