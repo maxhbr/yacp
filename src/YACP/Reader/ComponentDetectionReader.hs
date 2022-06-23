@@ -9,15 +9,19 @@ module YACP.Reader.ComponentDetectionReader
   , readComponentDetectionBS
   ) where
 
-import YACP.Core
+import           YACP.Core
 
-import System.IO (Handle, hPutStrLn, hClose, stdout)
-import qualified System.IO as IO
-import qualified Data.Aeson as A
-import qualified Data.Aeson.Types as A
-import qualified Data.Aeson.Encode.Pretty as A
-import qualified Data.ByteString.Lazy as B
-import qualified Control.Monad.State as MTL
+import qualified Control.Monad.State           as MTL
+import qualified Data.Aeson                    as A
+import qualified Data.Aeson.Encode.Pretty      as A
+import qualified Data.Aeson.Types              as A
+import qualified Data.ByteString.Lazy          as B
+import           System.IO                      ( Handle
+                                                , hClose
+                                                , hPutStrLn
+                                                , stdout
+                                                )
+import qualified System.IO                     as IO
 
 readComponentDetectionBS :: B.ByteString -> YACP (Maybe YACPIssue)
 readComponentDetectionBS = undefined
