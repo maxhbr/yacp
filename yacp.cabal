@@ -30,6 +30,7 @@ library
       YACP.Core.Model
       YACP.Core.MyPrelude
       YACP.Core.State
+      YACP.Core.StatementContents
       YACP.Reader.ComponentDetectionReader
       YACP.Reader.FosslightDependencyReportReader
       YACP.Reader.ItDependsReader

@@ -51,9 +51,8 @@ convertItDepends (ItDependsFile m) = Statements . V.fromList $ concatMap (\(name
         concatMap (\(version, ItDependsMetadata dependencies vulnerabilities) -> let
                 identifier = nameAndVersion name version
                 statementMetadata = StatementMetadata identifier Nothing
-            in map (Statement statementMetadata) $
-                ((map (FoundDependency . (\(name,version) -> nameAndVersion name version)) (Map.toList dependencies)))
-                ++ (map ComponentVulnerability vulnerabilities) 
+            in (map (Statement statementMetadata) (map (FoundDependency . (\(name,version) -> nameAndVersion name version)) (Map.toList dependencies)))
+                ++ (map (Statement statementMetadata) (map ComponentVulnerability vulnerabilities))
         ) (Map.toList m')
     ) (Map.toList m)
 

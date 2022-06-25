@@ -17,6 +17,7 @@ module YACP.Core.Model
   , parsePURL
   , nameAndVersion
   , Identifiable (..)
+  , IdentifierProvider (..)
   -- Relations
   , RelationType (..)
   , Relation (..)
@@ -27,10 +28,13 @@ module YACP.Core.Model
   , Origin (..)
   , StatementMetadata (..)
   , Statemental (..)
+  , StatementContental (..)
   , Statement (..)
   , setOirigin1
   , Statements (..)
   , setOirigin
+  , packStatements
+  , unpackStatement, unpackStatements
   , clusterifyStatements
   ) where
 
@@ -161,6 +165,7 @@ instance Identifiable Identifier where
 type Identifiers = V.Vector Identifier
 class IdentifierProvider a where
   getIdentifiers :: a -> Identifiers
+  getIdentifiers = mempty
   getIdentifierClusters :: a -> Identifiers
   getIdentifierClusters = let
     clusterifyIdentifiers :: Identifiers -> Identifiers
@@ -271,6 +276,8 @@ class (A.ToJSON a, A.FromJSON a, IdentifierProvider a, Eq a, Show a, Typeable a)
   getTypeRep = typeOf
   getDynamic :: a -> Dynamic
   getDynamic = toDyn
+  getRelationFuns :: a -> [Identifier -> Relation]
+  getRelationFuns _ = []
 
 -- -- TODO: would be better to be extensible and not to have a full list here
 -- data StatementContent
@@ -287,26 +294,10 @@ class (A.ToJSON a, A.FromJSON a, IdentifierProvider a, Eq a, Show a, Typeable a)
 --   getIdentifiers (FoundManifestFile i) = V.singleton i
 --   getIdentifiers _ = mempty
 
-data FoundDependent = FoundDependent Identifier
-  deriving (Eq, Show, Generic)
-instance A.ToJSON FoundDependent
-instance A.FromJSON FoundDependent
-instance IdentifierProvider FoundDependent where
-  getIdentifiers (FoundDependent i) = pure i 
-instance StatementContental FoundDependent
-
-data FoundDependency = FoundDependency Identifier
-  deriving (Eq, Show, Generic)
-instance A.ToJSON FoundDependency
-instance A.FromJSON FoundDependency
-instance StatementContental FoundDependency
-instance IdentifierProvider FoundDependency where
-  getIdentifiers (FoundDependency i) = pure i 
-
 data Statement 
   = forall a. StatementContental a => Statement StatementMetadata a
 instance Eq Statement where
-  s1@(Statement sm1 _) == s2@(Statement sm2 _) = undefined
+  s1@(Statement sm1 sc1) == s2@(Statement sm2 sc2) = sm1 == sm2 && (show sc1 == show sc2)
 
 instance Show Statement where
   show s@(Statement sm _) = show sm
@@ -335,11 +326,9 @@ instance IdentifierProvider Statement where
 instance Statemental Statement where
     getStatementMetadata (Statement sm _) = sm
 
-    getStatementRelations' s = case unpackStatement s :: (Maybe FoundDependent) of
-      Just (FoundDependent src) -> Relations . pure $ Relation src DEPENDS_ON (getStatementSubject s)
-      _ -> case unpackStatement s :: (Maybe FoundDependency) of
-        Just (FoundDependency trg) -> Relations . pure $ Relation (getStatementSubject s) DEPENDS_ON trg
-        _ -> mempty
+    getStatementRelations' (Statement (StatementMetadata i _) c) = let
+        funs = getRelationFuns c
+      in Relations . V.fromList $ map (\fun -> fun i) funs
 
 data Statements
   = Statements (Vector Statement)
@@ -354,6 +343,9 @@ instance Monoid Statements where
     mempty = Statements mempty
 instance IdentifierProvider Statements where
   getIdentifiers (Statements ss) = V.concatMap getIdentifiers ss
+
+packStatements :: StatementContental a => StatementMetadata -> [a] -> Statements
+packStatements sm scs = Statements . V.fromList $ map (Statement sm) scs
 
 unpackStatements :: forall a. Typeable a => Statements -> [a]
 unpackStatements (Statements ss) = (catMaybes . map unpackStatement) (V.toList ss)
@@ -371,6 +363,3 @@ clusterifyStatements (ss@(Statements ss')) = let
          then prev
          else (i,Statements matchingStatements) `V.cons` prev
   in V.foldl' fun V.empty iClusters
-
-type Collector = IO Statements
-type Writer = Statements -> IO ()

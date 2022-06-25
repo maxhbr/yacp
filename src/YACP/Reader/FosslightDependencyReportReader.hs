@@ -70,13 +70,11 @@ rowToStatements :: FDRRow -> Statements
 rowToStatements (FDRRow _ src name version lic download home copyright exclude comment) = let
       identifier = nameAndVersion name version
       statementMetadata = StatementMetadata identifier Nothing
-    in (Statements . V.fromList) $ map
-        (Statement statementMetadata)
-        ([ (FoundManifestFile (AbsolutePathIdentifier src))
-        ] 
-        ++ (map ComponentUrl $ Maybe.maybeToList download)
-        ++ (map ComponentUrl $ Maybe.maybeToList home)
-        ++ (map (ComponentLicense . String.fromString) $ Maybe.maybeToList lic))
+    in mconcat [ packStatements statementMetadata [ (FoundManifestFile (AbsolutePathIdentifier src))]
+               , packStatements statementMetadata (map ComponentUrl $ Maybe.maybeToList download)
+               , packStatements statementMetadata (map ComponentUrl $ Maybe.maybeToList home)
+               , packStatements statementMetadata (map (ComponentLicense . String.fromString) $ Maybe.maybeToList lic)
+               ]
 
 readFosslightDepRepBS :: B.ByteString -> YACP (Maybe YACPIssue)
 readFosslightDepRepBS bs = case parseFosslightDepRepBS bs of
