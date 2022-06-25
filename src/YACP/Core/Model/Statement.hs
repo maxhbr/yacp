@@ -11,9 +11,10 @@ module YACP.Core.Model.Statement
   ( Origin(..)
   , Statemental(..)
   , Statement(..)
-  , setOirigin1
+  , setOrigin1
   , Statements(..)
-  , setOirigin
+  , getOrigins
+  , setOrigin
   , packStatements
   , unpackStatement
   , unpackStatements
@@ -57,7 +58,8 @@ import           System.IO                      ( hPutStrLn
 import           System.Random                  ( randomIO )
 
 data Origin
-  = OriginTool String
+  = NoOrigin
+  | OriginTool String
   | OriginToolReport String FilePath
   deriving (Eq, Generic)
 instance A.ToJSON Origin
@@ -88,8 +90,8 @@ instance Eq Statement where
   _ == _ = False
 
 instance Show Statement where
-  show s@(Statement sm _) = show sm
-  show s@(Statement sm _) = show sm
+  show (Statement i sc) = show i ++ " -> " ++ show sc 
+  show (StatementWithOrigin s _) = show s
 
 instance A.ToJSON Statement where
   toJSON (Statement identifier a) = A.object
@@ -107,12 +109,23 @@ getStatementSubject :: Statement -> Identifier
 getStatementSubject (Statement           i _) = i
 getStatementSubject (StatementWithOrigin s _) = getStatementSubject s
 
-unpackStatement :: forall a . Typeable a => Statement -> Maybe a
-unpackStatement (Statement           _ x) = (fromDynamic . getDynamic) x
-unpackStatement (StatementWithOrigin s _) = unpackStatement s
+unpackStatement :: forall a . Typeable a => Statement -> Maybe (a, Origin)
+unpackStatement (Statement           _ x) = case (fromDynamic . getDynamic) x of
+  Just y -> Just (y, NoOrigin)
+  Nothing -> Nothing
+unpackStatement (StatementWithOrigin s NoOrigin) = unpackStatement s
+unpackStatement (StatementWithOrigin s o) = case unpackStatement s of
+  Just (y,_) -> Just (y,o)
+  Nothing -> Nothing
 
-setOirigin1 :: Origin -> Statement -> Statement
-setOirigin1 o s = StatementWithOrigin s o
+getOrigin :: Statement -> Origin
+getOrigin (Statement _ _) = NoOrigin
+getOrigin (StatementWithOrigin s NoOrigin) = getOrigin s
+getOrigin (StatementWithOrigin _ o) = o
+
+setOrigin1 :: Origin -> Statement -> Statement
+setOrigin1 NoOrigin s = s
+setOrigin1 o s = StatementWithOrigin s o
 
 instance IdentifierProvider Statement where
   getIdentifiers (StatementWithOrigin s o) = getIdentifiers s
@@ -143,12 +156,15 @@ instance IdentifierProvider Statements where
 packStatements :: Statemental a => Identifier -> [a] -> Statements
 packStatements i scs = Statements . V.fromList $ map (Statement i) scs
 
-unpackStatements :: forall a . Typeable a => Statements -> [a]
+unpackStatements :: forall a . Typeable a => Statements -> [(a,Origin)]
 unpackStatements (Statements ss) =
   (catMaybes . map unpackStatement) (V.toList ss)
 
-setOirigin :: Origin -> Statements -> Statements
-setOirigin o (Statements ss) = Statements (V.map (setOirigin1 o) ss)
+getOrigins :: Statements -> [Origin]
+getOrigins (Statements ss) = (nub . V.toList . V.map getOrigin) ss
+
+setOrigin :: Origin -> Statements -> Statements
+setOrigin o (Statements ss) = Statements (V.map (setOrigin1 o) ss)
 
 clusterifyStatements :: Statements -> V.Vector (Identifier, Statements)
 clusterifyStatements (ss@(Statements ss')) =

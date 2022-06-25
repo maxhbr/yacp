@@ -26,6 +26,7 @@ import           System.IO                     as X
                                                 ( hPutStrLn
                                                 , stderr
                                                 )
+import           SPDX.LicenseExpression        as X
 
 import qualified Data.Vector                   as V
 

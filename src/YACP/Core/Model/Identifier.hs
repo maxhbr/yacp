@@ -13,14 +13,11 @@ module YACP.Core.Model.Identifier
   , matchesIdentifier
   , flattenIdentifierToList
   , mkUUID
-  , parsePURL
-  , nameAndVersion
   , Identifiable (..)
   , IdentifierProvider (..)
   ) where
 
 import YACP.Core.MyPrelude
-import PURL.PURL hiding (parsePURL)
 import qualified PURL.PURL as PURL
 
 import System.Console.Pretty (color, Color(Green))
@@ -43,7 +40,6 @@ import qualified Distribution.SPDX.Extra as SPDX
 import qualified Distribution.SPDX.License as SPDX
 import qualified Distribution.Parsec as SPDX
 import qualified Network.URI as URI
-import qualified System.FilePath as FP
 import Data.Typeable
 import Data.Dynamic
 
@@ -79,18 +75,10 @@ flattenIdentifierToList :: Identifier -> [Identifier]
 flattenIdentifierToList (Identifiers is) = nub $ concatMap flattenIdentifierToList is
 flattenIdentifierToList i                = [i]
 
-nameAndVersion :: String -> String -> Identifier
-nameAndVersion name version = PurlIdentifier (PURL (Just "pkg") Nothing Nothing name (Just version) Nothing Nothing)
-
 mkUUID :: IO Identifier
 mkUUID = do
   uuid <- randomIO
   return (UuidIdentifier uuid)
-
-parsePURL :: String -> Identifier
-parsePURL uriStr = case PURL.parsePURL uriStr of
-  Just purl -> PurlIdentifier purl
-  Nothing  -> Identifier uriStr
 
 instance Semigroup Identifier where
   i1 <> (Identifiers []) = i1

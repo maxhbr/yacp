@@ -36,7 +36,7 @@ identifierSpec =
         "pkg:maven/org.apache.xmlgraphics/batik-anim@1.9.1?packaging=sources"
   in  describe "Identifier" $ do
         it ("parse purl1=" ++ purl1) $ do
-          parsePURL purl1
+          idFromPurl purl1
             `shouldBe` (PurlIdentifier
                          (PURL.PURL (Just "pkg")
                                     (Just (PURL.parsePURL_Type "pypi"))
@@ -48,7 +48,7 @@ identifierSpec =
                          )
                        )
         it ("parse purl2=" ++ purl2) $ do
-          parsePURL purl2
+          idFromPurl purl2
             `shouldBe` (PurlIdentifier
                          (PURL.PURL (Just "pkg")
                                     (Just (PURL.parsePURL_Type "maven"))
@@ -60,7 +60,7 @@ identifierSpec =
                          )
                        )
         it ("test show of purl2=" ++ purl2) $ do
-          show (parsePURL purl2) `shouldBe` purl2
+          show (idFromPurl purl2) `shouldBe` purl2
 
 componentDetectionSpec =
   let componentDetectionFileBS :: B.ByteString

@@ -101,8 +101,8 @@ parseComponentDetectionBS bs = case A.eitherDecode bs of
   Right cd  -> Right cd
   Left  err -> Left (YACPParsingIssue err)
 
-applyComponentDetection :: ComponentDetection -> YACP ()
-applyComponentDetection (ComponentDetection dgs cfs) =
+applyComponentDetection :: Origin -> ComponentDetection -> YACP ()
+applyComponentDetection o (ComponentDetection dgs cfs) =
   let
     applyDependencyGraphs :: Map.Map FilePath DependencyGraph -> YACP ()
     applyDependencyGraphs = let in \_ -> pure ()
@@ -110,7 +110,7 @@ applyComponentDetection (ComponentDetection dgs cfs) =
     applyFoundComponent :: FoundComponent -> YACP ()
     applyFoundComponent FoundComponent { _locationsFoundAt = locationsFoundAt, _id = componentId, _packageURL = packageUrl }
       = let identifier = PurlIdentifier packageUrl <> Identifier componentId
-            statements = (Statements . V.fromList) $ map
+            statements = setOrigin o . (Statements . V.fromList) $ map
               (Statement identifier)
               (map (FoundManifestFile . AbsolutePathIdentifier) locationsFoundAt
               )
@@ -120,12 +120,12 @@ applyComponentDetection (ComponentDetection dgs cfs) =
       applyDependencyGraphs dgs
       mapM_ applyFoundComponent cfs
 
-readComponentDetectionBS :: B.ByteString -> YACP (Maybe YACPIssue)
-readComponentDetectionBS bs = case parseComponentDetectionBS bs of
+readComponentDetectionBS :: Origin -> B.ByteString -> YACP (Maybe YACPIssue)
+readComponentDetectionBS o bs = case parseComponentDetectionBS bs of
   Right cd -> do
-    applyComponentDetection cd
+    applyComponentDetection o cd
     return (Nothing)
   Left issue -> return (Just issue)
 
 readComponentDetectionFile :: FilePath -> YACP ()
-readComponentDetectionFile = readBSFromFile readComponentDetectionBS
+readComponentDetectionFile f = readBSFromFile (readComponentDetectionBS (OriginToolReport "component-detection" f)) f

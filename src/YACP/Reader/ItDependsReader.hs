@@ -75,13 +75,13 @@ parseItDependsBS bs = case A.eitherDecode bs of
   Right cd  -> Right cd
   Left  err -> Left (YACPParsingIssue err)
 
-readItDependsBS :: B.ByteString -> YACP (Maybe YACPIssue)
-readItDependsBS bs = case parseItDependsBS bs of
+readItDependsBS :: Origin -> B.ByteString -> YACP (Maybe YACPIssue)
+readItDependsBS o bs = case parseItDependsBS bs of
   Right file -> do
-    let statements = convertItDepends file
+    let statements = setOrigin o $ convertItDepends file
     addStatements statements
     return (Nothing)
   Left issue -> return (Just issue)
 
 readItDependsFile :: FilePath -> YACP ()
-readItDependsFile = readBSFromFile readItDependsBS
+readItDependsFile f = readBSFromFile (readItDependsBS (OriginToolReport "it-depends" f)) f

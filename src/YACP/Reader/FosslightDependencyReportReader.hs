@@ -78,7 +78,7 @@ rowToStatements (FDRRow _ src name version lic download home copyright exclude c
 readFosslightDepRepBS :: Origin -> B.ByteString -> YACP (Maybe YACPIssue)
 readFosslightDepRepBS o bs = case parseFosslightDepRepBS bs of
   Right rs -> do
-    let stmtss = V.map (setOirigin o . rowToStatements) rs
+    let stmtss = V.map (setOrigin o . rowToStatements) rs
     V.mapM_ addStatements stmtss
     return Nothing
   Left issue -> return (Just issue)
