@@ -105,15 +105,13 @@ applyComponentDetection :: ComponentDetection -> YACP ()
 applyComponentDetection (ComponentDetection dgs cfs) =
   let
     applyDependencyGraphs :: Map.Map FilePath DependencyGraph -> YACP ()
-    applyDependencyGraphs =
-      let in \_ -> pure ()
+    applyDependencyGraphs = let in \_ -> pure ()
 -- idfyGraph :: Map.Map FilePath DependencyGraph -> 
     applyFoundComponent :: FoundComponent -> YACP ()
     applyFoundComponent FoundComponent { _locationsFoundAt = locationsFoundAt, _id = componentId, _packageURL = packageUrl }
       = let identifier = PurlIdentifier packageUrl <> Identifier componentId
-            statementMetadata = StatementMetadata identifier Nothing
             statements = (Statements . V.fromList) $ map
-              (Statement statementMetadata)
+              (Statement identifier)
               (map (FoundManifestFile . AbsolutePathIdentifier) locationsFoundAt
               )
         in  addStatements statements

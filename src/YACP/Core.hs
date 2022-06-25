@@ -4,4 +4,4 @@ module YACP.Core
 import           YACP.Core.Model               as X
 import           YACP.Core.MyPrelude           as X
 import           YACP.Core.State               as X
-import           YACP.Core.StatementContents               as X
+import           YACP.Core.StatementContents   as X

@@ -69,20 +69,19 @@ parseFosslightDepRepBS bs = let
 rowToStatements :: FDRRow -> Statements
 rowToStatements (FDRRow _ src name version lic download home copyright exclude comment) = let
       identifier = nameAndVersion name version
-      statementMetadata = StatementMetadata identifier Nothing
-    in mconcat [ packStatements statementMetadata [ (FoundManifestFile (AbsolutePathIdentifier src))]
-               , packStatements statementMetadata (map ComponentUrl $ Maybe.maybeToList download)
-               , packStatements statementMetadata (map ComponentUrl $ Maybe.maybeToList home)
-               , packStatements statementMetadata (map (ComponentLicense . String.fromString) $ Maybe.maybeToList lic)
+    in mconcat [ packStatements identifier [ (FoundManifestFile (AbsolutePathIdentifier src))]
+               , packStatements identifier (map ComponentUrl $ Maybe.maybeToList download)
+               , packStatements identifier (map ComponentUrl $ Maybe.maybeToList home)
+               , packStatements identifier (map (ComponentLicense . String.fromString) $ Maybe.maybeToList lic)
                ]
 
-readFosslightDepRepBS :: B.ByteString -> YACP (Maybe YACPIssue)
-readFosslightDepRepBS bs = case parseFosslightDepRepBS bs of
+readFosslightDepRepBS :: Origin -> B.ByteString -> YACP (Maybe YACPIssue)
+readFosslightDepRepBS o bs = case parseFosslightDepRepBS bs of
   Right rs -> do
-    let stmtss = V.map rowToStatements rs
+    let stmtss = V.map (setOirigin o . rowToStatements) rs
     V.mapM_ addStatements stmtss
     return Nothing
   Left issue -> return (Just issue)
 
 readFosslightDepRepFile :: FilePath -> YACP ()
-readFosslightDepRepFile = readBSFromFile readFosslightDepRepBS
+readFosslightDepRepFile f = readBSFromFile (readFosslightDepRepBS (OriginToolReport "Fosslight" f)) f

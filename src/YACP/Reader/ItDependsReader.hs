@@ -22,42 +22,55 @@ import qualified Data.Map                      as Map
 import qualified Data.Vector                   as V
 import qualified System.IO                     as IO
 
-data ItDependsEntryDependency
-    = ItDependsEntryDependency
-    { _ided_name :: String
-    , _ided_version :: String
-    } deriving (Eq, Show)
+data ItDependsEntryDependency = ItDependsEntryDependency
+  { _ided_name    :: String
+  , _ided_version :: String
+  }
+  deriving (Eq, Show)
 
-data ItDependsMetadata 
-    = ItDependsMetadata 
-    { _idev_dependencies :: Map.Map String String
-    , _idev_vulnerabilities :: [String]
-    } deriving (Eq, Show)
+data ItDependsMetadata = ItDependsMetadata
+  { _idev_dependencies    :: Map.Map String String
+  , _idev_vulnerabilities :: [String]
+  }
+  deriving (Eq, Show)
 instance A.FromJSON ItDependsMetadata where
   parseJSON = A.withObject "ItDependsMetadata" $ \v ->
-    ItDependsMetadata <$> v A..: "dependencies"
-                      <*> v A..: "vulnerabilities"
+    ItDependsMetadata <$> v A..: "dependencies" <*> v A..: "vulnerabilities"
 
-data ItDependsFile
-    = ItDependsFile (Map.Map String (Map.Map String ItDependsMetadata))
-    deriving (Eq, Show)
+data ItDependsFile = ItDependsFile ( Map.Map
+                                       String
+                                       (Map.Map String ItDependsMetadata)
+                                   )
+  deriving (Eq, Show)
 instance A.FromJSON ItDependsFile where
   parseJSON a = do
     parsed <- A.parseJSON a
     return (ItDependsFile parsed)
 
 convertItDepends :: ItDependsFile -> Statements
-convertItDepends (ItDependsFile m) = Statements . V.fromList $ concatMap (\(name, m') -> 
-        concatMap (\(version, ItDependsMetadata dependencies vulnerabilities) -> let
-                identifier = nameAndVersion name version
-                statementMetadata = StatementMetadata identifier Nothing
-            in (map (Statement statementMetadata) (map (FoundDependency . (\(name,version) -> nameAndVersion name version)) (Map.toList dependencies)))
-                ++ (map (Statement statementMetadata) (map ComponentVulnerability vulnerabilities))
-        ) (Map.toList m')
-    ) (Map.toList m)
+convertItDepends (ItDependsFile m) = Statements . V.fromList $ concatMap
+  (\(name, m') -> concatMap
+    (\(version, ItDependsMetadata dependencies vulnerabilities) ->
+      let identifier = nameAndVersion name version
+      in  (map
+            (Statement identifier)
+            (map
+              ( FoundDependency
+              . (\(name, version) -> nameAndVersion name version)
+              )
+              (Map.toList dependencies)
+            )
+          )
+            ++ (map
+                 (Statement identifier)
+                 (map ComponentVulnerability vulnerabilities)
+               )
+    )
+    (Map.toList m')
+  )
+  (Map.toList m)
 
-parseItDependsBS
-  :: B.ByteString -> Either YACPIssue ItDependsFile
+parseItDependsBS :: B.ByteString -> Either YACPIssue ItDependsFile
 parseItDependsBS bs = case A.eitherDecode bs of
   Right cd  -> Right cd
   Left  err -> Left (YACPParsingIssue err)
