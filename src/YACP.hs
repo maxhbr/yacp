@@ -14,7 +14,6 @@ import           YACP.Reader.ComponentDetectionReader
                                                as X
 import YACP.Reader.FosslightDependencyReportReader as X
 import           YACP.Reader.ScanossReader     as X
-import           YACP.Reader.StateReader       as X
 import YACP.Reader.ItDependsReader as X
 import           YACP.Writer.CSVWriter         as X
 import           YACP.Writer.StateWriter       as X
@@ -48,7 +47,6 @@ argsToYACP' [outDir] = do
   -- _ <- writeDigraphFile (outDir </> "digraph.dot")
   -- writeHHCFile (outDir </> "hhc.json")
   failOnIssue
-argsToYACP' ("--yacp" : (f : oArgs)) = readStateFile f >> argsToYACP' oArgs
 argsToYACP' ("--component-detection" : (f : oArgs)) =
   readComponentDetectionFile f >> argsToYACP' oArgs
 argsToYACP' ("--fosslight" : (f : oArgs)) =

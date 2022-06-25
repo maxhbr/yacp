@@ -28,6 +28,9 @@ library
       YACP
       YACP.Core
       YACP.Core.Model
+      YACP.Core.Model.Identifier
+      YACP.Core.Model.Relation
+      YACP.Core.Model.Statement
       YACP.Core.MyPrelude
       YACP.Core.State
       YACP.Core.StatementContents
@@ -35,7 +38,6 @@ library
       YACP.Reader.FosslightDependencyReportReader
       YACP.Reader.ItDependsReader
       YACP.Reader.ScanossReader
-      YACP.Reader.StateReader
       YACP.Writer.CSVWriter
       YACP.Writer.StateWriter
   other-modules:
