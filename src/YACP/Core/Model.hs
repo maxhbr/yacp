@@ -1,6 +1,8 @@
 module YACP.Core.Model
   ( module X
   , idFromPurl
+  , refinePurl
+  , flexibilizePURL
   , nameAndVersion
   ) where
 
@@ -46,14 +48,17 @@ refinePurl = let
       Nothing -> p
   in applyGuessNamespaceFromName . applyGuessType
 
+flexibilizePURL :: PURL -> Identifier
+flexibilizePURL p = let
+    refinedPurl = refinePurl p
+    purlNoV = case refinedPurl of
+      p'@(PURL{_PURL_version = Just ('v':vrst)}) -> [p'{_PURL_version = Just vrst}]
+      p'@(PURL{_PURL_version = Just ('=':vrst)}) -> [p'{_PURL_version = Just vrst}]
+      _ -> []
+  in (mconcat . map PurlIdentifier) ([refinedPurl, p] ++ purlNoV)
+
 nameAndVersion :: String -> String -> Identifier
 nameAndVersion name version = let 
     rawIdentifier = Identifier (name ++ "@" ++ version)
     rawPurl = PURL (Just "pkg") (Just PURL_TypeGeneric) Nothing name (Just version) Nothing Nothing
-    rawPurlIdentifier = PurlIdentifier rawPurl
-    refinedPurl = refinePurl rawPurl
-    purlIdentifier = PurlIdentifier refinedPurl
-    purlNoV = case refinedPurl of
-      p@(PURL{_PURL_version = Just (v:vrst)}) -> PurlIdentifier $ p{_PURL_version = Just vrst}
-      _ -> mempty
-  in purlIdentifier <> rawPurlIdentifier <> rawIdentifier <> purlNoV
+  in flexibilizePURL rawPurl <> rawIdentifier

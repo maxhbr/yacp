@@ -14,6 +14,7 @@ module YACP.Core.Model.Identifier
   , flattenIdentifierToList
   , mkUUID
   , Identifiable (..)
+  , clusterifyIdentifiers
   , IdentifierProvider (..)
   ) where
 
@@ -27,6 +28,7 @@ import Data.List.Split (splitOn)
 import Data.Maybe (fromMaybe, maybeToList, catMaybes)
 import Data.UUID (UUID)
 import qualified Data.Map                      as Map
+import Data.Char (toLower)
 import System.Random (randomIO)
 import Data.String (IsString(..))
 import qualified Control.Monad.State as MTL
@@ -94,12 +96,17 @@ matchesIdentifier :: Identifier -> Identifier -> Bool
 matchesIdentifier i1 i2 = let
     matchesIdentifier' :: Identifier -> Identifier -> Bool
     matchesIdentifier' (Hash _ h1) (Hash _ h2) = h1 == h2 -- ignore type
-    matchesIdentifier' (PurlIdentifier p1) (PurlIdentifier p2) = 
-      and [ PURL._PURL_type p1 == PURL._PURL_type p2 
-          , PURL._PURL_namespace p1 == PURL._PURL_namespace p2 
-          , PURL._PURL_name p1 == PURL._PURL_name p2       
-          , PURL._PURL_version p1 == PURL._PURL_version p2
-          ] -- ignore qualifiers and subpath
+    matchesIdentifier' (PurlIdentifier p1) (PurlIdentifier p2) = let
+          toLowerString :: String -> String
+          toLowerString = map toLower
+          toLowerMaybe :: Maybe String -> Maybe String
+          toLowerMaybe = fmap toLowerString
+        in
+            and [ PURL._PURL_type p1 == PURL._PURL_type p2 
+                , toLowerMaybe  (PURL._PURL_namespace p1) == toLowerMaybe  (PURL._PURL_namespace p2 )
+                , toLowerString (PURL._PURL_name p1     ) == toLowerString (PURL._PURL_name p2      ) 
+                , toLowerMaybe  (PURL._PURL_version p1  ) == toLowerMaybe  (PURL._PURL_version p2)
+                ] -- ignore qualifiers and subpath
     matchesIdentifier' i1' i2' = i1' == i2' -- TODO: better matching? wildcards? path sanitation?
 
     i1s = flattenIdentifierToList i1
@@ -129,22 +136,27 @@ instance Identifiable Identifier where
   getIdentifier = id
   addIdentifier = (<>)
 
+clusterifyIdentifiers :: Identifiers -> Identifiers
+clusterifyIdentifiers input = let
+    lenOld = V.length input
+    fun :: Identifiers -> Identifier -> Identifiers
+    fun acc i = case V.uncons acc of 
+      Just (i', acc') -> if i `matchesIdentifier` i'
+                        then (i <> i') `V.cons` acc'
+                        else i' `V.cons` (fun acc' i)
+      Nothing -> V.singleton i
+    output = V.foldl' fun V.empty input
+    lenNew = V.length output
+  in if lenOld == lenNew
+     then output
+     else clusterifyIdentifiers output
+
 type Identifiers = V.Vector Identifier
 class IdentifierProvider a where
   getIdentifiers :: a -> Identifiers
   getIdentifiers = mempty
   getIdentifierClusters :: a -> Identifiers
-  getIdentifierClusters = let
-    clusterifyIdentifiers :: Identifiers -> Identifiers
-    clusterifyIdentifiers = let
-        fun :: Identifiers -> Identifier -> Identifiers
-        fun acc i = case V.uncons acc of 
-          Just (i', acc') -> if i `matchesIdentifier` i'
-                            then (i <> i') `V.cons` acc'
-                            else i' `V.cons` (fun acc' i)
-          Nothing -> V.singleton i
-      in V.foldl' fun V.empty
-    in clusterifyIdentifiers . getIdentifiers
+  getIdentifierClusters = clusterifyIdentifiers . getIdentifiers
 instance IdentifierProvider a => IdentifierProvider (Maybe a) where
   getIdentifiers (Just a) = getIdentifiers a
   getIdentifiers Nothing  = mempty

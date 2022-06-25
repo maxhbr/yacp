@@ -34,7 +34,8 @@ identifierSpec =
   let purl1 = "pkg:pypi/Jinja2@2.11.2"
       purl2 =
         "pkg:maven/org.apache.xmlgraphics/batik-anim@1.9.1?packaging=sources"
-  in  describe "Identifier" $ do
+  in do
+     describe "Identifier" $ do
         it ("parse purl1=" ++ purl1) $ do
           idFromPurl purl1
             `shouldBe` (PurlIdentifier
@@ -61,6 +62,15 @@ identifierSpec =
                        )
         it ("test show of purl2=" ++ purl2) $ do
           show (idFromPurl purl2) `shouldBe` purl2
+     describe "Clusterify" $ do
+      it "it minimal example" $ do
+        let is = (clusterifyIdentifiers . V.fromList) [ Identifier "abc"
+                                                      , Identifier "abc"
+                                                      , Identifier "cde"
+                                                      , Identifiers [Identifier "fgh"]
+                                                      , Identifiers [Identifier "fgh", Identifier "cde"]
+                                                      ]
+        (V.length is) `shouldBe` 2
 
 componentDetectionSpec =
   let componentDetectionFileBS :: B.ByteString
