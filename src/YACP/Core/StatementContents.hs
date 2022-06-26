@@ -56,8 +56,7 @@ instance Show DetectedLicenses where
 instance A.ToJSON DetectedLicenses
 instance A.FromJSON DetectedLicenses
 instance Statemental DetectedLicenses where
-  isEmpty (DetectedLicenses []) = True
-  isEmpty _                     = False
+  isEmpty (DetectedLicenses ls) = null (filter (/= (MLicExp NOASSERTION)) ls)
 instance IdentifierProvider DetectedLicenses
 
 data ComponentUrl = ComponentUrl String

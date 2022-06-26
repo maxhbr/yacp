@@ -26,11 +26,12 @@ import qualified System.IO                     as IO
 
 data CSVRecord = CSVRecord Identifier
                            [(ComponentLicense, Origin)]
+                           [(DetectedLicenses, Origin)]
                            [(ComponentVulnerability, Origin)]
                            [Origin]
 
 instance Csv.ToNamedRecord CSVRecord where
-  toNamedRecord (CSVRecord identifier lics vulns origins) =
+  toNamedRecord (CSVRecord identifier lics detLics vulns origins) =
     let toListOfStrings :: Show a => [(a, Origin)] -> String
         toListOfStrings =
           let fun :: Show a => (a, Origin) -> String
@@ -40,13 +41,14 @@ instance Csv.ToNamedRecord CSVRecord where
           [ "Identifier"
             Csv..= (unlines . map show . flattenIdentifierToList) identifier
           , "Licenses" Csv..= toListOfStrings lics
+          , "DetectedLicenses" Csv..= toListOfStrings detLics
           , "Vulnerabilities" Csv..= toListOfStrings vulns
           , "Origins" Csv..= (unlines . map show) origins
           ]
 
 csvRecordHeader :: Csv.Header
 csvRecordHeader =
-  V.fromList ["Identifier", "Licenses", "Vulnerabilities", "Origins"]
+  V.fromList ["Identifier", "Licenses", "DetectedLicenses", "Vulnerabilities", "Origins"]
 
 genCSV :: State -> V.Vector CSVRecord
 genCSV (State { _getStatements = sts }) =
@@ -54,9 +56,10 @@ genCSV (State { _getStatements = sts }) =
   in  V.map
         (\(i, sts') ->
           let lics    = unpackStatements sts'
+              detLics = unpackStatements sts'
               vulns   = unpackStatements sts'
               origins = getOrigins sts'
-          in  CSVRecord i lics vulns origins
+          in  CSVRecord i lics detLics vulns origins
         )
         clusters
 

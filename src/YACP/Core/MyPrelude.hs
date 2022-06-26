@@ -13,6 +13,7 @@ import           Data.List                     as X
 import           Data.Maybe                    as X
                                                 ( fromMaybe
                                                 , mapMaybe
+                                                , isJust
                                                 )
 import           Data.String                   as X
                                                 ( fromString )
@@ -35,6 +36,8 @@ import           System.IO                     as X
                                                 ( hPutStrLn
                                                 , stderr
                                                 )
+
+import Data.Monoid as X
 
 import qualified Data.Vector                   as V
 

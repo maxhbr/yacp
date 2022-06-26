@@ -122,8 +122,19 @@ syftSpec =
       syftBS =
         B.fromStrict
           $(embedFile "test/data/syft/report.json")
-  in describe "OrtEvaluatedModelReader" $ do
+  in describe "SyftReader" $ do
     let parsed = parseSyftBS syftBS
+    it ("parsing should succeed") $ do
+      when (isLeft parsed) $ parsed `shouldBe` (Left (YACPParsingIssue ""))
+      isRight parsed `shouldBe` True
+
+scancodeSpec =
+  let scancodeBS :: B.ByteString
+      scancodeBS =
+        B.fromStrict
+          $(embedFile "test/data/scancode/scancode.pp.json")
+  in describe "scancodeReader" $ do
+    let parsed = parseScancodeBS scancodeBS
     it ("parsing should succeed") $ do
       when (isLeft parsed) $ parsed `shouldBe` (Left (YACPParsingIssue ""))
       isRight parsed `shouldBe` True
@@ -136,3 +147,4 @@ main = hspec $ do
   itDependsReportSpec
   evaluatedModelSpec
   syftSpec
+  scancodeSpec

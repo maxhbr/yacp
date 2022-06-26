@@ -9,4 +9,5 @@ stack exec yacp-exe -- \
   --it-depends "test/data/it-depends/it-depends.json" \
   --ort "test/data/ort/evaluated-model.json" \
   --syft "test/data/syft/report.json" \
+  --scancode "test/data/scancode/scancode.pp.json" \
   "_tmp"

@@ -18,6 +18,7 @@ import           YACP.Reader.ItDependsReader   as X
 import           YACP.Reader.OrtEvaluatedModelReader
                                                as X
 import           YACP.Reader.ScanossReader     as X
+import           YACP.Reader.ScancodeReader     as X
 import           YACP.Reader.SyftReader        as X
 import           YACP.Writer.CSVWriter         as X
 import           YACP.Writer.StateWriter       as X
@@ -51,14 +52,11 @@ argsToYACP' [outDir] = do
   -- _ <- writeDigraphFile (outDir </> "digraph.dot")
   -- writeHHCFile (outDir </> "hhc.json")
   failOnIssue
-argsToYACP' ("--component-detection" : (f : oArgs)) =
-  readComponentDetectionFile f >> argsToYACP' oArgs
-argsToYACP' ("--fosslight" : (f : oArgs)) =
-  readFosslightDepRepFile f >> argsToYACP' oArgs
-argsToYACP' ("--it-depends" : (f : oArgs)) =
-  readItDependsFile f >> argsToYACP' oArgs
-argsToYACP' ("--ort" : (f : oArgs)) =
-  readEvaluatedModelFile f >> argsToYACP' oArgs
+argsToYACP' ("--component-detection" : (f : oArgs)) = readComponentDetectionFile f >> argsToYACP' oArgs
+argsToYACP' ("--fosslight" : (f : oArgs)) = readFosslightDepRepFile f >> argsToYACP' oArgs
+argsToYACP' ("--it-depends" : (f : oArgs)) = readItDependsFile f >> argsToYACP' oArgs
+argsToYACP' ("--ort" : (f : oArgs)) = readEvaluatedModelFile f >> argsToYACP' oArgs
+argsToYACP' ("--scancode" : (f : oArgs)) = readScancodeFile f >> argsToYACP' oArgs
 argsToYACP' ("--syft" : (f : oArgs)) = readSyftFile f >> argsToYACP' oArgs
 -- argsToYACP' ("--spdx": (f: oArgs)) = parseSPDXFile f >> argsToYACP' oArgs
 -- argsToYACP' ("--hhc": (f: oArgs)) = parseHHCFile f >> argsToYACP' oArgs
