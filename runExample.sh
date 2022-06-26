@@ -4,8 +4,10 @@ set -exuo pipefail
 
 stack build
 stack exec yacp-exe -- \
-  --ort "test/data/analyzer-result.json" \
-  --sc "test/data/bat.scancode.pp.json" \
-  --sc "test/data/black.scancode.pp.json" \
-  --spdx "data/spdx-spdx-spec/examples/SPDXJSONExample-v2.2.spdx.json" \
+  --component-detection "test/data/component-detection/component-detection.json" \
+  --fosslight "test/data/fosslight/fosslight_dependency-Report_SRC.csv" \
+  --it-depends "test/data/it-depends/it-depends.json" \
+  --ort "test/data/ort/evaluated-model.json" \
+  --syft "test/data/syft/report.json" \
+  --scancode "test/data/scancode/scancode.pp.json" \
   "_tmp"

@@ -29,6 +29,8 @@ dependencies:
 - uuid
 - network-uri # URI
 - fgl # Martin Erwig's Functional Graph Library
+- packageurl
+- spdx-tools
 # containers
 - vector
 - hashable
@@ -40,6 +42,7 @@ dependencies:
 # parsing and file handling
 - aeson
 - aeson-pretty
+- cassava
 - yaml
 # output
 - graphviz
@@ -49,27 +52,6 @@ dependencies:
 - pretty-terminal
 - split
 - process
-
-# - attoparsec
-# - base16-bytestring
-# - cassava
-# - cryptohash-md5
-# - curl
-# - extra
-# - file-embed
-# - graphviz
-# - hexml
-# - http-client
-# - lens
-# - lens-aeson
-# - lucid
-# - mtl
-# - network-uri
-# - opensource
-# - pandoc
-# - pandoc-types
-# - raw-strings-qq
-# - yaml
 
 library:
   source-dirs: src

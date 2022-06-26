@@ -1,0 +1,1092 @@
+{
+  "path_excludes" : [ ],
+  "scope_excludes" : [ ],
+  "copyrights" : [ {
+    "_id" : 0,
+    "statement" : "Copyright (c) 2014-2021 Frederick F. Kautz IV"
+  }, {
+    "_id" : 1,
+    "statement" : "Copyright (c) 2011 Russ Ross"
+  }, {
+    "_id" : 2,
+    "statement" : "Copyright (c) 2011 Russ Ross <russ@russross.com>"
+  }, {
+    "_id" : 3,
+    "statement" : "Copyright (c) 2014 Brian Goff"
+  }, {
+    "_id" : 4,
+    "statement" : "Copyright (c) 2015 Dmitri Shuralyov"
+  }, {
+    "_id" : 5,
+    "statement" : "Copyright (c) 2016 Felix Geisendorfer (felix@debuggable.com)"
+  }, {
+    "_id" : 6,
+    "statement" : "Copyright (c) 2013 The Gorilla Handlers Authors"
+  }, {
+    "_id" : 7,
+    "statement" : "Copyright 2013 The Gorilla Authors"
+  }, {
+    "_id" : 8,
+    "statement" : "(c) 2004 Foo Corporation"
+  }, {
+    "_id" : 9,
+    "statement" : "Copyright (c) 2016 Jeremy Saenz & Contributors"
+  }, {
+    "_id" : 10,
+    "statement" : "(c) 1999 Serious Enterprise"
+  } ],
+  "licenses" : [ {
+    "_id" : 0,
+    "id" : "Apache-2.0"
+  }, {
+    "_id" : 1,
+    "id" : "BSD-2-Clause"
+  }, {
+    "_id" : 2,
+    "id" : "MIT"
+  }, {
+    "_id" : 3,
+    "id" : "BSD-3-Clause"
+  } ],
+  "scopes" : [ {
+    "_id" : 0,
+    "name" : "main"
+  }, {
+    "_id" : 1,
+    "name" : "vendor"
+  } ],
+  "issue_resolutions" : [ ],
+  "issues" : [ ],
+  "scan_results" : [ {
+    "_id" : 0,
+    "provenance" : {
+      "vcs_info" : {
+        "type" : "Git",
+        "url" : "https://github.com/fkautz/serve.git",
+        "revision" : "a1889fd1d6b962a03ef647256aee2ed80e74a96b",
+        "path" : ""
+      },
+      "resolved_revision" : "a1889fd1d6b962a03ef647256aee2ed80e74a96b"
+    },
+    "scanner" : {
+      "name" : "ScanCode",
+      "version" : "30.1.0",
+      "configuration" : "--copyright --license --info --strip-root --timeout 300 --json-pp"
+    },
+    "start_time" : "2022-06-23T05:14:29.343624Z",
+    "end_time" : "2022-06-23T05:14:32.553356Z",
+    "package_verification_code" : "d00820e3de92f9ddba1bcadfbd60c5244f6bb610"
+  }, {
+    "_id" : 1,
+    "provenance" : {
+      "vcs_info" : {
+        "type" : "Git",
+        "url" : "https://github.com/cpuguy83/go-md2man.git",
+        "revision" : "v2.0.0",
+        "path" : ""
+      },
+      "resolved_revision" : "f79a8a8ca69da163eee19ab442bedad7a35bba5a"
+    },
+    "scanner" : {
+      "name" : "ScanCode",
+      "version" : "30.1.0",
+      "configuration" : "--copyright --license --info --strip-root --timeout 300 --json-pp"
+    },
+    "start_time" : "2022-06-23T05:13:44.506973Z",
+    "end_time" : "2022-06-23T05:13:53.002878Z",
+    "package_verification_code" : "cc3ab65cd2ae2cc82eb8941908edc15ddf332728"
+  }, {
+    "_id" : 2,
+    "provenance" : {
+      "vcs_info" : {
+        "type" : "Git",
+        "url" : "https://github.com/felixge/httpsnoop.git",
+        "revision" : "v1.0.2",
+        "path" : ""
+      },
+      "resolved_revision" : "42c30f944879059639bcf7b2ca4aba06f4a83198"
+    },
+    "scanner" : {
+      "name" : "ScanCode",
+      "version" : "30.1.0",
+      "configuration" : "--copyright --license --info --strip-root --timeout 300 --json-pp"
+    },
+    "start_time" : "2022-06-23T05:13:54.844350Z",
+    "end_time" : "2022-06-23T05:13:58.911212Z",
+    "package_verification_code" : "ba18e5f389f5727ff8e5ffe25041e291b1f6559a"
+  }, {
+    "_id" : 3,
+    "provenance" : {
+      "vcs_info" : {
+        "type" : "Git",
+        "url" : "https://github.com/gorilla/handlers.git",
+        "revision" : "v1.5.1",
+        "path" : ""
+      },
+      "resolved_revision" : "d453effd20e6817a8acfd9d278dadd21371da0ba"
+    },
+    "scanner" : {
+      "name" : "ScanCode",
+      "version" : "30.1.0",
+      "configuration" : "--copyright --license --info --strip-root --timeout 300 --json-pp"
+    },
+    "start_time" : "2022-06-23T05:14:00.668757Z",
+    "end_time" : "2022-06-23T05:14:05.332876Z",
+    "package_verification_code" : "d37808c23a7c6a16511ecf20d7cebc3d6e7f2005"
+  }, {
+    "_id" : 4,
+    "provenance" : {
+      "vcs_info" : {
+        "type" : "Git",
+        "url" : "https://github.com/russross/blackfriday.git",
+        "revision" : "v2.1.0",
+        "path" : ""
+      },
+      "resolved_revision" : "4c9bf9512682b995722660a4196c0013228e2049"
+    },
+    "scanner" : {
+      "name" : "ScanCode",
+      "version" : "30.1.0",
+      "configuration" : "--copyright --license --info --strip-root --timeout 300 --json-pp"
+    },
+    "start_time" : "2022-06-23T05:14:07.475653Z",
+    "end_time" : "2022-06-23T05:14:15.843053Z",
+    "package_verification_code" : "3b2ac756d735dff6eed3e2294cb077c8eedb804f"
+  }, {
+    "_id" : 5,
+    "provenance" : {
+      "vcs_info" : {
+        "type" : "Git",
+        "url" : "https://github.com/urfave/cli.git",
+        "revision" : "v1.22.5",
+        "path" : ""
+      },
+      "resolved_revision" : "af7fa3de115a4f9772a7758c51f92a1e3b30a010"
+    },
+    "scanner" : {
+      "name" : "ScanCode",
+      "version" : "30.1.0",
+      "configuration" : "--copyright --license --info --strip-root --timeout 300 --json-pp"
+    },
+    "start_time" : "2022-06-23T05:14:18.211307Z",
+    "end_time" : "2022-06-23T05:14:27.494818Z",
+    "package_verification_code" : "09307b33d05345c3271eae9f7fbd451d13633379"
+  } ],
+  "packages" : [ {
+    "_id" : 0,
+    "id" : "GoMod::github.com/fkautz/serve:a1889fd1d6b962a03ef647256aee2ed80e74a96b",
+    "is_project" : true,
+    "definition_file_path" : "go.mod",
+    "declared_licenses_processed" : { },
+    "detected_licenses" : [ 0 ],
+    "binary_artifact" : {
+      "url" : "",
+      "hash" : {
+        "value" : "",
+        "algorithm" : ""
+      }
+    },
+    "source_artifact" : {
+      "url" : "",
+      "hash" : {
+        "value" : "",
+        "algorithm" : ""
+      }
+    },
+    "vcs" : {
+      "type" : "Git",
+      "url" : "https://github.com/fkautz/serve.git",
+      "revision" : "a1889fd1d6b962a03ef647256aee2ed80e74a96b",
+      "path" : ""
+    },
+    "vcs_processed" : {
+      "type" : "Git",
+      "url" : "https://github.com/fkautz/serve.git",
+      "revision" : "a1889fd1d6b962a03ef647256aee2ed80e74a96b",
+      "path" : ""
+    },
+    "paths" : [ ],
+    "levels" : [ 0 ],
+    "scan_results" : [ 0 ],
+    "findings" : [ {
+      "type" : "COPYRIGHT",
+      "copyright" : 0,
+      "path" : "main.go",
+      "start_line" : 1,
+      "end_line" : 1,
+      "scan_result" : 0
+    }, {
+      "type" : "LICENSE",
+      "license" : 0,
+      "path" : "LICENSE",
+      "start_line" : 1,
+      "end_line" : 201,
+      "scan_result" : 0
+    }, {
+      "type" : "LICENSE",
+      "license" : 0,
+      "path" : "main.go",
+      "start_line" : 3,
+      "end_line" : 15,
+      "scan_result" : 0
+    } ],
+    "is_excluded" : false
+  }, {
+    "_id" : 1,
+    "id" : "GoMod::github.com/cpuguy83/go-md2man/v2:v2.0.0",
+    "is_project" : false,
+    "definition_file_path" : "",
+    "purl" : "pkg:golang/github.com%2Fcpuguy83%2Fgo-md2man%2Fv2@v2.0.0",
+    "declared_licenses_processed" : { },
+    "detected_licenses" : [ 1, 2 ],
+    "binary_artifact" : {
+      "url" : "",
+      "hash" : {
+        "value" : "",
+        "algorithm" : ""
+      }
+    },
+    "source_artifact" : {
+      "url" : "",
+      "hash" : {
+        "value" : "",
+        "algorithm" : ""
+      }
+    },
+    "vcs" : {
+      "type" : "Git",
+      "url" : "https://github.com/cpuguy83/go-md2man.git",
+      "revision" : "v2.0.0",
+      "path" : ""
+    },
+    "vcs_processed" : {
+      "type" : "Git",
+      "url" : "https://github.com/cpuguy83/go-md2man.git",
+      "revision" : "v2.0.0",
+      "path" : ""
+    },
+    "paths" : [ 0, 1 ],
+    "levels" : [ 0 ],
+    "scopes" : [ 0, 1 ],
+    "scan_results" : [ 1 ],
+    "findings" : [ {
+      "type" : "COPYRIGHT",
+      "copyright" : 1,
+      "path" : "vendor/github.com/russross/blackfriday/v2/LICENSE.txt",
+      "start_line" : 3,
+      "end_line" : 4,
+      "scan_result" : 1
+    }, {
+      "type" : "COPYRIGHT",
+      "copyright" : 2,
+      "path" : "vendor/github.com/russross/blackfriday/v2/block.go",
+      "start_line" : 5,
+      "end_line" : 5,
+      "scan_result" : 1
+    }, {
+      "type" : "COPYRIGHT",
+      "copyright" : 2,
+      "path" : "vendor/github.com/russross/blackfriday/v2/html.go",
+      "start_line" : 5,
+      "end_line" : 5,
+      "scan_result" : 1
+    }, {
+      "type" : "COPYRIGHT",
+      "copyright" : 2,
+      "path" : "vendor/github.com/russross/blackfriday/v2/inline.go",
+      "start_line" : 5,
+      "end_line" : 5,
+      "scan_result" : 1
+    }, {
+      "type" : "COPYRIGHT",
+      "copyright" : 2,
+      "path" : "vendor/github.com/russross/blackfriday/v2/markdown.go",
+      "start_line" : 4,
+      "end_line" : 4,
+      "scan_result" : 1
+    }, {
+      "type" : "COPYRIGHT",
+      "copyright" : 2,
+      "path" : "vendor/github.com/russross/blackfriday/v2/smartypants.go",
+      "start_line" : 5,
+      "end_line" : 5,
+      "scan_result" : 1
+    }, {
+      "type" : "LICENSE",
+      "license" : 1,
+      "path" : "vendor/github.com/russross/blackfriday/v2/LICENSE.txt",
+      "start_line" : 1,
+      "end_line" : 1,
+      "scan_result" : 1
+    }, {
+      "type" : "LICENSE",
+      "license" : 1,
+      "path" : "vendor/github.com/russross/blackfriday/v2/LICENSE.txt",
+      "start_line" : 6,
+      "end_line" : 29,
+      "scan_result" : 1
+    }, {
+      "type" : "LICENSE",
+      "license" : 1,
+      "path" : "vendor/github.com/russross/blackfriday/v2/README.md",
+      "start_line" : 283,
+      "end_line" : 283,
+      "scan_result" : 1
+    }, {
+      "type" : "LICENSE",
+      "license" : 1,
+      "path" : "vendor/github.com/russross/blackfriday/v2/block.go",
+      "start_line" : 6,
+      "end_line" : 6,
+      "scan_result" : 1
+    }, {
+      "type" : "LICENSE",
+      "license" : 1,
+      "path" : "vendor/github.com/russross/blackfriday/v2/html.go",
+      "start_line" : 6,
+      "end_line" : 6,
+      "scan_result" : 1
+    }, {
+      "type" : "LICENSE",
+      "license" : 1,
+      "path" : "vendor/github.com/russross/blackfriday/v2/inline.go",
+      "start_line" : 6,
+      "end_line" : 6,
+      "scan_result" : 1
+    }, {
+      "type" : "LICENSE",
+      "license" : 1,
+      "path" : "vendor/github.com/russross/blackfriday/v2/markdown.go",
+      "start_line" : 5,
+      "end_line" : 5,
+      "scan_result" : 1
+    }, {
+      "type" : "LICENSE",
+      "license" : 1,
+      "path" : "vendor/github.com/russross/blackfriday/v2/smartypants.go",
+      "start_line" : 6,
+      "end_line" : 6,
+      "scan_result" : 1
+    }, {
+      "type" : "COPYRIGHT",
+      "copyright" : 3,
+      "path" : "LICENSE.md",
+      "start_line" : 3,
+      "end_line" : 3,
+      "scan_result" : 1
+    }, {
+      "type" : "COPYRIGHT",
+      "copyright" : 4,
+      "path" : "vendor/github.com/shurcooL/sanitized_anchor_name/LICENSE",
+      "start_line" : 3,
+      "end_line" : 3,
+      "scan_result" : 1
+    }, {
+      "type" : "LICENSE",
+      "license" : 2,
+      "path" : "LICENSE.md",
+      "start_line" : 1,
+      "end_line" : 1,
+      "scan_result" : 1
+    }, {
+      "type" : "LICENSE",
+      "license" : 2,
+      "path" : "LICENSE.md",
+      "start_line" : 5,
+      "end_line" : 21,
+      "scan_result" : 1
+    }, {
+      "type" : "LICENSE",
+      "license" : 2,
+      "path" : "vendor/github.com/shurcooL/sanitized_anchor_name/LICENSE",
+      "start_line" : 1,
+      "end_line" : 1,
+      "scan_result" : 1
+    }, {
+      "type" : "LICENSE",
+      "license" : 2,
+      "path" : "vendor/github.com/shurcooL/sanitized_anchor_name/LICENSE",
+      "start_line" : 5,
+      "end_line" : 21,
+      "scan_result" : 1
+    }, {
+      "type" : "LICENSE",
+      "license" : 2,
+      "path" : "vendor/github.com/shurcooL/sanitized_anchor_name/README.md",
+      "start_line" : 33,
+      "end_line" : 36,
+      "scan_result" : 1
+    } ],
+    "is_excluded" : false
+  }, {
+    "_id" : 2,
+    "id" : "GoMod::github.com/felixge/httpsnoop:v1.0.2",
+    "is_project" : false,
+    "definition_file_path" : "",
+    "purl" : "pkg:golang/github.com%2Ffelixge%2Fhttpsnoop@v1.0.2",
+    "declared_licenses_processed" : { },
+    "detected_licenses" : [ 2 ],
+    "binary_artifact" : {
+      "url" : "",
+      "hash" : {
+        "value" : "",
+        "algorithm" : ""
+      }
+    },
+    "source_artifact" : {
+      "url" : "",
+      "hash" : {
+        "value" : "",
+        "algorithm" : ""
+      }
+    },
+    "vcs" : {
+      "type" : "Git",
+      "url" : "https://github.com/felixge/httpsnoop.git",
+      "revision" : "v1.0.2",
+      "path" : ""
+    },
+    "vcs_processed" : {
+      "type" : "Git",
+      "url" : "https://github.com/felixge/httpsnoop.git",
+      "revision" : "v1.0.2",
+      "path" : ""
+    },
+    "paths" : [ 2, 3 ],
+    "levels" : [ 0 ],
+    "scopes" : [ 0, 1 ],
+    "scan_results" : [ 2 ],
+    "findings" : [ {
+      "type" : "COPYRIGHT",
+      "copyright" : 5,
+      "path" : "LICENSE.txt",
+      "start_line" : 1,
+      "end_line" : 1,
+      "scan_result" : 2
+    }, {
+      "type" : "LICENSE",
+      "license" : 2,
+      "path" : "LICENSE.txt",
+      "start_line" : 3,
+      "end_line" : 19,
+      "scan_result" : 2
+    }, {
+      "type" : "LICENSE",
+      "license" : 2,
+      "path" : "README.md",
+      "start_line" : 93,
+      "end_line" : 95,
+      "scan_result" : 2
+    } ],
+    "is_excluded" : false
+  }, {
+    "_id" : 3,
+    "id" : "GoMod::github.com/gorilla/handlers:v1.5.1",
+    "is_project" : false,
+    "definition_file_path" : "",
+    "purl" : "pkg:golang/github.com%2Fgorilla%2Fhandlers@v1.5.1",
+    "declared_licenses_processed" : { },
+    "detected_licenses" : [ 1, 3 ],
+    "binary_artifact" : {
+      "url" : "",
+      "hash" : {
+        "value" : "",
+        "algorithm" : ""
+      }
+    },
+    "source_artifact" : {
+      "url" : "",
+      "hash" : {
+        "value" : "",
+        "algorithm" : ""
+      }
+    },
+    "vcs" : {
+      "type" : "Git",
+      "url" : "https://github.com/gorilla/handlers.git",
+      "revision" : "v1.5.1",
+      "path" : ""
+    },
+    "vcs_processed" : {
+      "type" : "Git",
+      "url" : "https://github.com/gorilla/handlers.git",
+      "revision" : "v1.5.1",
+      "path" : ""
+    },
+    "paths" : [ 4, 5 ],
+    "levels" : [ 0 ],
+    "scopes" : [ 0, 1 ],
+    "scan_results" : [ 3 ],
+    "findings" : [ {
+      "type" : "COPYRIGHT",
+      "copyright" : 6,
+      "path" : "LICENSE",
+      "start_line" : 1,
+      "end_line" : 1,
+      "scan_result" : 3
+    }, {
+      "type" : "LICENSE",
+      "license" : 1,
+      "path" : "LICENSE",
+      "start_line" : 3,
+      "end_line" : 22,
+      "scan_result" : 3
+    }, {
+      "type" : "COPYRIGHT",
+      "copyright" : 7,
+      "path" : "compress.go",
+      "start_line" : 1,
+      "end_line" : 1,
+      "scan_result" : 3
+    }, {
+      "type" : "COPYRIGHT",
+      "copyright" : 7,
+      "path" : "compress_test.go",
+      "start_line" : 1,
+      "end_line" : 1,
+      "scan_result" : 3
+    }, {
+      "type" : "COPYRIGHT",
+      "copyright" : 7,
+      "path" : "handlers.go",
+      "start_line" : 1,
+      "end_line" : 1,
+      "scan_result" : 3
+    }, {
+      "type" : "COPYRIGHT",
+      "copyright" : 7,
+      "path" : "handlers_test.go",
+      "start_line" : 1,
+      "end_line" : 1,
+      "scan_result" : 3
+    }, {
+      "type" : "COPYRIGHT",
+      "copyright" : 7,
+      "path" : "logging.go",
+      "start_line" : 1,
+      "end_line" : 1,
+      "scan_result" : 3
+    }, {
+      "type" : "COPYRIGHT",
+      "copyright" : 7,
+      "path" : "logging_test.go",
+      "start_line" : 1,
+      "end_line" : 1,
+      "scan_result" : 3
+    }, {
+      "type" : "LICENSE",
+      "license" : 3,
+      "path" : "README.md",
+      "start_line" : 53,
+      "end_line" : 55,
+      "scan_result" : 3
+    }, {
+      "type" : "LICENSE",
+      "license" : 3,
+      "path" : "compress.go",
+      "start_line" : 2,
+      "end_line" : 3,
+      "scan_result" : 3
+    }, {
+      "type" : "LICENSE",
+      "license" : 3,
+      "path" : "compress_test.go",
+      "start_line" : 2,
+      "end_line" : 3,
+      "scan_result" : 3
+    }, {
+      "type" : "LICENSE",
+      "license" : 3,
+      "path" : "handlers.go",
+      "start_line" : 2,
+      "end_line" : 3,
+      "scan_result" : 3
+    }, {
+      "type" : "LICENSE",
+      "license" : 3,
+      "path" : "handlers_test.go",
+      "start_line" : 2,
+      "end_line" : 3,
+      "scan_result" : 3
+    }, {
+      "type" : "LICENSE",
+      "license" : 3,
+      "path" : "logging.go",
+      "start_line" : 2,
+      "end_line" : 3,
+      "scan_result" : 3
+    }, {
+      "type" : "LICENSE",
+      "license" : 3,
+      "path" : "logging_test.go",
+      "start_line" : 2,
+      "end_line" : 3,
+      "scan_result" : 3
+    } ],
+    "is_excluded" : false
+  }, {
+    "_id" : 4,
+    "id" : "GoMod::github.com/russross/blackfriday/v2:v2.1.0",
+    "is_project" : false,
+    "definition_file_path" : "",
+    "purl" : "pkg:golang/github.com%2Frussross%2Fblackfriday%2Fv2@v2.1.0",
+    "declared_licenses_processed" : { },
+    "detected_licenses" : [ 1 ],
+    "binary_artifact" : {
+      "url" : "",
+      "hash" : {
+        "value" : "",
+        "algorithm" : ""
+      }
+    },
+    "source_artifact" : {
+      "url" : "",
+      "hash" : {
+        "value" : "",
+        "algorithm" : ""
+      }
+    },
+    "vcs" : {
+      "type" : "Git",
+      "url" : "https://github.com/russross/blackfriday.git",
+      "revision" : "v2.1.0",
+      "path" : ""
+    },
+    "vcs_processed" : {
+      "type" : "Git",
+      "url" : "https://github.com/russross/blackfriday.git",
+      "revision" : "v2.1.0",
+      "path" : ""
+    },
+    "paths" : [ 6, 7 ],
+    "levels" : [ 0 ],
+    "scopes" : [ 0, 1 ],
+    "scan_results" : [ 4 ],
+    "findings" : [ {
+      "type" : "COPYRIGHT",
+      "copyright" : 1,
+      "path" : "LICENSE.txt",
+      "start_line" : 3,
+      "end_line" : 4,
+      "scan_result" : 4
+    }, {
+      "type" : "COPYRIGHT",
+      "copyright" : 8,
+      "path" : "testdata/Markdown Documentation - Syntax.text",
+      "start_line" : 506,
+      "end_line" : 506,
+      "scan_result" : 4
+    }, {
+      "type" : "COPYRIGHT",
+      "copyright" : 2,
+      "path" : "block.go",
+      "start_line" : 5,
+      "end_line" : 5,
+      "scan_result" : 4
+    }, {
+      "type" : "COPYRIGHT",
+      "copyright" : 2,
+      "path" : "block_test.go",
+      "start_line" : 5,
+      "end_line" : 5,
+      "scan_result" : 4
+    }, {
+      "type" : "COPYRIGHT",
+      "copyright" : 2,
+      "path" : "helpers_test.go",
+      "start_line" : 5,
+      "end_line" : 5,
+      "scan_result" : 4
+    }, {
+      "type" : "COPYRIGHT",
+      "copyright" : 2,
+      "path" : "html.go",
+      "start_line" : 5,
+      "end_line" : 5,
+      "scan_result" : 4
+    }, {
+      "type" : "COPYRIGHT",
+      "copyright" : 2,
+      "path" : "inline.go",
+      "start_line" : 5,
+      "end_line" : 5,
+      "scan_result" : 4
+    }, {
+      "type" : "COPYRIGHT",
+      "copyright" : 2,
+      "path" : "inline_test.go",
+      "start_line" : 5,
+      "end_line" : 5,
+      "scan_result" : 4
+    }, {
+      "type" : "COPYRIGHT",
+      "copyright" : 2,
+      "path" : "markdown.go",
+      "start_line" : 4,
+      "end_line" : 4,
+      "scan_result" : 4
+    }, {
+      "type" : "COPYRIGHT",
+      "copyright" : 2,
+      "path" : "markdown_test.go",
+      "start_line" : 5,
+      "end_line" : 5,
+      "scan_result" : 4
+    }, {
+      "type" : "COPYRIGHT",
+      "copyright" : 2,
+      "path" : "ref_test.go",
+      "start_line" : 5,
+      "end_line" : 5,
+      "scan_result" : 4
+    }, {
+      "type" : "COPYRIGHT",
+      "copyright" : 2,
+      "path" : "smartypants.go",
+      "start_line" : 5,
+      "end_line" : 5,
+      "scan_result" : 4
+    }, {
+      "type" : "LICENSE",
+      "license" : 1,
+      "path" : "LICENSE.txt",
+      "start_line" : 1,
+      "end_line" : 1,
+      "scan_result" : 4
+    }, {
+      "type" : "LICENSE",
+      "license" : 1,
+      "path" : "LICENSE.txt",
+      "start_line" : 6,
+      "end_line" : 29,
+      "scan_result" : 4
+    }, {
+      "type" : "LICENSE",
+      "license" : 1,
+      "path" : "README.md",
+      "start_line" : 323,
+      "end_line" : 323,
+      "scan_result" : 4
+    }, {
+      "type" : "LICENSE",
+      "license" : 1,
+      "path" : "block.go",
+      "start_line" : 6,
+      "end_line" : 6,
+      "scan_result" : 4
+    }, {
+      "type" : "LICENSE",
+      "license" : 1,
+      "path" : "block_test.go",
+      "start_line" : 6,
+      "end_line" : 6,
+      "scan_result" : 4
+    }, {
+      "type" : "LICENSE",
+      "license" : 1,
+      "path" : "helpers_test.go",
+      "start_line" : 6,
+      "end_line" : 6,
+      "scan_result" : 4
+    }, {
+      "type" : "LICENSE",
+      "license" : 1,
+      "path" : "html.go",
+      "start_line" : 6,
+      "end_line" : 6,
+      "scan_result" : 4
+    }, {
+      "type" : "LICENSE",
+      "license" : 1,
+      "path" : "inline.go",
+      "start_line" : 6,
+      "end_line" : 6,
+      "scan_result" : 4
+    }, {
+      "type" : "LICENSE",
+      "license" : 1,
+      "path" : "inline_test.go",
+      "start_line" : 6,
+      "end_line" : 6,
+      "scan_result" : 4
+    }, {
+      "type" : "LICENSE",
+      "license" : 1,
+      "path" : "markdown.go",
+      "start_line" : 5,
+      "end_line" : 5,
+      "scan_result" : 4
+    }, {
+      "type" : "LICENSE",
+      "license" : 1,
+      "path" : "markdown_test.go",
+      "start_line" : 6,
+      "end_line" : 6,
+      "scan_result" : 4
+    }, {
+      "type" : "LICENSE",
+      "license" : 1,
+      "path" : "ref_test.go",
+      "start_line" : 6,
+      "end_line" : 6,
+      "scan_result" : 4
+    }, {
+      "type" : "LICENSE",
+      "license" : 1,
+      "path" : "smartypants.go",
+      "start_line" : 6,
+      "end_line" : 6,
+      "scan_result" : 4
+    } ],
+    "is_excluded" : false
+  }, {
+    "_id" : 5,
+    "id" : "GoMod::github.com/urfave/cli:v1.22.5",
+    "is_project" : false,
+    "definition_file_path" : "",
+    "purl" : "pkg:golang/github.com%2Furfave%2Fcli@v1.22.5",
+    "declared_licenses_processed" : { },
+    "detected_licenses" : [ 2 ],
+    "binary_artifact" : {
+      "url" : "",
+      "hash" : {
+        "value" : "",
+        "algorithm" : ""
+      }
+    },
+    "source_artifact" : {
+      "url" : "",
+      "hash" : {
+        "value" : "",
+        "algorithm" : ""
+      }
+    },
+    "vcs" : {
+      "type" : "Git",
+      "url" : "https://github.com/urfave/cli.git",
+      "revision" : "v1.22.5",
+      "path" : ""
+    },
+    "vcs_processed" : {
+      "type" : "Git",
+      "url" : "https://github.com/urfave/cli.git",
+      "revision" : "v1.22.5",
+      "path" : ""
+    },
+    "paths" : [ 8, 9 ],
+    "levels" : [ 0 ],
+    "scopes" : [ 0, 1 ],
+    "scan_results" : [ 5 ],
+    "findings" : [ {
+      "type" : "COPYRIGHT",
+      "copyright" : 9,
+      "path" : "LICENSE",
+      "start_line" : 3,
+      "end_line" : 3,
+      "scan_result" : 5
+    }, {
+      "type" : "COPYRIGHT",
+      "copyright" : 10,
+      "path" : "docs/v1/manual.md",
+      "start_line" : 1275,
+      "end_line" : 1275,
+      "scan_result" : 5
+    }, {
+      "type" : "LICENSE",
+      "license" : 2,
+      "path" : "LICENSE",
+      "start_line" : 1,
+      "end_line" : 1,
+      "scan_result" : 5
+    }, {
+      "type" : "LICENSE",
+      "license" : 2,
+      "path" : "LICENSE",
+      "start_line" : 5,
+      "end_line" : 21,
+      "scan_result" : 5
+    } ],
+    "is_excluded" : false
+  } ],
+  "paths" : [ {
+    "_id" : 0,
+    "pkg" : 1,
+    "project" : 0,
+    "scope" : 0,
+    "path" : [ ]
+  }, {
+    "_id" : 1,
+    "pkg" : 1,
+    "project" : 0,
+    "scope" : 1,
+    "path" : [ ]
+  }, {
+    "_id" : 2,
+    "pkg" : 2,
+    "project" : 0,
+    "scope" : 0,
+    "path" : [ ]
+  }, {
+    "_id" : 3,
+    "pkg" : 2,
+    "project" : 0,
+    "scope" : 1,
+    "path" : [ ]
+  }, {
+    "_id" : 4,
+    "pkg" : 3,
+    "project" : 0,
+    "scope" : 0,
+    "path" : [ ]
+  }, {
+    "_id" : 5,
+    "pkg" : 3,
+    "project" : 0,
+    "scope" : 1,
+    "path" : [ ]
+  }, {
+    "_id" : 6,
+    "pkg" : 4,
+    "project" : 0,
+    "scope" : 0,
+    "path" : [ ]
+  }, {
+    "_id" : 7,
+    "pkg" : 4,
+    "project" : 0,
+    "scope" : 1,
+    "path" : [ ]
+  }, {
+    "_id" : 8,
+    "pkg" : 5,
+    "project" : 0,
+    "scope" : 0,
+    "path" : [ ]
+  }, {
+    "_id" : 9,
+    "pkg" : 5,
+    "project" : 0,
+    "scope" : 1,
+    "path" : [ ]
+  } ],
+  "dependency_trees" : [ {
+    "key" : 0,
+    "pkg" : 0,
+    "children" : [ {
+      "key" : 1,
+      "scope" : 0,
+      "children" : [ {
+        "key" : 2,
+        "linkage" : "PROJECT_STATIC",
+        "pkg" : 1
+      }, {
+        "key" : 3,
+        "linkage" : "PROJECT_STATIC",
+        "pkg" : 2
+      }, {
+        "key" : 4,
+        "linkage" : "PROJECT_STATIC",
+        "pkg" : 3
+      }, {
+        "key" : 5,
+        "linkage" : "PROJECT_STATIC",
+        "pkg" : 4
+      }, {
+        "key" : 6,
+        "linkage" : "PROJECT_STATIC",
+        "pkg" : 5
+      } ]
+    }, {
+      "key" : 7,
+      "scope" : 1,
+      "children" : [ {
+        "key" : 8,
+        "linkage" : "PROJECT_STATIC",
+        "pkg" : 1
+      }, {
+        "key" : 9,
+        "linkage" : "PROJECT_STATIC",
+        "pkg" : 2
+      }, {
+        "key" : 10,
+        "linkage" : "PROJECT_STATIC",
+        "pkg" : 3
+      }, {
+        "key" : 11,
+        "linkage" : "PROJECT_STATIC",
+        "pkg" : 4
+      }, {
+        "key" : 12,
+        "linkage" : "PROJECT_STATIC",
+        "pkg" : 5
+      } ]
+    } ]
+  } ],
+  "rule_violation_resolutions" : [ ],
+  "rule_violations" : [ ],
+  "vulnerabilities_resolutions" : [ ],
+  "vulnerabilities" : [ ],
+  "statistics" : {
+    "repository_configuration" : {
+      "path_excludes" : 0,
+      "scope_excludes" : 0,
+      "license_choices" : 0,
+      "license_finding_curations" : 0,
+      "issue_resolutions" : 0,
+      "rule_violation_resolutions" : 0,
+      "vulnerability_resolutions" : 0
+    },
+    "open_issues" : {
+      "errors" : 0,
+      "warnings" : 0,
+      "hints" : 0
+    },
+    "open_rule_violations" : {
+      "errors" : 0,
+      "warnings" : 0,
+      "hints" : 0
+    },
+    "open_vulnerabilities" : 0,
+    "dependency_tree" : {
+      "included_projects" : 1,
+      "excluded_projects" : 0,
+      "included_packages" : 5,
+      "excludes_packages" : 0,
+      "total_tree_depth" : 1,
+      "included_tree_depth" : 1,
+      "included_scopes" : [ "main", "vendor" ],
+      "excluded_scopes" : [ ]
+    },
+    "licenses" : {
+      "declared" : { },
+      "detected" : {
+        "Apache-2.0" : 1,
+        "BSD-2-Clause" : 3,
+        "BSD-3-Clause" : 1,
+        "MIT" : 3
+      }
+    }
+  },
+  "repository" : {
+    "vcs" : {
+      "type" : "Git",
+      "url" : "http://github.com/fkautz/serve",
+      "revision" : "a1889fd1d6b962a03ef647256aee2ed80e74a96b",
+      "path" : ""
+    },
+    "vcs_processed" : {
+      "type" : "Git",
+      "url" : "https://github.com/fkautz/serve.git",
+      "revision" : "a1889fd1d6b962a03ef647256aee2ed80e74a96b",
+      "path" : ""
+    },
+    "config" : { }
+  },
+  "severe_issue_threshold" : "WARNING",
+  "severe_rule_violation_threshold" : "WARNING",
+  "repository_configuration" : "--- {}\n",
+  "labels" : { },
+  "meta_data" : {
+    "analyzer_start_time" : "2022-06-23T05:13:21.826434Z"
+  }
+}

@@ -1,0 +1,522 @@
+{
+  "dependencyGraphs": {
+    "/outputs/src/go.sum": {
+      "graph": {
+        "github.com/gorilla/handlers v1.5.1 - Go": null,
+        "github.com/BurntSushi/toml v0.3.1 - Go": null,
+        "github.com/shurcooL/sanitized_anchor_name v1.0.0 - Go": null,
+        "github.com/cpuguy83/go-md2man/v2 v2.0.0 - Go": [
+          "github.com/pmezard/go-difflib v1.0.0 - Go",
+          "github.com/shurcooL/sanitized_anchor_name v1.0.0 - Go"
+        ],
+        "github.com/urfave/cli v1.22.5 - Go": [
+          "github.com/BurntSushi/toml v0.3.1 - Go",
+          "gopkg.in/yaml.v2 v2.2.2 - Go"
+        ],
+        "github.com/felixge/httpsnoop v1.0.2 - Go": null,
+        "gopkg.in/check.v1 v0.0.0-20161208181325-20d25e280405 - Go": null,
+        "github.com/russross/blackfriday/v2 v2.1.0 - Go": null,
+        "github.com/pmezard/go-difflib v1.0.0 - Go": null,
+        "gopkg.in/yaml.v2 v2.2.2 - Go": [
+          "gopkg.in/check.v1 v0.0.0-20161208181325-20d25e280405 - Go"
+        ]
+      },
+      "explicitlyReferencedComponentIds": [
+        "github.com/gorilla/handlers v1.5.1 - Go",
+        "github.com/urfave/cli v1.22.5 - Go"
+      ],
+      "developmentDependencies": [],
+      "dependencies": []
+    }
+  },
+  "componentsFound": [
+    {
+      "locationsFoundAt": [
+        "/go.sum"
+      ],
+      "component": {
+        "name": "github.com/gorilla/handlers",
+        "version": "v1.5.1",
+        "hash": "",
+        "type": "Go",
+        "id": "github.com/gorilla/handlers v1.5.1 - Go",
+        "packageUrl": {
+          "Scheme": "pkg",
+          "Type": "golang",
+          "Namespace": null,
+          "Name": "github.com/gorilla/handlers",
+          "Version": "v1.5.1",
+          "Qualifiers": null,
+          "Subpath": null
+        }
+      },
+      "detectorId": "Go",
+      "isDevelopmentDependency": null,
+      "dependencyScope": null,
+      "topLevelReferrers": [
+        {
+          "name": "github.com/gorilla/handlers",
+          "version": "v1.5.1",
+          "hash": "",
+          "type": "Go",
+          "id": "github.com/gorilla/handlers v1.5.1 - Go",
+          "packageUrl": {
+            "Scheme": "pkg",
+            "Type": "golang",
+            "Namespace": null,
+            "Name": "github.com/gorilla/handlers",
+            "Version": "v1.5.1",
+            "Qualifiers": null,
+            "Subpath": null
+          }
+        }
+      ],
+      "containerDetailIds": [],
+      "containerLayerIds": {}
+    },
+    {
+      "locationsFoundAt": [
+        "/go.sum"
+      ],
+      "component": {
+        "name": "github.com/BurntSushi/toml",
+        "version": "v0.3.1",
+        "hash": "",
+        "type": "Go",
+        "id": "github.com/BurntSushi/toml v0.3.1 - Go",
+        "packageUrl": {
+          "Scheme": "pkg",
+          "Type": "golang",
+          "Namespace": null,
+          "Name": "github.com/burntsushi/toml",
+          "Version": "v0.3.1",
+          "Qualifiers": null,
+          "Subpath": null
+        }
+      },
+      "detectorId": "Go",
+      "isDevelopmentDependency": null,
+      "dependencyScope": null,
+      "topLevelReferrers": [
+        {
+          "name": "github.com/urfave/cli",
+          "version": "v1.22.5",
+          "hash": "",
+          "type": "Go",
+          "id": "github.com/urfave/cli v1.22.5 - Go",
+          "packageUrl": {
+            "Scheme": "pkg",
+            "Type": "golang",
+            "Namespace": null,
+            "Name": "github.com/urfave/cli",
+            "Version": "v1.22.5",
+            "Qualifiers": null,
+            "Subpath": null
+          }
+        }
+      ],
+      "containerDetailIds": [],
+      "containerLayerIds": {}
+    },
+    {
+      "locationsFoundAt": [
+        "/go.sum"
+      ],
+      "component": {
+        "name": "github.com/shurcooL/sanitized_anchor_name",
+        "version": "v1.0.0",
+        "hash": "",
+        "type": "Go",
+        "id": "github.com/shurcooL/sanitized_anchor_name v1.0.0 - Go",
+        "packageUrl": {
+          "Scheme": "pkg",
+          "Type": "golang",
+          "Namespace": null,
+          "Name": "github.com/shurcool/sanitized_anchor_name",
+          "Version": "v1.0.0",
+          "Qualifiers": null,
+          "Subpath": null
+        }
+      },
+      "detectorId": "Go",
+      "isDevelopmentDependency": null,
+      "dependencyScope": null,
+      "topLevelReferrers": [],
+      "containerDetailIds": [],
+      "containerLayerIds": {}
+    },
+    {
+      "locationsFoundAt": [
+        "/go.sum"
+      ],
+      "component": {
+        "name": "github.com/cpuguy83/go-md2man/v2",
+        "version": "v2.0.0",
+        "hash": "",
+        "type": "Go",
+        "id": "github.com/cpuguy83/go-md2man/v2 v2.0.0 - Go",
+        "packageUrl": {
+          "Scheme": "pkg",
+          "Type": "golang",
+          "Namespace": null,
+          "Name": "github.com/cpuguy83/go-md2man/v2",
+          "Version": "v2.0.0",
+          "Qualifiers": null,
+          "Subpath": null
+        }
+      },
+      "detectorId": "Go",
+      "isDevelopmentDependency": null,
+      "dependencyScope": null,
+      "topLevelReferrers": [],
+      "containerDetailIds": [],
+      "containerLayerIds": {}
+    },
+    {
+      "locationsFoundAt": [
+        "/go.sum"
+      ],
+      "component": {
+        "name": "github.com/urfave/cli",
+        "version": "v1.22.5",
+        "hash": "",
+        "type": "Go",
+        "id": "github.com/urfave/cli v1.22.5 - Go",
+        "packageUrl": {
+          "Scheme": "pkg",
+          "Type": "golang",
+          "Namespace": null,
+          "Name": "github.com/urfave/cli",
+          "Version": "v1.22.5",
+          "Qualifiers": null,
+          "Subpath": null
+        }
+      },
+      "detectorId": "Go",
+      "isDevelopmentDependency": null,
+      "dependencyScope": null,
+      "topLevelReferrers": [
+        {
+          "name": "github.com/urfave/cli",
+          "version": "v1.22.5",
+          "hash": "",
+          "type": "Go",
+          "id": "github.com/urfave/cli v1.22.5 - Go",
+          "packageUrl": {
+            "Scheme": "pkg",
+            "Type": "golang",
+            "Namespace": null,
+            "Name": "github.com/urfave/cli",
+            "Version": "v1.22.5",
+            "Qualifiers": null,
+            "Subpath": null
+          }
+        }
+      ],
+      "containerDetailIds": [],
+      "containerLayerIds": {}
+    },
+    {
+      "locationsFoundAt": [
+        "/go.sum"
+      ],
+      "component": {
+        "name": "github.com/felixge/httpsnoop",
+        "version": "v1.0.2",
+        "hash": "",
+        "type": "Go",
+        "id": "github.com/felixge/httpsnoop v1.0.2 - Go",
+        "packageUrl": {
+          "Scheme": "pkg",
+          "Type": "golang",
+          "Namespace": null,
+          "Name": "github.com/felixge/httpsnoop",
+          "Version": "v1.0.2",
+          "Qualifiers": null,
+          "Subpath": null
+        }
+      },
+      "detectorId": "Go",
+      "isDevelopmentDependency": null,
+      "dependencyScope": null,
+      "topLevelReferrers": [],
+      "containerDetailIds": [],
+      "containerLayerIds": {}
+    },
+    {
+      "locationsFoundAt": [
+        "/go.sum"
+      ],
+      "component": {
+        "name": "gopkg.in/check.v1",
+        "version": "v0.0.0-20161208181325-20d25e280405",
+        "hash": "",
+        "type": "Go",
+        "id": "gopkg.in/check.v1 v0.0.0-20161208181325-20d25e280405 - Go",
+        "packageUrl": {
+          "Scheme": "pkg",
+          "Type": "golang",
+          "Namespace": null,
+          "Name": "gopkg.in/check.v1",
+          "Version": "v0.0.0-20161208181325-20d25e280405",
+          "Qualifiers": null,
+          "Subpath": null
+        }
+      },
+      "detectorId": "Go",
+      "isDevelopmentDependency": null,
+      "dependencyScope": null,
+      "topLevelReferrers": [
+        {
+          "name": "github.com/urfave/cli",
+          "version": "v1.22.5",
+          "hash": "",
+          "type": "Go",
+          "id": "github.com/urfave/cli v1.22.5 - Go",
+          "packageUrl": {
+            "Scheme": "pkg",
+            "Type": "golang",
+            "Namespace": null,
+            "Name": "github.com/urfave/cli",
+            "Version": "v1.22.5",
+            "Qualifiers": null,
+            "Subpath": null
+          }
+        }
+      ],
+      "containerDetailIds": [],
+      "containerLayerIds": {}
+    },
+    {
+      "locationsFoundAt": [
+        "/go.sum"
+      ],
+      "component": {
+        "name": "github.com/russross/blackfriday/v2",
+        "version": "v2.1.0",
+        "hash": "",
+        "type": "Go",
+        "id": "github.com/russross/blackfriday/v2 v2.1.0 - Go",
+        "packageUrl": {
+          "Scheme": "pkg",
+          "Type": "golang",
+          "Namespace": null,
+          "Name": "github.com/russross/blackfriday/v2",
+          "Version": "v2.1.0",
+          "Qualifiers": null,
+          "Subpath": null
+        }
+      },
+      "detectorId": "Go",
+      "isDevelopmentDependency": null,
+      "dependencyScope": null,
+      "topLevelReferrers": [],
+      "containerDetailIds": [],
+      "containerLayerIds": {}
+    },
+    {
+      "locationsFoundAt": [
+        "/go.sum"
+      ],
+      "component": {
+        "name": "github.com/pmezard/go-difflib",
+        "version": "v1.0.0",
+        "hash": "",
+        "type": "Go",
+        "id": "github.com/pmezard/go-difflib v1.0.0 - Go",
+        "packageUrl": {
+          "Scheme": "pkg",
+          "Type": "golang",
+          "Namespace": null,
+          "Name": "github.com/pmezard/go-difflib",
+          "Version": "v1.0.0",
+          "Qualifiers": null,
+          "Subpath": null
+        }
+      },
+      "detectorId": "Go",
+      "isDevelopmentDependency": null,
+      "dependencyScope": null,
+      "topLevelReferrers": [],
+      "containerDetailIds": [],
+      "containerLayerIds": {}
+    },
+    {
+      "locationsFoundAt": [
+        "/go.sum"
+      ],
+      "component": {
+        "name": "gopkg.in/yaml.v2",
+        "version": "v2.2.2",
+        "hash": "",
+        "type": "Go",
+        "id": "gopkg.in/yaml.v2 v2.2.2 - Go",
+        "packageUrl": {
+          "Scheme": "pkg",
+          "Type": "golang",
+          "Namespace": null,
+          "Name": "gopkg.in/yaml.v2",
+          "Version": "v2.2.2",
+          "Qualifiers": null,
+          "Subpath": null
+        }
+      },
+      "detectorId": "Go",
+      "isDevelopmentDependency": null,
+      "dependencyScope": null,
+      "topLevelReferrers": [
+        {
+          "name": "github.com/urfave/cli",
+          "version": "v1.22.5",
+          "hash": "",
+          "type": "Go",
+          "id": "github.com/urfave/cli v1.22.5 - Go",
+          "packageUrl": {
+            "Scheme": "pkg",
+            "Type": "golang",
+            "Namespace": null,
+            "Name": "github.com/urfave/cli",
+            "Version": "v1.22.5",
+            "Qualifiers": null,
+            "Subpath": null
+          }
+        }
+      ],
+      "containerDetailIds": [],
+      "containerLayerIds": {}
+    }
+  ],
+  "detectorsInScan": [
+    {
+      "detectorId": "Yarn",
+      "isExperimental": false,
+      "version": 6,
+      "supportedComponentTypes": [
+        "Npm"
+      ]
+    },
+    {
+      "detectorId": "RustCrateDetector",
+      "isExperimental": false,
+      "version": 7,
+      "supportedComponentTypes": [
+        "Cargo"
+      ]
+    },
+    {
+      "detectorId": "RustCrateV2Detector",
+      "isExperimental": false,
+      "version": 6,
+      "supportedComponentTypes": [
+        "Cargo"
+      ]
+    },
+    {
+      "detectorId": "Ruby",
+      "isExperimental": false,
+      "version": 3,
+      "supportedComponentTypes": [
+        "RubyGems"
+      ]
+    },
+    {
+      "detectorId": "Pnpm",
+      "isExperimental": false,
+      "version": 5,
+      "supportedComponentTypes": [
+        "Npm"
+      ]
+    },
+    {
+      "detectorId": "Pip",
+      "isExperimental": false,
+      "version": 5,
+      "supportedComponentTypes": [
+        "Pip"
+      ]
+    },
+    {
+      "detectorId": "NuGet",
+      "isExperimental": false,
+      "version": 2,
+      "supportedComponentTypes": [
+        "NuGet"
+      ]
+    },
+    {
+      "detectorId": "NuGetProjectCentric",
+      "isExperimental": false,
+      "version": 1,
+      "supportedComponentTypes": [
+        "NuGet"
+      ]
+    },
+    {
+      "detectorId": "Npm",
+      "isExperimental": false,
+      "version": 2,
+      "supportedComponentTypes": [
+        "Npm"
+      ]
+    },
+    {
+      "detectorId": "NpmWithRoots",
+      "isExperimental": false,
+      "version": 2,
+      "supportedComponentTypes": [
+        "Npm"
+      ]
+    },
+    {
+      "detectorId": "MvnCli",
+      "isExperimental": false,
+      "version": 2,
+      "supportedComponentTypes": [
+        "Maven"
+      ]
+    },
+    {
+      "detectorId": "Linux",
+      "isExperimental": false,
+      "version": 4,
+      "supportedComponentTypes": [
+        "Linux"
+      ]
+    },
+    {
+      "detectorId": "Ivy",
+      "isExperimental": true,
+      "version": 2,
+      "supportedComponentTypes": [
+        "Maven"
+      ]
+    },
+    {
+      "detectorId": "Gradle",
+      "isExperimental": false,
+      "version": 2,
+      "supportedComponentTypes": [
+        "Maven"
+      ]
+    },
+    {
+      "detectorId": "Go",
+      "isExperimental": false,
+      "version": 6,
+      "supportedComponentTypes": [
+        "Go"
+      ]
+    },
+    {
+      "detectorId": "CocoaPods",
+      "isExperimental": false,
+      "version": 2,
+      "supportedComponentTypes": [
+        "Pod",
+        "Git"
+      ]
+    }
+  ],
+  "containerDetailsMap": {},
+  "resultCode": "Success"
+}

@@ -1,0 +1,126 @@
+{
+  "Dockerfile": [
+    {
+      "id": "none",
+      "server": {
+        "kb_version": {
+          "daily": "22.06.21",
+          "monthly": "22.06"
+        },
+        "version": "4.5.2"
+      }
+    }
+  ],
+  "go.mod": [
+    {
+      "component": "serve",
+      "file": "go.mod",
+      "file_hash": "9b0ad4696b5038eed8feb4d9873788a7",
+      "file_url": "https://osskb.org/api/file_contents/9b0ad4696b5038eed8feb4d9873788a7",
+      "id": "file",
+      "latest": "1.0.0",
+      "licenses": [],
+      "lines": "all",
+      "matched": "100%",
+      "oss_lines": "all",
+      "purl": [
+        "pkg:github/fkautz/serve"
+      ],
+      "release_date": "2021-05-28",
+      "server": {
+        "kb_version": {
+          "daily": "22.06.21",
+          "monthly": "22.06"
+        },
+        "version": "4.5.2"
+      },
+      "source_hash": "9b0ad4696b5038eed8feb4d9873788a7",
+      "status": "pending",
+      "url": "https://github.com/fkautz/serve",
+      "url_hash": "f68b8f7b374f30ac0ef9197d2aec6373",
+      "vendor": "fkautz",
+      "version": "1.0.0"
+    }
+  ],
+  "go.sum": [
+    {
+      "component": "serve",
+      "file": "go.sum",
+      "file_hash": "93b145428e4e9b3023ba9c0f6b37e858",
+      "file_url": "https://osskb.org/api/file_contents/93b145428e4e9b3023ba9c0f6b37e858",
+      "id": "file",
+      "latest": "1.0.0",
+      "licenses": [],
+      "lines": "all",
+      "matched": "100%",
+      "oss_lines": "all",
+      "purl": [
+        "pkg:github/fkautz/serve"
+      ],
+      "release_date": "2021-05-28",
+      "server": {
+        "kb_version": {
+          "daily": "22.06.21",
+          "monthly": "22.06"
+        },
+        "version": "4.5.2"
+      },
+      "source_hash": "93b145428e4e9b3023ba9c0f6b37e858",
+      "status": "pending",
+      "url": "https://github.com/fkautz/serve",
+      "url_hash": "f68b8f7b374f30ac0ef9197d2aec6373",
+      "vendor": "fkautz",
+      "version": "1.0.0"
+    }
+  ],
+  "main.go": [
+    {
+      "component": "serve",
+      "file": "main.go",
+      "file_hash": "f3ac7a60cd038e207b329d1c8568b293",
+      "file_url": "https://osskb.org/api/file_contents/f3ac7a60cd038e207b329d1c8568b293",
+      "id": "file",
+      "latest": "1.0.0",
+      "licenses": [
+        {
+          "checklist_url": "https://www.osadl.org/fileadmin/checklists/unreflicenses/Apache-2.0.txt",
+          "copyleft": "no",
+          "name": "Apache-2.0",
+          "osadl_updated": "2022-05-13 08:48",
+          "patent_hints": "yes",
+          "source": "file_spdx_tag",
+          "url": "https://spdx.org/licenses/Apache-2.0.html"
+        },
+        {
+          "checklist_url": "https://www.osadl.org/fileadmin/checklists/unreflicenses/Apache-2.0.txt",
+          "copyleft": "no",
+          "name": "Apache-2.0",
+          "osadl_updated": "2022-05-13 08:48",
+          "patent_hints": "yes",
+          "source": "scancode",
+          "url": "https://spdx.org/licenses/Apache-2.0.html"
+        }
+      ],
+      "lines": "all",
+      "matched": "100%",
+      "oss_lines": "all",
+      "purl": [
+        "pkg:github/fkautz/serve"
+      ],
+      "release_date": "2021-05-28",
+      "server": {
+        "kb_version": {
+          "daily": "22.06.21",
+          "monthly": "22.06"
+        },
+        "version": "4.5.2"
+      },
+      "source_hash": "f3ac7a60cd038e207b329d1c8568b293",
+      "status": "pending",
+      "url": "https://github.com/fkautz/serve",
+      "url_hash": "f68b8f7b374f30ac0ef9197d2aec6373",
+      "vendor": "fkautz",
+      "version": "1.0.0"
+    }
+  ]
+}

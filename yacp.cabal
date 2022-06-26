@@ -1,6 +1,6 @@
 cabal-version: 1.12
 
--- This file has been generated from package.yaml by hpack version 0.34.4.
+-- This file has been generated from package.yaml by hpack version 0.34.7.
 --
 -- see: https://github.com/sol/hpack
 
@@ -26,35 +26,23 @@ source-repository head
 library
   exposed-modules:
       YACP
-      YACP.ComputeGraph
       YACP.Core
       YACP.Core.Model
+      YACP.Core.Model.Identifier
+      YACP.Core.Model.Relation
+      YACP.Core.Model.Statement
       YACP.Core.MyPrelude
-      YACP.Core.StateActions
-      YACP.CycloneDXCollector
-      YACP.Graphviz
-      YACP.HHC.HHC
-      YACP.HHC.HHCUtils
-      YACP.HHCCollector
-      YACP.HHCWriter
-      YACP.ORT.ORT
-      YACP.OrtCollector
-      YACP.ParserHelper
-      YACP.Plantuml
-      YACP.PPState
-      YACP.ScancodeCollector
-      YACP.ScanossCollector
-      YACP.SPDX.Annotations
-      YACP.SPDX.Common
-      YACP.SPDX.DocumentCreationInformation
-      YACP.SPDX.FileInformation
-      YACP.SPDX.OtherLicensingInformationDetected
-      YACP.SPDX.PackageInformation
-      YACP.SPDX.RelationshipsbetweenSPDXElements
-      YACP.SPDX.SnippetInformation
-      YACP.SPDX.SPDX
-      YACP.SPDXCollector
-      YACP.StateWriter
+      YACP.Core.State
+      YACP.Core.StatementContents
+      YACP.Reader.ComponentDetectionReader
+      YACP.Reader.FosslightDependencyReportReader
+      YACP.Reader.ItDependsReader
+      YACP.Reader.OrtEvaluatedModelReader
+      YACP.Reader.ScancodeReader
+      YACP.Reader.ScanossReader
+      YACP.Reader.SyftReader
+      YACP.Writer.CSVWriter
+      YACP.Writer.StateWriter
   other-modules:
       Paths_yacp
   hs-source-dirs:
@@ -65,6 +53,7 @@ library
     , aeson-pretty
     , base >=4.7 && <5
     , bytestring
+    , cassava
     , containers
     , directory
     , fgl
@@ -73,10 +62,12 @@ library
     , hashable
     , mtl
     , network-uri
+    , packageurl
     , pretty-terminal
     , process
     , random
     , spdx
+    , spdx-tools
     , split
     , text
     , unordered-containers
@@ -98,6 +89,7 @@ executable yacp-exe
     , aeson-pretty
     , base >=4.7 && <5
     , bytestring
+    , cassava
     , containers
     , directory
     , fgl
@@ -106,10 +98,12 @@ executable yacp-exe
     , hashable
     , mtl
     , network-uri
+    , packageurl
     , pretty-terminal
     , process
     , random
     , spdx
+    , spdx-tools
     , split
     , text
     , unordered-containers
@@ -134,6 +128,7 @@ test-suite yacp-test
     , aeson-pretty
     , base >=4.7 && <5
     , bytestring
+    , cassava
     , containers
     , directory
     , fgl
@@ -144,10 +139,12 @@ test-suite yacp-test
     , hspec
     , mtl
     , network-uri
+    , packageurl
     , pretty-terminal
     , process
     , random
     , spdx
+    , spdx-tools
     , split
     , temporary
     , text
