@@ -105,6 +105,17 @@ itDependsReportSpec =
           when (isLeft parsed) $ parsed `shouldBe` (Left (YACPParsingIssue ""))
           isRight parsed `shouldBe` True
 
+evaluatedModelSpec =
+  let evaluatedModelBS :: B.ByteString
+      evaluatedModelBS =
+        B.fromStrict
+          $(embedFile "test/data/ort/evaluated-model.json")
+  in describe "OrtEvaluatedModelReader" $ do
+    let parsed = parseEvaluatedModelBS evaluatedModelBS
+    it ("parsing should succeed") $ do
+      when (isLeft parsed) $ parsed `shouldBe` (Left (YACPParsingIssue ""))
+      isRight parsed `shouldBe` True
+
 main :: IO ()
 main = hspec $ do
   identifierSpec

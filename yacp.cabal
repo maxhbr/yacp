@@ -37,6 +37,7 @@ library
       YACP.Reader.ComponentDetectionReader
       YACP.Reader.FosslightDependencyReportReader
       YACP.Reader.ItDependsReader
+      YACP.Reader.OrtEvaluatedModelReader
       YACP.Reader.ScanossReader
       YACP.Writer.CSVWriter
       YACP.Writer.StateWriter

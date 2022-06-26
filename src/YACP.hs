@@ -14,6 +14,7 @@ import           YACP.Reader.ComponentDetectionReader
                                                as X
 import           YACP.Reader.FosslightDependencyReportReader
                                                as X
+import           YACP.Reader.OrtEvaluatedModelReader   as X
 import           YACP.Reader.ItDependsReader   as X
 import           YACP.Reader.ScanossReader     as X
 import           YACP.Writer.CSVWriter         as X
