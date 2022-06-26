@@ -12,8 +12,8 @@ import           Data.List                     as X
                                                 ( nub )
 import           Data.Maybe                    as X
                                                 ( fromMaybe
-                                                , mapMaybe
                                                 , isJust
+                                                , mapMaybe
                                                 )
 import           Data.String                   as X
                                                 ( fromString )
@@ -37,7 +37,7 @@ import           System.IO                     as X
                                                 , stderr
                                                 )
 
-import Data.Monoid as X
+import           Data.Monoid                   as X
 
 import qualified Data.Vector                   as V
 

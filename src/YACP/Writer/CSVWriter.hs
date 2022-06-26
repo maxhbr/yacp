@@ -47,8 +47,8 @@ instance Csv.ToNamedRecord CSVRecord where
           ]
 
 csvRecordHeader :: Csv.Header
-csvRecordHeader =
-  V.fromList ["Identifier", "Licenses", "DetectedLicenses", "Vulnerabilities", "Origins"]
+csvRecordHeader = V.fromList
+  ["Identifier", "Licenses", "DetectedLicenses", "Vulnerabilities", "Origins"]
 
 genCSV :: State -> V.Vector CSVRecord
 genCSV (State { _getStatements = sts }) =
