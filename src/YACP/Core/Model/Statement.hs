@@ -79,6 +79,8 @@ class (Eq a, Show a
   getDynamic = toDyn
   getRelationFuns :: a -> [Identifier -> Relation]
   getRelationFuns _ = []
+  isEmpty :: a -> Bool
+  isEmpty _ = False
 
 data Statement
   = forall a. Statemental a => Statement Identifier a
@@ -109,9 +111,11 @@ getStatementSubject :: Statement -> Identifier
 getStatementSubject (Statement           i _) = i
 getStatementSubject (StatementWithOrigin s _) = getStatementSubject s
 
-unpackStatement :: forall a . Typeable a => Statement -> Maybe (a, Origin)
+unpackStatement :: forall a. (Typeable a, Statemental a) => Statement -> Maybe (a, Origin)
 unpackStatement (Statement           _ x) = case (fromDynamic . getDynamic) x of
-  Just y -> Just (y, NoOrigin)
+  Just y -> if isEmpty y
+            then Nothing
+            else Just (y, NoOrigin)
   Nothing -> Nothing
 unpackStatement (StatementWithOrigin s NoOrigin) = unpackStatement s
 unpackStatement (StatementWithOrigin s o) = case unpackStatement s of
@@ -156,7 +160,7 @@ instance IdentifierProvider Statements where
 packStatements :: Statemental a => Identifier -> [a] -> Statements
 packStatements i scs = Statements . V.fromList $ map (Statement i) scs
 
-unpackStatements :: forall a . Typeable a => Statements -> [(a,Origin)]
+unpackStatements :: forall a . (Typeable a, Statemental a) => Statements -> [(a,Origin)]
 unpackStatements (Statements ss) =
   (catMaybes . map unpackStatement) (V.toList ss)
 

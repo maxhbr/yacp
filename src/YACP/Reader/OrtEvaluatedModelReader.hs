@@ -21,6 +21,7 @@ import qualified Data.ByteString.Lazy          as B
 import qualified Data.Map                      as Map
 import qualified Data.Vector                   as V
 import qualified System.IO                     as IO
+import qualified Data.Maybe as Maybe
 
 {-
 $ cat test/data/ort/evaluated-model.json | jq '.packages[3] | keys'
@@ -78,6 +79,12 @@ $ cat test/data/ort/evaluated-model.json | jq 'keys'
 data EvaluatedModelPackage
   = EvaluatedModelPackage
   { _evaluatedModelPackageId :: String
+  , _evaluatedModelPackagePurl :: Maybe PURL
+  , _evaluatedModelPackageLevels :: [Int]
+  , _evaluatedModelPackageScopes :: [String]
+  , _evaluatedModelPackageDetectedLicenses :: [MaybeLicenseExpression]
+  , _evaluatedModelPackageDeclaredLicenses :: MaybeLicenseExpression
+  , _evaluatedModelPackageDefinitionFilePath :: Maybe FilePath
   } deriving (Eq, Show)
 
 data EvaluatedModelFile
@@ -98,25 +105,76 @@ instance A.FromJSON EvaluatedModelFile where
       parseSimpleToMap :: A.FromJSON a => A.Key -> A.Value -> A.Parser (Map.Map Int a)
       parseSimpleToMap key = parseToMap (\v -> v A..: key)
 
-      parsePackage :: (Map.Map Int MaybeLicenseExpression) -> A.Object -> A.Parser EvaluatedModelPackage
-      parsePackage licenseMap = \v -> do
+      lookupsInMap :: Map.Map Int a -> [Int] -> [a]
+      lookupsInMap m is = Maybe.mapMaybe (`Map.lookup` m) is
+
+      parsePackage :: (Map.Map Int MaybeLicenseExpression) -> (Map.Map Int String) -> A.Object -> A.Parser EvaluatedModelPackage
+      parsePackage licenseMap scopeMap = \v -> do
         EvaluatedModelPackage <$> v A..: "id"
-      parsePackageMap :: (Map.Map Int MaybeLicenseExpression) -> A.Value -> A.Parser (Map.Map Int EvaluatedModelPackage)
-      parsePackageMap licenseMap = parseToMap (parsePackage licenseMap)
+                              <*> (v A..:? "purl" >>= return . \case
+                                     Just str -> parsePURL str
+                                     Nothing -> Nothing)
+                              <*> v A..: "levels"
+                              <*> (v A..:? "scopes" >>= return . \case
+                                     Just ids -> lookupsInMap scopeMap ids
+                                     Nothing -> [])
+                              <*> (v A..: "detected_licenses" >>= return . lookupsInMap licenseMap)
+                              <*> (v A..: "declared_licenses_processed" 
+                                   >>= (\v' -> do
+                                    spdxExp <- (v' A..:? "spdx_expression">>= return . \case
+                                            Just exp -> fromString exp
+                                            Nothing -> MLicExp NOASSERTION)
+                                    unmapped <- (([] `fromMaybe`) <$> v' A..:? "unmapped_licenses") >>= return . lookupsInMap licenseMap
+                                    return (mconcat (spdxExp:unmapped))))
+                              <*> (v A..: "definition_file_path" >>= return . \case
+                                     "" -> Nothing
+                                     dfp -> Just dfp)
+      parsePackageMap :: (Map.Map Int MaybeLicenseExpression) -> (Map.Map Int String) -> A.Value -> A.Parser (Map.Map Int EvaluatedModelPackage)
+      parsePackageMap licenseMap scopeMap = parseToMap (parsePackage licenseMap scopeMap)
     in A.withObject "EvaluatedModelFile" $ \v -> do
       licenseMap <- (v A..: "licenses" >>= parseSimpleToMap "id") :: A.Parser (Map.Map Int MaybeLicenseExpression)
       scopeMap <- (v A..: "scopes" >>= parseSimpleToMap "name") :: A.Parser (Map.Map Int String)
       copyrightMap <- (v A..: "copyrights" >>= parseSimpleToMap "statement") :: A.Parser (Map.Map Int String)
 
-      packageMap <- (v A..: "packages" >>= parsePackageMap licenseMap) :: A.Parser (Map.Map Int EvaluatedModelPackage)
+      packageMap <- (v A..: "packages" >>= parsePackageMap licenseMap scopeMap) :: A.Parser (Map.Map Int EvaluatedModelPackage)
 
       return (EvaluatedModelFile licenseMap scopeMap copyrightMap packageMap)
+
+convertEvaluatedModel :: EvaluatedModelFile -> Statements
+convertEvaluatedModel (EvaluatedModelFile {_evaluatedModelPackages = packages}) = let
+    convertEvaluatedPackage :: EvaluatedModelPackage -> [Statement]
+  -- { _evaluatedModelPackageId :: String
+  -- , _evaluatedModelPackagePurl :: Maybe PURL
+  -- , _evaluatedModelPackageLevels :: [Int]
+  -- , _evaluatedModelPackageScopes :: [String]
+  -- , _evaluatedModelPackageDetectedLicenses :: [MaybeLicenseExpression]
+  -- , _evaluatedModelPackageDeclaredLicenses :: MaybeLicenseExpression
+  -- , _evaluatedModelPackageDefinitionFilePath :: Maybe FilePath
+    convertEvaluatedPackage p = let
+        identifier = Identifier (_evaluatedModelPackageId p) <> (case _evaluatedModelPackagePurl p of
+          Just p -> PurlIdentifier p
+          Nothing -> mempty)
+        detectedLicenses = Statement identifier (DetectedLicenses (_evaluatedModelPackageDetectedLicenses p))
+        declaredLicenses = Statement identifier (ComponentLicense (_evaluatedModelPackageDeclaredLicenses p))
+        manifestFile = case _evaluatedModelPackageDefinitionFilePath p of
+          Just manifest -> [Statement identifier (FoundManifestFile (AbsolutePathIdentifier manifest))]
+          Nothing -> []
+
+      in [declaredLicenses, detectedLicenses] ++ manifestFile
+  in (Statements . V.fromList . concatMap convertEvaluatedPackage . Map.elems) packages
 
 parseEvaluatedModelBS :: B.ByteString -> Either YACPIssue EvaluatedModelFile
 parseEvaluatedModelBS bs = case A.eitherDecode bs of
   Right cd  -> Right cd
   Left  err -> Left (YACPParsingIssue err)
+
 readEvaluatedModelBS :: Origin -> B.ByteString -> YACP (Maybe YACPIssue)
-readEvaluatedModelBS = undefined
+readEvaluatedModelBS o bs = case parseEvaluatedModelBS bs of
+  Right file -> do
+    let statements = setOrigin o $ convertEvaluatedModel file
+    addStatements statements
+    return Nothing
+  Left issue -> return (Just issue)
+
 readEvaluatedModelFile :: FilePath -> YACP ()
-readEvaluatedModelFile = undefined
+readEvaluatedModelFile f = readBSFromFile (readEvaluatedModelBS (OriginToolReport "ort" f)) f

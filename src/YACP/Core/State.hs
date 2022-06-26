@@ -119,6 +119,7 @@ readBSFromFile
 readBSFromFile fun path = do
   fileExist <- MTL.liftIO $ doesFileExist path
   unless fileExist $ fail ("The file " ++ path ++ " was not found")
+  stderrLog $ "parse " ++ path
   bs         <- MTL.liftIO $ B.readFile path
   maybeIssue <- fun bs
   case maybeIssue of

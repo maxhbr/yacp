@@ -44,8 +44,21 @@ instance Show ComponentLicense where
     show (ComponentLicense l) = show l
 instance A.ToJSON ComponentLicense
 instance A.FromJSON ComponentLicense
-instance Statemental ComponentLicense
+instance Statemental ComponentLicense where
+  isEmpty (ComponentLicense (MLicExp NOASSERTION)) = True
+  isEmpty _                                        = False
 instance IdentifierProvider ComponentLicense
+
+data DetectedLicenses = DetectedLicenses [MaybeLicenseExpression]
+  deriving (Eq, Generic)
+instance Show DetectedLicenses where
+    show (DetectedLicenses l) = show l
+instance A.ToJSON DetectedLicenses
+instance A.FromJSON DetectedLicenses
+instance Statemental DetectedLicenses where
+  isEmpty (DetectedLicenses []) = True
+  isEmpty _                     = False
+instance IdentifierProvider DetectedLicenses
 
 data ComponentUrl = ComponentUrl String
   deriving (Eq, Generic)

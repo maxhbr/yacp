@@ -55,7 +55,8 @@ argsToYACP' ("--fosslight" : (f : oArgs)) =
   readFosslightDepRepFile f >> argsToYACP' oArgs
 argsToYACP' ("--it-depends" : (f : oArgs)) =
   readItDependsFile f >> argsToYACP' oArgs
--- argsToYACP' ("--ort": (f: oArgs)) = parseOrtFile f >> argsToYACP' oArgs
+argsToYACP' ("--ort" : (f : oArgs)) =
+  readEvaluatedModelFile f >> argsToYACP' oArgs
 -- argsToYACP' ("--spdx": (f: oArgs)) = parseSPDXFile f >> argsToYACP' oArgs
 -- argsToYACP' ("--hhc": (f: oArgs)) = parseHHCFile f >> argsToYACP' oArgs
 argsToYACP' (unknown : oArgs) = MTL.liftIO $ do

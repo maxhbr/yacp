@@ -80,7 +80,7 @@ readItDependsBS o bs = case parseItDependsBS bs of
   Right file -> do
     let statements = setOrigin o $ convertItDepends file
     addStatements statements
-    return (Nothing)
+    return Nothing
   Left issue -> return (Just issue)
 
 readItDependsFile :: FilePath -> YACP ()

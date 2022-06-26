@@ -27,6 +27,9 @@ import           System.IO                     as X
                                                 , stderr
                                                 )
 import           SPDX.LicenseExpression        as X
+import SPDX.Document.Common as X (SPDXMaybe(..))
+import Data.String as X (fromString)
+import Data.Maybe as X (fromMaybe, mapMaybe)
 
 import qualified Data.Vector                   as V
 
