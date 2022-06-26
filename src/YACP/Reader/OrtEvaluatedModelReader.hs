@@ -74,8 +74,6 @@ $ cat test/data/ort/evaluated-model.json | jq 'keys'
 ]
 -}
 
-
-
 data EvaluatedModelPackage
   = EvaluatedModelPackage
   { _evaluatedModelPackageId :: String
@@ -87,12 +85,22 @@ data EvaluatedModelPackage
   , _evaluatedModelPackageDefinitionFilePath :: Maybe FilePath
   } deriving (Eq, Show)
 
+data EvaluatedModelDependencyTree
+  = EvaluatedModelDependencyTree
+  { _evaluatedModelDependencyTreeKey :: Int
+  , _evaluatedModelDependencyTreeSubject :: Maybe Identifier
+  , _evaluatedModelDependencyTreeChildren :: [EvaluatedModelDependencyTree]
+  , _evaluatedModelDependencyTreeScope :: Maybe String
+  , _evaluatedModelDependencyTreeLinkage :: Maybe String
+  } deriving (Eq, Show)
+
 data EvaluatedModelFile
   = EvaluatedModelFile
   { _evaluatedModelLicenses :: (Map.Map Int MaybeLicenseExpression)
   , _evaluatedModelScopes :: (Map.Map Int String)
   , _evaluatedModelCopyrights :: (Map.Map Int String)
   , _evaluatedModelPackages :: (Map.Map Int EvaluatedModelPackage)
+  , _evaluatedModelDependencyTrees :: [EvaluatedModelDependencyTree]
   }
   deriving (Eq, Show)
 instance A.FromJSON EvaluatedModelFile where
@@ -131,6 +139,25 @@ instance A.FromJSON EvaluatedModelFile where
                                      dfp -> Just dfp)
       parsePackageMap :: (Map.Map Int MaybeLicenseExpression) -> (Map.Map Int String) -> A.Value -> A.Parser (Map.Map Int EvaluatedModelPackage)
       parsePackageMap licenseMap scopeMap = parseToMap (parsePackage licenseMap scopeMap)
+
+      parseDependencyTree :: (Map.Map Int String) -> (Map.Map Int EvaluatedModelPackage) -> A.Value -> A.Parser EvaluatedModelDependencyTree
+      parseDependencyTree scopeMap packageMap = A.withObject "EvaluatedModelDependencyTree" $ \v ->
+        EvaluatedModelDependencyTree <$> v A..: "key"
+                                     <*> (v A..:? "pkg" >>= return . \case
+                                            Just i -> case  i `Map.lookup` packageMap of
+                                               Just p -> Just $ Identifier (_evaluatedModelPackageId p)
+                                               Nothing -> Nothing
+                                            Nothing -> Nothing)
+                                     <*> (v A..:? "children" >>= \case 
+                                       Just ts -> parseDependencyTrees scopeMap packageMap ts
+                                       Nothing -> return [])
+                                     <*> (v A..:? "scope" >>= return . \case
+                                            Just i -> i `Map.lookup` scopeMap
+                                            Nothing -> Nothing)
+                                     <*> v A..:? "linkage"
+      parseDependencyTrees :: (Map.Map Int String) -> (Map.Map Int EvaluatedModelPackage) -> A.Value -> A.Parser [EvaluatedModelDependencyTree]
+      parseDependencyTrees scopeMap packageMap = A.withArray "Array" $ \v -> mapM (parseDependencyTree scopeMap packageMap) (V.toList v)
+
     in A.withObject "EvaluatedModelFile" $ \v -> do
       licenseMap <- (v A..: "licenses" >>= parseSimpleToMap "id") :: A.Parser (Map.Map Int MaybeLicenseExpression)
       scopeMap <- (v A..: "scopes" >>= parseSimpleToMap "name") :: A.Parser (Map.Map Int String)
@@ -138,18 +165,13 @@ instance A.FromJSON EvaluatedModelFile where
 
       packageMap <- (v A..: "packages" >>= parsePackageMap licenseMap scopeMap) :: A.Parser (Map.Map Int EvaluatedModelPackage)
 
-      return (EvaluatedModelFile licenseMap scopeMap copyrightMap packageMap)
+      dependencyTrees <- (v A..: "dependency_trees" >>= parseDependencyTrees scopeMap packageMap) :: A.Parser [EvaluatedModelDependencyTree]
+
+      return (EvaluatedModelFile licenseMap scopeMap copyrightMap packageMap dependencyTrees)
 
 convertEvaluatedModel :: EvaluatedModelFile -> Statements
 convertEvaluatedModel (EvaluatedModelFile {_evaluatedModelPackages = packages}) = let
     convertEvaluatedPackage :: EvaluatedModelPackage -> [Statement]
-  -- { _evaluatedModelPackageId :: String
-  -- , _evaluatedModelPackagePurl :: Maybe PURL
-  -- , _evaluatedModelPackageLevels :: [Int]
-  -- , _evaluatedModelPackageScopes :: [String]
-  -- , _evaluatedModelPackageDetectedLicenses :: [MaybeLicenseExpression]
-  -- , _evaluatedModelPackageDeclaredLicenses :: MaybeLicenseExpression
-  -- , _evaluatedModelPackageDefinitionFilePath :: Maybe FilePath
     convertEvaluatedPackage p = let
         identifier = Identifier (_evaluatedModelPackageId p) <> (case _evaluatedModelPackagePurl p of
           Just p -> PurlIdentifier p
