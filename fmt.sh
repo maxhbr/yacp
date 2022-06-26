@@ -16,6 +16,6 @@ formatDir() {
 }
 
 formatDir src
-formatDir test
+# formatDir test
 formatDir app
 

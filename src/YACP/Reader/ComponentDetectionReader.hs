@@ -40,7 +40,7 @@ instance A.FromJSON DependencyGraph where
               . A.toMap
               )
               v
-    in  \(A.Object v) -> pure $ keyMapToDependencyGraph v
+    in  A.withObject "DependencyGraph" $ \v -> pure $ keyMapToDependencyGraph v
 
 data FoundComponent = FoundComponent
   { _locationsFoundAt        :: [FilePath]
@@ -52,7 +52,7 @@ data FoundComponent = FoundComponent
   }
   deriving (Eq, Show)
 instance A.FromJSON FoundComponent where
-  parseJSON (A.Object v) = do
+  parseJSON = A.withObject "FoundComponent" $ \v -> do
     component <- v A..: "component"
     purl      <- component A..: "packageUrl"
     FoundComponent

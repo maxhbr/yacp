@@ -8,4 +8,5 @@ stack exec yacp-exe -- \
   --fosslight "test/data/fosslight/fosslight_dependency-Report_SRC.csv" \
   --it-depends "test/data/it-depends/it-depends.json" \
   --ort "test/data/ort/evaluated-model.json" \
+  --syft "test/data/syft/report.json" \
   "_tmp"

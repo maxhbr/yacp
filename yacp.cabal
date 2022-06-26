@@ -39,6 +39,7 @@ library
       YACP.Reader.ItDependsReader
       YACP.Reader.OrtEvaluatedModelReader
       YACP.Reader.ScanossReader
+      YACP.Reader.SyftReader
       YACP.Writer.CSVWriter
       YACP.Writer.StateWriter
   other-modules:

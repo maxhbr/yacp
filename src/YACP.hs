@@ -18,6 +18,7 @@ import           YACP.Reader.ItDependsReader   as X
 import           YACP.Reader.OrtEvaluatedModelReader
                                                as X
 import           YACP.Reader.ScanossReader     as X
+import           YACP.Reader.SyftReader        as X
 import           YACP.Writer.CSVWriter         as X
 import           YACP.Writer.StateWriter       as X
 
@@ -58,9 +59,10 @@ argsToYACP' ("--it-depends" : (f : oArgs)) =
   readItDependsFile f >> argsToYACP' oArgs
 argsToYACP' ("--ort" : (f : oArgs)) =
   readEvaluatedModelFile f >> argsToYACP' oArgs
+argsToYACP' ("--syft" : (f : oArgs)) = readSyftFile f >> argsToYACP' oArgs
 -- argsToYACP' ("--spdx": (f: oArgs)) = parseSPDXFile f >> argsToYACP' oArgs
 -- argsToYACP' ("--hhc": (f: oArgs)) = parseHHCFile f >> argsToYACP' oArgs
-argsToYACP' (unknown : oArgs) = MTL.liftIO $ do
+argsToYACP' (unknown  : oArgs      ) = MTL.liftIO $ do
   putStrLn ("failed to parse: " ++ unknown)
   exitFailure
 

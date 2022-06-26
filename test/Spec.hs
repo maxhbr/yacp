@@ -117,6 +117,17 @@ evaluatedModelSpec =
       when (isLeft parsed) $ parsed `shouldBe` (Left (YACPParsingIssue ""))
       isRight parsed `shouldBe` True
 
+syftSpec =
+  let syftBS :: B.ByteString
+      syftBS =
+        B.fromStrict
+          $(embedFile "test/data/syft/report.json")
+  in describe "OrtEvaluatedModelReader" $ do
+    let parsed = parseSyftBS syftBS
+    it ("parsing should succeed") $ do
+      when (isLeft parsed) $ parsed `shouldBe` (Left (YACPParsingIssue ""))
+      isRight parsed `shouldBe` True
+
 main :: IO ()
 main = hspec $ do
   identifierSpec
@@ -124,3 +135,4 @@ main = hspec $ do
   fosslightDependencyReportSpec
   itDependsReportSpec
   evaluatedModelSpec
+  syftSpec
