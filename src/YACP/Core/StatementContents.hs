@@ -41,18 +41,18 @@ instance IdentifierProvider FoundManifestFile where
 data ComponentLicense = ComponentLicense MaybeLicenseExpression
   deriving (Eq, Generic)
 instance Show ComponentLicense where
-    show (ComponentLicense l) = show l
+  show (ComponentLicense l) = show l
 instance A.ToJSON ComponentLicense
 instance A.FromJSON ComponentLicense
 instance Statemental ComponentLicense where
   isEmpty (ComponentLicense (MLicExp NOASSERTION)) = True
-  isEmpty _                                        = False
+  isEmpty _ = False
 instance IdentifierProvider ComponentLicense
 
 data DetectedLicenses = DetectedLicenses [MaybeLicenseExpression]
   deriving (Eq, Generic)
 instance Show DetectedLicenses where
-    show (DetectedLicenses l) = show l
+  show (DetectedLicenses l) = show l
 instance A.ToJSON DetectedLicenses
 instance A.FromJSON DetectedLicenses
 instance Statemental DetectedLicenses where
@@ -63,7 +63,7 @@ instance IdentifierProvider DetectedLicenses
 data ComponentUrl = ComponentUrl String
   deriving (Eq, Generic)
 instance Show ComponentUrl where
-    show (ComponentUrl url) = url
+  show (ComponentUrl url) = url
 instance A.ToJSON ComponentUrl
 instance A.FromJSON ComponentUrl
 instance Statemental ComponentUrl
@@ -72,7 +72,7 @@ instance IdentifierProvider ComponentUrl
 data ComponentVulnerability = ComponentVulnerability String
   deriving (Eq, Generic)
 instance Show ComponentVulnerability where
-    show (ComponentVulnerability v) = v
+  show (ComponentVulnerability v) = v
 instance A.ToJSON ComponentVulnerability
 instance A.FromJSON ComponentVulnerability
 instance Statemental ComponentVulnerability

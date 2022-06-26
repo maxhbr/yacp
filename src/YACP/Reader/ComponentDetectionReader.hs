@@ -109,7 +109,10 @@ applyComponentDetection o (ComponentDetection dgs cfs) =
 -- idfyGraph :: Map.Map FilePath DependencyGraph -> 
     applyFoundComponent :: FoundComponent -> YACP ()
     applyFoundComponent FoundComponent { _locationsFoundAt = locationsFoundAt, _id = componentId, _packageURL = packageUrl }
-      = let identifier = PurlIdentifier packageUrl <> flexibilizePURL packageUrl <> Identifier componentId
+      = let identifier =
+              PurlIdentifier packageUrl
+                <> flexibilizePURL packageUrl
+                <> Identifier componentId
             statements = setOrigin o . (Statements . V.fromList) $ map
               (Statement identifier)
               (map (FoundManifestFile . AbsolutePathIdentifier) locationsFoundAt
@@ -128,4 +131,6 @@ readComponentDetectionBS o bs = case parseComponentDetectionBS bs of
   Left issue -> return (Just issue)
 
 readComponentDetectionFile :: FilePath -> YACP ()
-readComponentDetectionFile f = readBSFromFile (readComponentDetectionBS (OriginToolReport "component-detection" f)) f
+readComponentDetectionFile f = readBSFromFile
+  (readComponentDetectionBS (OriginToolReport "component-detection" f))
+  f

@@ -92,8 +92,8 @@ instance Eq Statement where
   _ == _ = False
 
 instance Show Statement where
-  show (Statement i sc) = show i ++ " -> " ++ show sc 
-  show (StatementWithOrigin s _) = show s
+  show (Statement           i sc) = show i ++ " -> " ++ show sc
+  show (StatementWithOrigin s _ ) = show s
 
 instance A.ToJSON Statement where
   toJSON (Statement identifier a) = A.object
@@ -111,25 +111,24 @@ getStatementSubject :: Statement -> Identifier
 getStatementSubject (Statement           i _) = i
 getStatementSubject (StatementWithOrigin s _) = getStatementSubject s
 
-unpackStatement :: forall a. (Typeable a, Statemental a) => Statement -> Maybe (a, Origin)
-unpackStatement (Statement           _ x) = case (fromDynamic . getDynamic) x of
-  Just y -> if isEmpty y
-            then Nothing
-            else Just (y, NoOrigin)
+unpackStatement
+  :: forall a . (Typeable a, Statemental a) => Statement -> Maybe (a, Origin)
+unpackStatement (Statement _ x) = case (fromDynamic . getDynamic) x of
+  Just y  -> if isEmpty y then Nothing else Just (y, NoOrigin)
   Nothing -> Nothing
 unpackStatement (StatementWithOrigin s NoOrigin) = unpackStatement s
-unpackStatement (StatementWithOrigin s o) = case unpackStatement s of
-  Just (y,_) -> Just (y,o)
-  Nothing -> Nothing
+unpackStatement (StatementWithOrigin s o       ) = case unpackStatement s of
+  Just (y, _) -> Just (y, o)
+  Nothing     -> Nothing
 
 getOrigin :: Statement -> Origin
-getOrigin (Statement _ _) = NoOrigin
+getOrigin (Statement           _ _       ) = NoOrigin
 getOrigin (StatementWithOrigin s NoOrigin) = getOrigin s
-getOrigin (StatementWithOrigin _ o) = o
+getOrigin (StatementWithOrigin _ o       ) = o
 
 setOrigin1 :: Origin -> Statement -> Statement
 setOrigin1 NoOrigin s = s
-setOrigin1 o s = StatementWithOrigin s o
+setOrigin1 o        s = StatementWithOrigin s o
 
 instance IdentifierProvider Statement where
   getIdentifiers (StatementWithOrigin s o) = getIdentifiers s
@@ -160,7 +159,8 @@ instance IdentifierProvider Statements where
 packStatements :: Statemental a => Identifier -> [a] -> Statements
 packStatements i scs = Statements . V.fromList $ map (Statement i) scs
 
-unpackStatements :: forall a . (Typeable a, Statemental a) => Statements -> [(a,Origin)]
+unpackStatements
+  :: forall a . (Typeable a, Statemental a) => Statements -> [(a, Origin)]
 unpackStatements (Statements ss) =
   (catMaybes . map unpackStatement) (V.toList ss)
 

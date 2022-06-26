@@ -84,4 +84,5 @@ readItDependsBS o bs = case parseItDependsBS bs of
   Left issue -> return (Just issue)
 
 readItDependsFile :: FilePath -> YACP ()
-readItDependsFile f = readBSFromFile (readItDependsBS (OriginToolReport "it-depends" f)) f
+readItDependsFile f =
+  readBSFromFile (readItDependsBS (OriginToolReport "it-depends" f)) f

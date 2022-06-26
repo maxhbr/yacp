@@ -34,43 +34,44 @@ identifierSpec =
   let purl1 = "pkg:pypi/Jinja2@2.11.2"
       purl2 =
         "pkg:maven/org.apache.xmlgraphics/batik-anim@1.9.1?packaging=sources"
-  in do
-     describe "Identifier" $ do
-        it ("parse purl1=" ++ purl1) $ do
-          idFromPurl purl1
-            `shouldBe` (PurlIdentifier
-                         (PURL.PURL (Just "pkg")
-                                    (Just (PURL.parsePURL_Type "pypi"))
-                                    Nothing
-                                    "Jinja2"
-                                    (Just "2.11.2")
-                                    Nothing
-                                    Nothing
+  in  do
+        describe "Identifier" $ do
+          it ("parse purl1=" ++ purl1) $ do
+            idFromPurl purl1
+              `shouldBe` (PurlIdentifier
+                           (PURL.PURL (Just "pkg")
+                                      (Just (PURL.parsePURL_Type "pypi"))
+                                      Nothing
+                                      "Jinja2"
+                                      (Just "2.11.2")
+                                      Nothing
+                                      Nothing
+                           )
                          )
-                       )
-        it ("parse purl2=" ++ purl2) $ do
-          idFromPurl purl2
-            `shouldBe` (PurlIdentifier
-                         (PURL.PURL (Just "pkg")
-                                    (Just (PURL.parsePURL_Type "maven"))
-                                    (Just "org.apache.xmlgraphics")
-                                    "batik-anim"
-                                    (Just "1.9.1")
-                                    (Just "?packaging=sources")
-                                    Nothing
+          it ("parse purl2=" ++ purl2) $ do
+            idFromPurl purl2
+              `shouldBe` (PurlIdentifier
+                           (PURL.PURL (Just "pkg")
+                                      (Just (PURL.parsePURL_Type "maven"))
+                                      (Just "org.apache.xmlgraphics")
+                                      "batik-anim"
+                                      (Just "1.9.1")
+                                      (Just "?packaging=sources")
+                                      Nothing
+                           )
                          )
-                       )
-        it ("test show of purl2=" ++ purl2) $ do
-          show (idFromPurl purl2) `shouldBe` purl2
-     describe "Clusterify" $ do
-      it "it minimal example" $ do
-        let is = (clusterifyIdentifiers . V.fromList) [ Identifier "abc"
-                                                      , Identifier "abc"
-                                                      , Identifier "cde"
-                                                      , Identifiers [Identifier "fgh"]
-                                                      , Identifiers [Identifier "fgh", Identifier "cde"]
-                                                      ]
-        (V.length is) `shouldBe` 2
+          it ("test show of purl2=" ++ purl2) $ do
+            show (idFromPurl purl2) `shouldBe` purl2
+        describe "Clusterify" $ do
+          it "it minimal example" $ do
+            let is = (clusterifyIdentifiers . V.fromList)
+                  [ Identifier "abc"
+                  , Identifier "abc"
+                  , Identifier "cde"
+                  , Identifiers [Identifier "fgh"]
+                  , Identifiers [Identifier "fgh", Identifier "cde"]
+                  ]
+            (V.length is) `shouldBe` 2
 
 componentDetectionSpec =
   let componentDetectionFileBS :: B.ByteString
