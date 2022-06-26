@@ -122,3 +122,4 @@ main = hspec $ do
   componentDetectionSpec
   fosslightDependencyReportSpec
   itDependsReportSpec
+  evaluatedModelSpec

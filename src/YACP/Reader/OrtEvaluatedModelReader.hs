@@ -44,9 +44,6 @@ $ cat test/data/ort/evaluated-model.json | jq '.packages[3] | keys'
   "vcs_processed"
 ]
 -}
-data EvaluatedModelPackage
-  = EvaluatedModelPackage
-  deriving (Eq, Show)
 
 {-
 $ cat test/data/ort/evaluated-model.json | jq 'keys'
@@ -75,12 +72,51 @@ $ cat test/data/ort/evaluated-model.json | jq 'keys'
   "vulnerabilities_resolutions"
 ]
 -}
+
+
+
+data EvaluatedModelPackage
+  = EvaluatedModelPackage
+  { _evaluatedModelPackageId :: String
+  } deriving (Eq, Show)
+
 data EvaluatedModelFile
-  = EvaluatedModelFile 
+  = EvaluatedModelFile
+  { _evaluatedModelLicenses :: (Map.Map Int MaybeLicenseExpression)
+  , _evaluatedModelScopes :: (Map.Map Int String)
+  , _evaluatedModelCopyrights :: (Map.Map Int String)
+  , _evaluatedModelPackages :: (Map.Map Int EvaluatedModelPackage)
+  }
   deriving (Eq, Show)
 instance A.FromJSON EvaluatedModelFile where
-    parseJSON = A.withObject "EvaluatedModelFile" $ \v -> return EvaluatedModelFile
+  parseJSON = let
+      parseToMap :: (A.Object -> A.Parser a) -> A.Value -> A.Parser (Map.Map Int a)
+      parseToMap parser = A.withArray "Array" $ \v -> do
+        entries <- mapM (A.withObject "ArrayItem" $ \v' -> 
+          (,) <$> v' A..: "_id" <*> parser v') (V.toList v)
+        return $ Map.fromList entries
+      parseSimpleToMap :: A.FromJSON a => A.Key -> A.Value -> A.Parser (Map.Map Int a)
+      parseSimpleToMap key = parseToMap (\v -> v A..: key)
 
-readEvaluatedModelFile = undefined
+      parsePackage :: (Map.Map Int MaybeLicenseExpression) -> A.Object -> A.Parser EvaluatedModelPackage
+      parsePackage licenseMap = \v -> do
+        EvaluatedModelPackage <$> v A..: "id"
+      parsePackageMap :: (Map.Map Int MaybeLicenseExpression) -> A.Value -> A.Parser (Map.Map Int EvaluatedModelPackage)
+      parsePackageMap licenseMap = parseToMap (parsePackage licenseMap)
+    in A.withObject "EvaluatedModelFile" $ \v -> do
+      licenseMap <- (v A..: "licenses" >>= parseSimpleToMap "id") :: A.Parser (Map.Map Int MaybeLicenseExpression)
+      scopeMap <- (v A..: "scopes" >>= parseSimpleToMap "name") :: A.Parser (Map.Map Int String)
+      copyrightMap <- (v A..: "copyrights" >>= parseSimpleToMap "statement") :: A.Parser (Map.Map Int String)
+
+      packageMap <- (v A..: "packages" >>= parsePackageMap licenseMap) :: A.Parser (Map.Map Int EvaluatedModelPackage)
+
+      return (EvaluatedModelFile licenseMap scopeMap copyrightMap packageMap)
+
+parseEvaluatedModelBS :: B.ByteString -> Either YACPIssue EvaluatedModelFile
+parseEvaluatedModelBS bs = case A.eitherDecode bs of
+  Right cd  -> Right cd
+  Left  err -> Left (YACPParsingIssue err)
+readEvaluatedModelBS :: Origin -> B.ByteString -> YACP (Maybe YACPIssue)
 readEvaluatedModelBS = undefined
-parseEvaluatedModelBS = undefined
+readEvaluatedModelFile :: FilePath -> YACP ()
+readEvaluatedModelFile = undefined
